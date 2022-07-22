@@ -8,31 +8,42 @@ public class Main {
         //homePage.setExtendedState(JFrame.MAXIMIZED_BOTH);
         homePage.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         homePage.setVisible(true);
-        homePage.setLayout(new BorderLayout());
+        homePage.setLayout(new GridBagLayout());
 
         //declaring panels
         JPanel settingsPanel = new JPanel();
-        JPanel rightPartHomePage = new JPanel();
         JPanel simulationPanel = new JPanel();
         JPanel activeEntitiesPanel = new JPanel();
 
         //setting panels
-        settingsPanel.setPreferredSize(new Dimension(homePage.getWidth() / 4, homePage.getHeight()));
-        homePage.add(settingsPanel, "West");
-        rightPartHomePage.setPreferredSize(new Dimension(homePage.getWidth() - homePage.getWidth() / 4, homePage.getHeight()));
-        homePage.add(rightPartHomePage, "East");
-        rightPartHomePage.setLayout(new BorderLayout());
-        simulationPanel.setPreferredSize(new Dimension(rightPartHomePage.getWidth(), homePage.getHeight() / 2));
-        rightPartHomePage.add(simulationPanel, "North");
-        activeEntitiesPanel.setPreferredSize(new Dimension(rightPartHomePage.getWidth(), homePage.getHeight() / 2));
-        rightPartHomePage.add(activeEntitiesPanel, "South");
+        GridBagConstraints gbdSettings = new GridBagConstraints();
+        gbdSettings.gridx = 0;
+        gbdSettings.gridy = 0;
+        gbdSettings.gridheight = 2;
+        gbdSettings.fill = GridBagConstraints.BOTH;
+        gbdSettings.weightx = 0.3;
+        gbdSettings.weighty = 1;
+        homePage.add(settingsPanel,gbdSettings);
 
-        homePage.pack();
+        GridBagConstraints gbdSimulation = new GridBagConstraints();
+        gbdSimulation.gridx = 1;
+        gbdSimulation.gridy = 0;
+        gbdSimulation.fill = GridBagConstraints.BOTH;
+        gbdSimulation.weightx = 0.7;
+        gbdSimulation.weighty = 0.5;
+        homePage.add(simulationPanel,gbdSimulation);
+
+        GridBagConstraints gbdActiveEntities = new GridBagConstraints();
+        gbdActiveEntities.gridx = 1;
+        gbdActiveEntities.gridy = 1;
+        gbdActiveEntities.fill = GridBagConstraints.BOTH;
+        gbdActiveEntities.weightx = 0.7;
+        gbdActiveEntities.weighty = 0.5;
+        homePage.add(activeEntitiesPanel,gbdActiveEntities);
 
         //remove them when they are useless
         settingsPanel.setBackground(Color.RED);
         simulationPanel.setBackground(Color.GREEN);
         activeEntitiesPanel.setBackground(Color.BLUE);
-        rightPartHomePage.setBackground(Color.GRAY);
     }
 }
