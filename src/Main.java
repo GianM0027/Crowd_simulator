@@ -16,8 +16,8 @@ public class Main {
         ActiveEntitiesPanel activeEntitiesPanel = new ActiveEntitiesPanel(homePage);
 
         //setting panels
-        homePage.add(settingsPanel.getPanel(),settingsPanel.getGbd());
-        homePage.add(simulationPanel.getPanel(),simulationPanel.getGbd());
-        homePage.add(activeEntitiesPanel.getPanel(),activeEntitiesPanel.getGbd());
+        homePage.add(settingsPanel,settingsPanel.getGbd());
+        homePage.add(simulationPanel,simulationPanel.getGbd());
+        homePage.add(activeEntitiesPanel,activeEntitiesPanel.getGbd());
     }
 }
