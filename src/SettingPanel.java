@@ -1,9 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import static constants.Constants.*;
+import static support.constants.Constant.*;
 
 public class SettingPanel extends JPanel {
     private GridBagConstraints gbd = new GridBagConstraints();
@@ -19,76 +17,85 @@ public class SettingPanel extends JPanel {
         this.gbd.weighty = 1;
         this.setBorder(BorderFactory.createEtchedBorder());
         this.setBackground(Color.WHITE);
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout(10,10));
 
         setInternalLayout();
     }
 
+
     private void setInternalLayout(){
+        //declaring 2 sections (1 containing topBar + buttons, 1 scrollable contains options and settings)
+        JPanel topPanel = new JPanel(new BorderLayout(10,10));
+        topPanel.setBackground(Color.WHITE);
+        this.add(topPanel, BorderLayout.NORTH);
+
+        JPanel optionsPanel = new JPanel(); //decidi un layout manager
+        JScrollPane optionScroll = new JScrollPane(optionsPanel);
+        optionsPanel.setBackground(Color.GREEN);
+        this.add(optionScroll, BorderLayout.CENTER);
+
+        /*setting scroll bar
+        JScrollBar scrollBar = new JScrollBar();
+        optionsPanel.add(scrollBar, BorderLayout.EAST);*/
+
+        //setting top bar
+        setTopBar(topPanel);
+
         //startSimulationButton settings
-        addButtons();
+        addButtons(topPanel);
 
-        //Settings panel
-        JPanel optionPanel = new JPanel();
-        optionPanel.setLayout(new GridBagLayout());
-        optionPanel.setBackground(Color.WHITE);
-        this.add(optionPanel);
-
-        //Adding label and text fields in the panel
-        GridBagConstraints gbd = new GridBagConstraints();
-        gbd.gridy = 0;
-        gbd.insets = new Insets(5,5,5,5);
-        gbd = addLabelAndTextField(optionPanel , "Number of people", gbd);
-        gbd = addLabelAndTextField(optionPanel, "Number of obstacles", gbd);
-        gbd = addLabelAndTextField(optionPanel, "Number of points of interest", gbd);
+        //Adding label and text fields into the panel
+        addLabelAndTextField(optionsPanel, "Number of people");
+        addLabelAndTextField(optionsPanel, "Number of obstacles");
+        addLabelAndTextField(optionsPanel, "Number of points of interest");
     }
 
 
-    private GridBagConstraints addLabelAndTextField(JPanel panel, String label, GridBagConstraints gbd){
+    private void setTopBar(JPanel panel){//vedi se aggiungere pannello in cui mettere la topBar
+        JToolBar topBar = new JToolBar();
+        topBar.setBackground(Color.LIGHT_GRAY);
+        JLabel label = new JLabel("Settings Menu");
+        topBar.setFloatable(false);
+        topBar.add(label);
+
+        panel.add(topBar,BorderLayout.NORTH);
+    }
+
+    private void addButtons(JPanel panel){
+        JPanel buttonsPanel = new JPanel(new BorderLayout(10,10));
+
+        buttonsPanel.setLayout(new BorderLayout(10,10));
+        buttonsPanel.setBounds(0,0,this.getWidth(),this.getHeight()/10);
+        buttonsPanel.setBackground(Color.WHITE);
+
+        JButton startSimulationButton = new JButton("START SIMULATION");
+        startSimulationButton.addActionListener(e -> startSimulation());
+        startSimulationButton.setPreferredSize(new Dimension(this.getWidth()/3, 40));
+        buttonsPanel.add(startSimulationButton, BorderLayout.NORTH);
+
+        JButton stopSimulationButton = new JButton("STOP SIMULATION");
+        stopSimulationButton.addActionListener(e -> stopSimulation());
+        stopSimulationButton.setPreferredSize(new Dimension(this.getWidth()/3, 40));
+        buttonsPanel.add(stopSimulationButton, BorderLayout.SOUTH);
+
+        panel.add(buttonsPanel, BorderLayout.SOUTH);
+    }
+
+    private void addLabelAndTextField(JPanel panel, String label){
         JLabel jlabel = new JLabel(label);
         JSpinner inputNumber = new JSpinner();
         JButton confirmButton = new JButton("Confirm");
 
         SpinnerModel spinnerModel = new SpinnerNumberModel(0,0,MAX_PEOPLE,1);
         inputNumber.setModel(spinnerModel);
-        gbd.anchor = GridBagConstraints.FIRST_LINE_START;
 
-        gbd.gridx = 0;
-        gbd.weightx = 0.8;
-        panel.add(jlabel, gbd);
-        gbd.gridx = 1;
-        gbd.weightx = 0.5;
-        gbd.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(inputNumber, gbd);
-        gbd.gridx = 2;
-        gbd.weightx = 0.3;
-        gbd.fill = GridBagConstraints.NONE;
-        panel.add(confirmButton, gbd);
+        panel.add(jlabel);
+        panel.add(inputNumber);
+        panel.add(confirmButton);
 
-        gbd.gridx = 0;
-        gbd.gridy++;
-        return gbd;
+        this.add(panel);
     }
 
-    private void addButtons(){
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setBorder(BorderFactory.createEtchedBorder());
-        buttonPanel.setLayout(new BorderLayout(10,10));
-        buttonPanel.setBounds(0,0,this.getWidth(),this.getHeight()/10);
-        buttonPanel.setBackground(Color.WHITE);
-
-        JButton startSimulationButton = new JButton("START SIMULATION");
-        startSimulationButton.addActionListener(e -> startSimulation());
-        startSimulationButton.setPreferredSize(new Dimension(this.getWidth()/3, 40));
-        buttonPanel.add(startSimulationButton, BorderLayout.NORTH);
-
-        JButton stopSimulationButton = new JButton("STOP SIMULATION");
-        stopSimulationButton.addActionListener(e -> stopSimulation());
-        stopSimulationButton.setPreferredSize(new Dimension(this.getWidth()/3, 40));
-        buttonPanel.add(stopSimulationButton, BorderLayout.SOUTH);
-
-        this.add(buttonPanel, BorderLayout.NORTH);
-    }
 
 
     private void startSimulation(){
