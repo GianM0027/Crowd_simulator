@@ -4,20 +4,14 @@ import java.awt.*;
 import static support.constants.Constant.*;
 
 public class SettingPanel extends JPanel {
-    private GridBagConstraints gbd = new GridBagConstraints();
     private JFrame frame;
 
     public SettingPanel(JFrame frame){
         this.frame = frame;
-        this.gbd.gridx = 0;
-        this.gbd.gridy = 0;
-        this.gbd.gridheight = 2;
-        this.gbd.fill = GridBagConstraints.BOTH;
-        this.gbd.weightx = 0.15;
-        this.gbd.weighty = 1;
         this.setBorder(BorderFactory.createEtchedBorder());
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout(10,10));
+        this.setPreferredSize(new Dimension(350,500));
 
         setInternalLayout();
     }
@@ -28,15 +22,12 @@ public class SettingPanel extends JPanel {
         JPanel topPanel = new JPanel(new BorderLayout(10,10));
         topPanel.setBackground(Color.WHITE);
         this.add(topPanel, BorderLayout.NORTH);
-
         JPanel optionsPanel = new JPanel(); //decidi un layout manager
+
+        //setting scrollBar
         JScrollPane optionScroll = new JScrollPane(optionsPanel);
         optionsPanel.setBackground(Color.GREEN);
         this.add(optionScroll, BorderLayout.CENTER);
-
-        /*setting scroll bar
-        JScrollBar scrollBar = new JScrollBar();
-        optionsPanel.add(scrollBar, BorderLayout.EAST);*/
 
         //setting top bar
         setTopBar(topPanel);
@@ -106,9 +97,6 @@ public class SettingPanel extends JPanel {
         System.out.println("Simulation Stopped");
     }
 
-    public GridBagConstraints getGbd() {
-        return gbd;
-    }
 
     public JFrame getFrame() {
         return frame;

@@ -4,20 +4,29 @@ import java.awt.*;
 public class Main {
     public static void main(String[] args) {
         JFrame homePage = new JFrame("Crowd Simulation");
-        homePage.setSize(720, 480);
+        homePage.setSize(1080, 720);
         //homePage.setExtendedState(JFrame.MAXIMIZED_BOTH);
         homePage.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        homePage.setLayout(new GridBagLayout());
+        homePage.setLayout(new BorderLayout());
 
         //declaring panels
+        /*
+        * 2 Main areas:
+        *       Left corner of the frame for settings (settingsPanel)
+        *       Center of frame for simulation + alive entities panel (mainPanel)
+        * */
         SettingPanel settingsPanel = new SettingPanel(homePage);
+        JPanel mainPanel = new JPanel(new BorderLayout());
         SimulationPanel simulationPanel = new SimulationPanel(homePage);
         ActiveEntitiesPanel activeEntitiesPanel = new ActiveEntitiesPanel(homePage);
 
-        //setting panels
-        homePage.add(settingsPanel,settingsPanel.getGbd());
-        homePage.add(simulationPanel,simulationPanel.getGbd());
-        homePage.add(activeEntitiesPanel,activeEntitiesPanel.getGbd());
+
+        //putting panels into the main frame
+        mainPanel.add(simulationPanel, BorderLayout.CENTER);
+        mainPanel.add(activeEntitiesPanel, BorderLayout.SOUTH);
+        homePage.add(mainPanel, BorderLayout.CENTER);
+
+        homePage.add(settingsPanel, BorderLayout.WEST);
 
         homePage.setVisible(true);
 
