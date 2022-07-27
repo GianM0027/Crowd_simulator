@@ -19,7 +19,8 @@ public class SettingPanel extends JPanel {
         //declaring 2 sections (1 containing topBar + buttons, 1 scrollable contains options and settings)
         JPanel topPanel = new JPanel(new BorderLayout(10,10));
         this.add(topPanel, BorderLayout.NORTH);
-        JPanel optionsPanel = new JPanel(new GridBagLayout()); //decidi un layout manager
+        JPanel optionsPanel = new JPanel(new GridBagLayout());
+        optionsPanel.setBorder(BorderFactory.createEtchedBorder());
         this.add(optionsPanel);
 
         //setting top bar
@@ -50,21 +51,23 @@ public class SettingPanel extends JPanel {
     }
 
     private void addButtons(JPanel panel){
-        JPanel buttonsPanel = new JPanel(new BorderLayout(5,5));
+        JPanel buttonsPanel = new JPanel(new GridBagLayout());
 
-        buttonsPanel.setBounds(0,0,this.getWidth(),this.getHeight()/10);
+        GridBagConstraints gbd = new GridBagConstraints();
+        gbd.gridx = 0;
+        gbd.ipadx = 140;
+        gbd.ipady = 15;
+        gbd.insets = new Insets(5,10,5,10);
 
         JButton startSimulationButton = new JButton("START SIMULATION");
         startSimulationButton.addActionListener(e -> startSimulation());
-        startSimulationButton.setPreferredSize(new Dimension(this.getWidth()/3, 40));
-        buttonsPanel.add(startSimulationButton, BorderLayout.NORTH);
+        buttonsPanel.add(startSimulationButton, gbd);
 
         JButton stopSimulationButton = new JButton("PAUSE SIMULATION");
         stopSimulationButton.addActionListener(e -> stopSimulation());
-        stopSimulationButton.setPreferredSize(new Dimension(this.getWidth()/3, 40));
-        buttonsPanel.add(stopSimulationButton, BorderLayout.SOUTH);
+        buttonsPanel.add(stopSimulationButton, gbd);
 
-        panel.add(buttonsPanel, BorderLayout.SOUTH);
+        panel.add(buttonsPanel, BorderLayout.CENTER);
     }
 
     private void addLabelAndTextField(JPanel panel, String label){
