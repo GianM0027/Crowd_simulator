@@ -16,17 +16,19 @@ public class Main {
         *       Center of frame for simulation + alive entities panel (mainPanel)
         * */
         SettingPanel settingsPanel = new SettingPanel(homePage);
-        JPanel mainPanel = new JPanel(new BorderLayout());
         SimulationPanel simulationPanel = new SimulationPanel(homePage);
         ActiveEntitiesPanel activeEntitiesPanel = new ActiveEntitiesPanel(homePage);
 
+        //Defining JSplitPane to create resizable windows
+        JSplitPane leftRightSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        JSplitPane upDownSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
-        //putting panels into the main frame
-        mainPanel.add(simulationPanel, BorderLayout.CENTER);
-        mainPanel.add(activeEntitiesPanel, BorderLayout.SOUTH);
-        homePage.add(mainPanel, BorderLayout.CENTER);
+        leftRightSplit.setLeftComponent(settingsPanel);
+        leftRightSplit.setRightComponent(upDownSplit);
+        upDownSplit.setTopComponent(simulationPanel);
+        upDownSplit.setBottomComponent(activeEntitiesPanel);
 
-        homePage.add(settingsPanel, BorderLayout.WEST);
+        homePage.add(leftRightSplit);
 
         homePage.setVisible(true);
 
@@ -38,18 +40,14 @@ public class Main {
     static public void prova(){
         JFrame frame = new JFrame();
         frame.setSize(500,500);
-        frame.setLayout(new BorderLayout());
+        frame.setLayout(new GridBagLayout());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        JPanel red = new JPanel();
-        JPanel blue = new JPanel();
-        red.setBackground(Color.RED);
-        blue.setBackground(Color.BLUE);
-        red.setPreferredSize(new Dimension(100,100));
-        blue.setPreferredSize(new Dimension(100,100));
+        JLabel label = new JLabel("CACCA");
 
-        frame.add(red, BorderLayout.NORTH);
-        frame.add(blue, BorderLayout.CENTER);
+        GridBagConstraints gbd = new GridBagConstraints();
+        gbd.anchor = GridBagConstraints.LINE_START;
+        frame.add(label,gbd);
 
         frame.setVisible(true);
     }
