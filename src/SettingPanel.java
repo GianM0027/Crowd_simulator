@@ -34,8 +34,6 @@ public class SettingPanel extends JPanel {
         addLabelAndTextField(optionsPanel, "Number of obstacles:              ");
         addLabelAndTextField(optionsPanel, "Number of way points:             ");
         addLabelAndTextField(optionsPanel, "Number of groups:                   ");
-        addLabelAndTextField(optionsPanel, "Pedestrians for each group:   ");
-
 
         //Adding button for stopping the simulation (last thing to add in this page)
         addConfirmButton(optionsPanel);

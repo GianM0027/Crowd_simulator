@@ -15,18 +15,14 @@ public class ActiveEntitiesPanel extends JTabbedPane{
 
     private void setInternalLayout(){
         //split panes for the two tabs
-        JSplitPane obstaclesAndPoiTab = new JSplitPane();
+        JPanel obstaclesTab = new JPanel();
+        JPanel wayPointsTab = new JPanel();
         JSplitPane researchAndPeople = new JSplitPane();
-        this.addTab("Obstacles and Way Points", obstaclesAndPoiTab);
+        this.addTab("Obstacles", obstaclesTab);
+        this.addTab("Way Points", wayPointsTab);
         this.addTab("Pedestrians", researchAndPeople);
 
-        //panels to split in tab 1
-        JScrollPane obstacles = new JScrollPane();
-        JScrollPane wayPoints = new JScrollPane();
-        obstaclesAndPoiTab.setLeftComponent(obstacles);
-        obstaclesAndPoiTab.setRightComponent(wayPoints);
-
-        //panel to split in tab 2
+        //panel to split in researchAndPeople tab
         JPanel researchFilters = new JPanel();
         JScrollPane activePedestrians = new JScrollPane();
         researchAndPeople.setLeftComponent(researchFilters);
