@@ -28,9 +28,12 @@ public class SimulationPanel extends JPanel{
     }
 
     private void setInternalLayout(){
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel(new GridBagLayout());
         panel.setPreferredSize(new Dimension(500, this.frame.getHeight()/2+this.frame.getHeight()/9));
         this.add(panel, BorderLayout.CENTER);
+
+        JLabel label = new JLabel("*Simulation");
+        panel.add(label);
     }
 
     public JFrame getFrame() {

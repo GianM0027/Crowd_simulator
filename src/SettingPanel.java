@@ -30,13 +30,15 @@ public class SettingPanel extends JPanel {
         addButtons(topPanel);
 
         //Adding label and text fields into the panel
-        addLabelAndTextField(optionsPanel, "Number of people");
-        addLabelAndTextField(optionsPanel, "Number of obstacles");
-        addLabelAndTextField(optionsPanel, "Number of points of interest");
+        addLabelAndTextField(optionsPanel, "Number of people:                   ");
+        addLabelAndTextField(optionsPanel, "Number of obstacles:              ");
+        addLabelAndTextField(optionsPanel, "Number of way points:             ");
+        addLabelAndTextField(optionsPanel, "Number of groups:                   ");
+        addLabelAndTextField(optionsPanel, "Pedestrians for each group:   ");
 
 
         //Adding button for stopping the simulation (last thing to add in this page)
-        addStopButton(optionsPanel);
+        addConfirmButton(optionsPanel);
     }
 
 
@@ -53,17 +55,29 @@ public class SettingPanel extends JPanel {
     private void addButtons(JPanel panel){
         JPanel buttonsPanel = new JPanel(new GridBagLayout());
 
+        //icons
+        Icon playButton = new ImageIcon("src/media/playButton.png");
+        Icon pauseButton = new ImageIcon("src/media/pauseButton.png");
+        Icon stopButton = new ImageIcon("src/media/stopButton.png");
+
         GridBagConstraints gbd = new GridBagConstraints();
-        gbd.gridx = 0;
-        gbd.ipadx = 140;
-        gbd.ipady = 15;
         gbd.insets = new Insets(5,10,5,10);
 
-        JButton startSimulationButton = new JButton("START SIMULATION");
+        gbd.gridx = 0;
+        JButton pauseSimulationButton = new JButton(pauseButton);
+        pauseSimulationButton.setFocusable(false);
+        pauseSimulationButton.addActionListener(e -> startSimulation());
+        buttonsPanel.add(pauseSimulationButton, gbd);
+
+        gbd.gridx = 1;
+        JButton startSimulationButton = new JButton(playButton);
+        startSimulationButton.setFocusable(false);
         startSimulationButton.addActionListener(e -> startSimulation());
         buttonsPanel.add(startSimulationButton, gbd);
 
-        JButton stopSimulationButton = new JButton("PAUSE SIMULATION");
+        gbd.gridx = 2;
+        JButton stopSimulationButton = new JButton(stopButton);
+        stopSimulationButton.setFocusable(false);
         stopSimulationButton.addActionListener(e -> stopSimulation());
         buttonsPanel.add(stopSimulationButton, gbd);
 
@@ -73,7 +87,6 @@ public class SettingPanel extends JPanel {
     private void addLabelAndTextField(JPanel panel, String label){
         JLabel jlabel = new JLabel(label);
         JSpinner inputNumber = new JSpinner();
-        JButton confirmButton = new JButton("Confirm");
 
         SpinnerModel spinnerModel = new SpinnerNumberModel(0,0,MAX_PEOPLE,1);
         inputNumber.setModel(spinnerModel);
@@ -81,7 +94,6 @@ public class SettingPanel extends JPanel {
         JPanel line = new JPanel();
         line.add(jlabel);
         line.add(inputNumber);
-        line.add(confirmButton);
 
         GridBagConstraints gbdPanel = new GridBagConstraints();
         gbdPanel.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -91,8 +103,9 @@ public class SettingPanel extends JPanel {
         panel.add(line, gbdPanel);
     }
 
-    private void addStopButton(JPanel panel){
-        JButton stopButton = new JButton("Stop Simulation");
+    private void addConfirmButton(JPanel panel){
+        JButton confirmButton = new JButton("Confirm");
+        confirmButton.setFocusable(false);
 
         GridBagConstraints gbd = new GridBagConstraints();
         gbd.fill = GridBagConstraints.HORIZONTAL;
@@ -100,7 +113,8 @@ public class SettingPanel extends JPanel {
         gbd.insets = new Insets(10,20,10,20);
         gbd.gridy = 100000;
         gbd.weighty = 1;
-        panel.add(stopButton, gbd);
+        panel.add(confirmButton, gbd);
+
     }
 
 

@@ -1,11 +1,13 @@
+import models.Pedestrian;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
         JFrame homePage = new JFrame("Crowd Simulation");
-        homePage.setSize(1080, 720);
-        //homePage.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //homePage.setSize(1080, 720);
+        homePage.setExtendedState(JFrame.MAXIMIZED_BOTH);
         homePage.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         homePage.setLayout(new BorderLayout());
 
