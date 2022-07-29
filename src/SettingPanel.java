@@ -4,6 +4,7 @@ import java.awt.*;
 
 import static support.constants.Constant.*;
 
+
 public class SettingPanel extends JPanel {
     private JFrame frame;
 

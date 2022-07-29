@@ -16,7 +16,7 @@ public class SimulationPanel extends JPanel{
         setTopBar();
 
         //Setting simulation area
-        setInternalLayout();
+        this.add(Simulation.getInstance(), BorderLayout.CENTER);
     }
 
     private void setTopBar(){
@@ -27,15 +27,6 @@ public class SimulationPanel extends JPanel{
         topBar.add(label);
 
         this.add(topBar,BorderLayout.NORTH);
-    }
-
-    private void setInternalLayout(){
-        JPanel panel = new JPanel();
-        panel.setLayout(null);
-        panel.setMinimumSize(new Dimension(500, this.frame.getHeight()/2+this.frame.getHeight()/9));
-        this.add(panel, BorderLayout.CENTER);
-
-        Simulation.getInstance().setSimulationPanel(panel);
     }
 
     public JFrame getFrame() {

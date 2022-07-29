@@ -1,10 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Simulation {
+public class Simulation extends JPanel{
 
     private static Simulation instance;
-    private JPanel simulationPanel;
 
     private int numberOfPeople;
     private int numberOfGroups;
@@ -16,6 +15,10 @@ public class Simulation {
         this.numberOfObstacles = 0;
         this.numberOfPeople = 0;
         this.numberOfWayPoints = 0;
+
+        this.setMinimumSize(new Dimension(500, 500));
+
+        //set building bounds
     }
 
 
@@ -26,22 +29,29 @@ public class Simulation {
         return instance;
     }
 
+    public void paint(Graphics g){
+
+        //drawing building
+        Graphics2D building = (Graphics2D) g;
+        building.drawLine(0,0,100,100);
+    }
+
     protected void startSimulation(){
         if(checkInputValues()){
             System.out.println("Simulation Started");
-            this.simulationPanel.setBackground(Color.GREEN);
+            this.setBackground(Color.GREEN);
         }
         else {
             System.out.println("Missing Parameters");
-            this.simulationPanel.setBackground(Color.RED);
+            this.setBackground(Color.RED);
         }
 
     }
     protected void pauseSimulation(){
-        this.simulationPanel.setBackground(Color.GRAY);
+        this.setBackground(Color.GRAY);
     }
     protected void stopSimulation(){
-        this.simulationPanel.setBackground(Color.WHITE);
+        this.setBackground(Color.WHITE);
     }
 
 
@@ -53,9 +63,6 @@ public class Simulation {
     }
 
 
-    public JPanel getSimulationPanel() {
-        return simulationPanel;
-    }
 
     public int getNumberOfPeople() {
         return numberOfPeople;
@@ -80,9 +87,6 @@ public class Simulation {
         setNumberOfWayPoints(numberOfWayPoints);
     }
 
-    public void setSimulationPanel(JPanel simulationPanel) {
-        this.simulationPanel = simulationPanel;
-    }
 
     public void setNumberOfPeople(int numberOfPeople) {
         this.numberOfPeople = numberOfPeople;
