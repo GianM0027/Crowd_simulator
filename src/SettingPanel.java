@@ -1,10 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
 
+
 import static support.constants.Constant.*;
 
 public class SettingPanel extends JPanel {
     private JFrame frame;
+
+    private JSpinner numberOfPeople, numberOfWayPoints, numberOfGroups, numberOfObstacles;
 
     public SettingPanel(JFrame frame){
         this.frame = frame;
@@ -30,10 +33,7 @@ public class SettingPanel extends JPanel {
         addButtons(topPanel);
 
         //Adding label and text fields into the panel
-        addLabelAndTextField(optionsPanel, "Number of people:                   ");
-        addLabelAndTextField(optionsPanel, "Number of obstacles:              ");
-        addLabelAndTextField(optionsPanel, "Number of way points:             ");
-        addLabelAndTextField(optionsPanel, "Number of groups:                   ");
+        addLabelsAndSpinners(optionsPanel);
 
         //Adding button for stopping the simulation (last thing to add in this page)
         addConfirmButton(optionsPanel);
@@ -64,45 +64,92 @@ public class SettingPanel extends JPanel {
         gbd.gridx = 0;
         JButton pauseSimulationButton = new JButton(pauseButton);
         pauseSimulationButton.setFocusable(false);
-        pauseSimulationButton.addActionListener(e -> startSimulation());
+        pauseSimulationButton.addActionListener(e -> Simulation.getInstance().pauseSimulation());
         buttonsPanel.add(pauseSimulationButton, gbd);
 
         gbd.gridx = 1;
         JButton startSimulationButton = new JButton(playButton);
         startSimulationButton.setFocusable(false);
-        startSimulationButton.addActionListener(e -> startSimulation());
+        startSimulationButton.addActionListener(e -> Simulation.getInstance().startSimulation());
         buttonsPanel.add(startSimulationButton, gbd);
 
         gbd.gridx = 2;
         JButton stopSimulationButton = new JButton(stopButton);
         stopSimulationButton.setFocusable(false);
-        stopSimulationButton.addActionListener(e -> stopSimulation());
+        stopSimulationButton.addActionListener(e -> Simulation.getInstance().stopSimulation());
         buttonsPanel.add(stopSimulationButton, gbd);
 
         panel.add(buttonsPanel, BorderLayout.CENTER);
     }
 
-    private void addLabelAndTextField(JPanel panel, String label){
-        JLabel jlabel = new JLabel(label);
-        JSpinner inputNumber = new JSpinner();
-
-        SpinnerModel spinnerModel = new SpinnerNumberModel(0,0,MAX_PEOPLE,1);
-        inputNumber.setModel(spinnerModel);
-
-        JPanel line = new JPanel();
-        line.add(jlabel);
-        line.add(inputNumber);
-
+    private void addLabelsAndSpinners(JPanel panel){
+        //Gbd option for instructions and for every couple (label + spinner)
         GridBagConstraints gbdPanel = new GridBagConstraints();
         gbdPanel.anchor = GridBagConstraints.FIRST_LINE_START;
         gbdPanel.gridx = 0;
+        gbdPanel.insets = new Insets(5,5,0,5);
+
+        //instructions for setting panel
+        JLabel instructions1 = new JLabel("Set values for each field, then press \"confirm\"");
+        instructions1.setForeground(Color.GRAY);
+        panel.add(instructions1,gbdPanel);
+        gbdPanel.insets = new Insets(0,5,15,5);
+        JLabel instructions2 = new JLabel("to apply them to the simulation:");
+        instructions2.setForeground(Color.GRAY);
+        panel.add(instructions2,gbdPanel);
+
+        //Gbd option adjustment (label + spinner)
+        gbdPanel.gridx = 0;
         gbdPanel.insets = new Insets(5,5,5,5);
 
-        panel.add(line, gbdPanel);
+        //labels
+        JLabel numPeopleLabel = new JLabel("Number of people:                    ");
+        JLabel numWayPointsLabel = new JLabel("Number of way points:             ");
+        JLabel numObstaclesLabel = new JLabel("Number of obstacles:              ");
+        JLabel numGroupsLabel = new JLabel("Number of groups:                   ");
+
+        //spinners
+        this.numberOfPeople = new JSpinner();
+        SpinnerModel numOfPeopleModel = new SpinnerNumberModel(0,0,MAX_PEOPLE,1);
+        this.numberOfPeople.setModel(numOfPeopleModel);
+
+        this.numberOfWayPoints = new JSpinner();
+        SpinnerModel numOfWayPointsModel = new SpinnerNumberModel(0,0,MAX_WAY_POINTS,1);
+        this.numberOfWayPoints.setModel(numOfWayPointsModel);
+
+        this.numberOfObstacles = new JSpinner();
+        SpinnerModel numOfObstaclesModel = new SpinnerNumberModel(0,0,MAX_OBSTACLES,1);
+        this.numberOfObstacles.setModel(numOfObstaclesModel);
+
+        this.numberOfGroups = new JSpinner();
+        SpinnerModel numOfGroupsModel = new SpinnerNumberModel(0,0,MAX_GROUPS,1);
+        this.numberOfGroups.setModel(numOfGroupsModel);
+
+        //panels where to put every couple (label + spinner)
+        JPanel line1 = new JPanel();
+        line1.add(numPeopleLabel);
+        line1.add(numberOfPeople);
+        panel.add(line1, gbdPanel);
+
+        JPanel line2 = new JPanel();
+        line2.add(numWayPointsLabel);
+        line2.add(numberOfWayPoints);
+        panel.add(line2, gbdPanel);
+
+        JPanel line3 = new JPanel();
+        line3.add(numObstaclesLabel);
+        line3.add(numberOfObstacles);
+        panel.add(line3, gbdPanel);
+
+        JPanel line4 = new JPanel();
+        line4.add(numGroupsLabel);
+        line4.add(numberOfGroups);
+        panel.add(line4, gbdPanel);
     }
 
     private void addConfirmButton(JPanel panel){
         JButton confirmButton = new JButton("Confirm");
+        confirmButton.addActionListener(e -> setParameters());
         confirmButton.setFocusable(false);
 
         GridBagConstraints gbd = new GridBagConstraints();
@@ -115,15 +162,10 @@ public class SettingPanel extends JPanel {
 
     }
 
-
-    private void startSimulation(){
-        System.out.println("Simulation Started");
+    private void setParameters(){
+        Simulation.getInstance().setParameters((int)numberOfPeople.getValue(), (int)numberOfWayPoints.getValue(),
+                (int)numberOfGroups.getValue(), (int)numberOfObstacles.getValue());
     }
-
-    private void stopSimulation(){
-        System.out.println("Simulation Stopped");
-    }
-
 
     public JFrame getFrame() {
         return frame;

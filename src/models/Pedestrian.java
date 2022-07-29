@@ -7,15 +7,13 @@ import java.util.List;
 import java.util.Random;
 
 
-public class Pedestrian{
+public class Pedestrian extends Group{
     private int gender;
     private int age;
     private int velocity;
     private int energy;
     private Point position;
     private Bounds bounds;
-    private int group;
-    private List<WayPoint> goalsList;
 
     public Pedestrian(Point position, int groupId, List<WayPoint> goalsList){
         this.gender = new Random().nextInt(Constant.FEMALE+1)+Constant.MALE; //random among MALE and FEMALE
@@ -24,8 +22,6 @@ public class Pedestrian{
         this.energy = assignEnergy();
         this.position = position;
         this.bounds = new Bounds(this.position);
-        this.group = groupId;
-        this.goalsList = goalsList;
     }
 
     private int assignEnergy() {

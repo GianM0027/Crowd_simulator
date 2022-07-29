@@ -18,6 +18,7 @@ public class Constant {
     public static final int MAX_ENERGY_OLD = 0000000000;
     public static final int MAX_PEOPLE = 1000000;
     public static final int MAX_OBSTACLES = 1000000;
-    public static final int MAX_POINTS_OF_INTEREST = 1000000;
+    public static final int MAX_GROUPS = 1000000;
+    public static final int MAX_WAY_POINTS = 1000000;
 
 }

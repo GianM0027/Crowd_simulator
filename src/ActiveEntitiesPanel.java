@@ -7,7 +7,6 @@ public class ActiveEntitiesPanel extends JTabbedPane{
     public ActiveEntitiesPanel(JFrame frame){
         this.frame = frame;
         this.setBorder(BorderFactory.createEtchedBorder());
-        this.setPreferredSize(new Dimension(500, this.frame.getHeight()/2-this.frame.getHeight()/9));
 
         setInternalLayout();
     }
