@@ -8,28 +8,54 @@ public class Main {
         JFrame homePage = new JFrame("Crowd Simulator");
         homePage.setExtendedState(JFrame.MAXIMIZED_BOTH);
         homePage.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        homePage.setLayout(new BorderLayout());
+        homePage.setLayout(new GridBagLayout());
 
         //declaring panels
-        /*
-        * 2 Main areas:
-        *       Left corner of the frame for settings (settingsPanel)
-        *       Center of frame for simulation + alive entities panel (mainPanel)
-        * */
         SettingPanel settingsPanel = new SettingPanel(homePage);
         SimulationPanel simulationPanel = new SimulationPanel(homePage);
         ActiveEntitiesPanel activeEntitiesPanel = new ActiveEntitiesPanel(homePage);
 
-        //Defining JSplitPane to create resizable windows
-        JSplitPane leftRightSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        JSplitPane upDownSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        //preferred size for each panel (fa diventare tutto bianco)
+        //settingsPanel.setPreferredSize(new Dimension(homePage.getWidth()/8, homePage.getHeight()));
+        //simulationPanel.setPreferredSize(new Dimension(homePage.getWidth()-homePage.getWidth()/8, homePage.getHeight()+homePage.getHeight()/8));
+        //activeEntitiesPanel.setPreferredSize(new Dimension(homePage.getWidth()-homePage.getWidth()/8, homePage.getHeight()-homePage.getHeight()/8));
 
-        leftRightSplit.setLeftComponent(settingsPanel);
-        leftRightSplit.setRightComponent(upDownSplit);
-        upDownSplit.setTopComponent(simulationPanel);
-        upDownSplit.setBottomComponent(activeEntitiesPanel);
+        //gbd for settings panel
+        GridBagConstraints gbdSettings = new GridBagConstraints();
+        gbdSettings.gridx = 0;
+        gbdSettings.gridy = 0;
+        gbdSettings.gridheight = 2;
+        gbdSettings.gridwidth = 1;
+        gbdSettings.weighty = 1;
+        gbdSettings.weightx = 0;
+        gbdSettings.anchor = GridBagConstraints.LINE_START;
+        gbdSettings.fill = GridBagConstraints.VERTICAL;
 
-        homePage.add(leftRightSplit);
+        //gbd for simulation panel
+        GridBagConstraints gbdSimulation = new GridBagConstraints();
+        gbdSimulation.gridx = 1;
+        gbdSimulation.gridy = 0;
+        gbdSimulation.gridheight = 1;
+        gbdSimulation.gridwidth = 1;
+        gbdSimulation.weighty = 1;
+        gbdSimulation.weightx = 1;
+        gbdSimulation.anchor = GridBagConstraints.CENTER;
+        gbdSimulation.fill = GridBagConstraints.BOTH;
+
+        //gbd for active entities panel
+        GridBagConstraints gbdActiveEntities = new GridBagConstraints();
+        gbdActiveEntities.gridx = 1;
+        gbdActiveEntities.gridy = 1;
+        gbdActiveEntities.gridheight = 1;
+        gbdActiveEntities.gridwidth = 1;
+        gbdActiveEntities.weighty = 0.4;
+        gbdActiveEntities.weightx = 1;
+        gbdActiveEntities.anchor = GridBagConstraints.CENTER;
+        gbdActiveEntities.fill = GridBagConstraints.BOTH;
+
+        homePage.add(settingsPanel, gbdSettings);
+        homePage.add(simulationPanel, gbdSimulation);
+        homePage.add(activeEntitiesPanel, gbdActiveEntities);
 
         homePage.setVisible(true);
 

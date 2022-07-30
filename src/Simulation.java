@@ -16,8 +16,6 @@ public class Simulation extends JPanel{
         this.numberOfPeople = 0;
         this.numberOfWayPoints = 0;
 
-        this.setMinimumSize(new Dimension(500, 500));
-
         //set building bounds
     }
 
