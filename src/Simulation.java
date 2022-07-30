@@ -27,12 +27,6 @@ public class Simulation extends JPanel{
         return instance;
     }
 
-    public void paint(Graphics g){
-
-        //drawing building
-        Graphics2D building = (Graphics2D) g;
-        building.drawLine(0,0,100,100);
-    }
 
     protected void startSimulation(){
         if(checkInputValues()){

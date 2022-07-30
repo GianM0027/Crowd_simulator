@@ -15,11 +15,6 @@ public class Main {
         SimulationPanel simulationPanel = new SimulationPanel(homePage);
         ActiveEntitiesPanel activeEntitiesPanel = new ActiveEntitiesPanel(homePage);
 
-        //preferred size for each panel (fa diventare tutto bianco)
-        //settingsPanel.setPreferredSize(new Dimension(homePage.getWidth()/8, homePage.getHeight()));
-        //simulationPanel.setPreferredSize(new Dimension(homePage.getWidth()-homePage.getWidth()/8, homePage.getHeight()+homePage.getHeight()/8));
-        //activeEntitiesPanel.setPreferredSize(new Dimension(homePage.getWidth()-homePage.getWidth()/8, homePage.getHeight()-homePage.getHeight()/8));
-
         //gbd for settings panel
         GridBagConstraints gbdSettings = new GridBagConstraints();
         gbdSettings.gridx = 0;
@@ -58,24 +53,5 @@ public class Main {
         homePage.add(activeEntitiesPanel, gbdActiveEntities);
 
         homePage.setVisible(true);
-
-        //PROVA
-        //prova();
-    }
-
-
-    static public void prova(){
-        JFrame frame = new JFrame();
-        frame.setSize(500,500);
-        frame.setLayout(new GridBagLayout());
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        JLabel label = new JLabel("CACCA");
-
-        GridBagConstraints gbd = new GridBagConstraints();
-        gbd.anchor = GridBagConstraints.LINE_START;
-        frame.add(label,gbd);
-
-        frame.setVisible(true);
     }
 }
