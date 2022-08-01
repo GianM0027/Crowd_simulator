@@ -29,7 +29,7 @@ public class Simulation extends JPanel{
 
 
     protected void startSimulation(){
-        if(checkInputValues()){
+        if(!missingInputs()){
             System.out.println("Simulation Started");
             this.setBackground(Color.GREEN);
         }
@@ -43,15 +43,17 @@ public class Simulation extends JPanel{
         this.setBackground(Color.GRAY);
     }
     protected void stopSimulation(){
+        setParameters(0,0,0,0);
+        //azzerare anche i parametri negli spinner
         this.setBackground(Color.WHITE);
     }
 
 
-    private boolean checkInputValues(){
+    private boolean missingInputs(){
         if (this.numberOfGroups == 0 || this.numberOfPeople == 0 || this.numberOfObstacles == 0 || this.numberOfWayPoints == 0)
-            return false;
-        else
             return true;
+        else
+            return false;
     }
 
 

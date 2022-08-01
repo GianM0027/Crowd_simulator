@@ -172,4 +172,19 @@ public class SettingPanel extends JPanel {
         return frame;
     }
 
+    public JSpinner getNumberOfPeople() {
+        return numberOfPeople;
+    }
+
+    public JSpinner getNumberOfWayPoints() {
+        return numberOfWayPoints;
+    }
+
+    public JSpinner getNumberOfGroups() {
+        return numberOfGroups;
+    }
+
+    public JSpinner getNumberOfObstacles() {
+        return numberOfObstacles;
+    }
 }
