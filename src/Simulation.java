@@ -74,26 +74,10 @@ public class Simulation extends JPanel{
     }
 
     public void setParameters(int numberOfPeople, int numberOfGroups, int numberOfObstacles, int numberOfWayPoints){
-        setNumberOfGroups(numberOfGroups);
-        setNumberOfObstacles(numberOfObstacles);
-        setNumberOfPeople(numberOfPeople);
-        setNumberOfWayPoints(numberOfWayPoints);
-    }
-
-
-    public void setNumberOfPeople(int numberOfPeople) {
-        this.numberOfPeople = numberOfPeople;
-    }
-
-    public void setNumberOfGroups(int numberOfGroups) {
         this.numberOfGroups = numberOfGroups;
-    }
-
-    public void setNumberOfObstacles(int numberOfObstacles) {
         this.numberOfObstacles = numberOfObstacles;
-    }
-
-    public void setNumberOfWayPoints(int numberOfWayPoints) {
+        this.numberOfPeople = numberOfPeople;
         this.numberOfWayPoints = numberOfWayPoints;
     }
+
 }

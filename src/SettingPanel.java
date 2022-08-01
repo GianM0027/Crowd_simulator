@@ -11,6 +11,7 @@ public class SettingPanel extends JPanel {
     private JFrame frame;
 
     private JSpinner numberOfPeople, numberOfWayPoints, numberOfGroups, numberOfObstacles;
+    private JButton playButton, pauseButton, stopButton, confirmButton;
 
     public SettingPanel(JFrame frame){
         this.frame = frame;
@@ -65,22 +66,24 @@ public class SettingPanel extends JPanel {
         gbd.insets = new Insets(5,10,5,10);
 
         gbd.gridx = 0;
-        JButton pauseSimulationButton = new JButton(pauseButton);
-        pauseSimulationButton.setFocusable(false);
-        pauseSimulationButton.addActionListener(e -> Simulation.getInstance().pauseSimulation());
-        buttonsPanel.add(pauseSimulationButton, gbd);
+        this.pauseButton = new JButton(pauseButton);
+        this.pauseButton.setFocusable(false);
+        this.pauseButton.addActionListener(e -> Simulation.getInstance().pauseSimulation());
+        buttonsPanel.add(this.pauseButton, gbd);
 
         gbd.gridx = 1;
-        JButton startSimulationButton = new JButton(playButton);
-        startSimulationButton.setFocusable(false);
-        startSimulationButton.addActionListener(e -> Simulation.getInstance().startSimulation());
-        buttonsPanel.add(startSimulationButton, gbd);
+        this.playButton = new JButton(playButton);
+        this.playButton.setFocusable(false);
+        this.playButton.addActionListener(e -> startSimulation());
+        buttonsPanel.add(this.playButton, gbd);
 
         gbd.gridx = 2;
-        JButton stopSimulationButton = new JButton(stopButton);
-        stopSimulationButton.setFocusable(false);
-        stopSimulationButton.addActionListener(e -> stopSimulation());
-        buttonsPanel.add(stopSimulationButton, gbd);
+        this.stopButton = new JButton(stopButton);
+        this.stopButton.setFocusable(false);
+        this.stopButton.addActionListener(e -> stopSimulation());
+        buttonsPanel.add(this.stopButton, gbd);
+
+        disableButtons();
 
         panel.add(buttonsPanel, BorderLayout.CENTER);
     }
@@ -151,9 +154,9 @@ public class SettingPanel extends JPanel {
     }
 
     private void addConfirmButton(JPanel panel){
-        JButton confirmButton = new JButton("Confirm");
-        confirmButton.addActionListener(e -> setParameters());
-        confirmButton.setFocusable(false);
+        this.confirmButton = new JButton("Confirm");
+        this.confirmButton.addActionListener(e -> setParameters());
+        this.confirmButton.setFocusable(false);
 
         GridBagConstraints gbd = new GridBagConstraints();
         gbd.fill = GridBagConstraints.HORIZONTAL;
@@ -161,7 +164,7 @@ public class SettingPanel extends JPanel {
         gbd.insets = new Insets(10,20,10,20);
         gbd.gridy = 100000;
         gbd.weighty = 1;
-        panel.add(confirmButton, gbd);
+        panel.add(this.confirmButton, gbd);
 
     }
 
@@ -170,14 +173,30 @@ public class SettingPanel extends JPanel {
                 (int)numberOfGroups.getValue(), (int)numberOfObstacles.getValue());
     }
 
+    private void startSimulation(){
+        Simulation.getInstance().startSimulation();
+        enableButtons();
+    }
+
     private void stopSimulation(){
         if(new AllertWindow("Do you really want to stop the simulation? It will restore all the settings").isConfirmed()) {
             this.numberOfPeople.setValue(0);
             this.numberOfObstacles.setValue(0);
             this.numberOfGroups.setValue(0);
             this.numberOfWayPoints.setValue(0);
+            disableButtons();
             Simulation.getInstance().stopSimulation();
         }
+    }
+
+    public void disableButtons(){
+        this.stopButton.setEnabled(false);
+        this.pauseButton.setEnabled(false);
+    }
+
+    public void enableButtons(){
+        this.stopButton.setEnabled(true);
+        this.pauseButton.setEnabled(true);
     }
 
     public JFrame getFrame() {
