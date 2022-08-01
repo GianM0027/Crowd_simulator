@@ -174,6 +174,8 @@ public class SettingPanel extends JPanel {
     }
 
     private void startSimulation(){
+        if(Simulation.getInstance().missingInputs())
+            return;
         Simulation.getInstance().startSimulation();
         enableButtons();
     }
