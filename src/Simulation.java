@@ -44,7 +44,6 @@ public class Simulation extends JPanel{
     }
     protected void stopSimulation(){
         setParameters(0,0,0,0);
-        //azzerare anche i parametri negli spinner
         this.setBackground(Color.WHITE);
     }
 

@@ -1,3 +1,5 @@
+import support.AllertWindow;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -77,7 +79,7 @@ public class SettingPanel extends JPanel {
         gbd.gridx = 2;
         JButton stopSimulationButton = new JButton(stopButton);
         stopSimulationButton.setFocusable(false);
-        stopSimulationButton.addActionListener(e -> Simulation.getInstance().stopSimulation());
+        stopSimulationButton.addActionListener(e -> stopSimulation());
         buttonsPanel.add(stopSimulationButton, gbd);
 
         panel.add(buttonsPanel, BorderLayout.CENTER);
@@ -166,6 +168,16 @@ public class SettingPanel extends JPanel {
     private void setParameters(){
         Simulation.getInstance().setParameters((int)numberOfPeople.getValue(), (int)numberOfWayPoints.getValue(),
                 (int)numberOfGroups.getValue(), (int)numberOfObstacles.getValue());
+    }
+
+    private void stopSimulation(){
+        if(new AllertWindow("Do you really want to stop the simulation? It will restore all the settings").isConfirmed()) {
+            this.numberOfPeople.setValue(0);
+            this.numberOfObstacles.setValue(0);
+            this.numberOfGroups.setValue(0);
+            this.numberOfWayPoints.setValue(0);
+            Simulation.getInstance().stopSimulation();
+        }
     }
 
     public JFrame getFrame() {
