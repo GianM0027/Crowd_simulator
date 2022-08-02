@@ -10,7 +10,7 @@ import static support.constants.Constant.*;
 public class SettingPanel extends JPanel {
     private JFrame frame;
 
-    private JSpinner numberOfPeople, numberOfWayPoints, numberOfGroups, numberOfObstacles;
+    private JTextField numberOfPeople, numberOfWayPoints, numberOfGroups, numberOfObstacles;
     private JButton playButton, pauseButton, stopButton, confirmButton;
 
     public SettingPanel(JFrame frame){
@@ -106,50 +106,44 @@ public class SettingPanel extends JPanel {
 
         //Gbd option adjustment (label + spinner)
         gbdPanel.gridx = 0;
+        gbdPanel.fill = GridBagConstraints.HORIZONTAL;
         gbdPanel.insets = new Insets(5,5,5,5);
 
         //labels
-        JLabel numPeopleLabel = new JLabel("Number of people:                    ");
-        JLabel numWayPointsLabel = new JLabel("Number of way points:             ");
-        JLabel numObstaclesLabel = new JLabel("Number of obstacles:              ");
-        JLabel numGroupsLabel = new JLabel("Number of groups:                   ");
+        JLabel numPeopleLabel = new JLabel("Number of people:");
+        JLabel numWayPointsLabel = new JLabel("Number of way points:");
+        JLabel numObstaclesLabel = new JLabel("Number of obstacles:");
+        JLabel numGroupsLabel = new JLabel("Number of groups:");
 
         //spinners
-        this.numberOfPeople = new JSpinner();
-        SpinnerModel numOfPeopleModel = new SpinnerNumberModel(0,0,MAX_PEOPLE,1);
-        this.numberOfPeople.setModel(numOfPeopleModel);
-
-        this.numberOfWayPoints = new JSpinner();
-        SpinnerModel numOfWayPointsModel = new SpinnerNumberModel(0,0,MAX_WAY_POINTS,1);
-        this.numberOfWayPoints.setModel(numOfWayPointsModel);
-
-        this.numberOfObstacles = new JSpinner();
-        SpinnerModel numOfObstaclesModel = new SpinnerNumberModel(0,0,MAX_OBSTACLES,1);
-        this.numberOfObstacles.setModel(numOfObstaclesModel);
-
-        this.numberOfGroups = new JSpinner();
-        SpinnerModel numOfGroupsModel = new SpinnerNumberModel(0,0,MAX_GROUPS,1);
-        this.numberOfGroups.setModel(numOfGroupsModel);
+        this.numberOfPeople = new JTextField();
+        this.numberOfPeople.setPreferredSize(new Dimension(80, 25));
+        this.numberOfWayPoints = new JTextField();
+        this.numberOfWayPoints.setPreferredSize(new Dimension(80, 25));
+        this.numberOfObstacles = new JTextField();
+        this.numberOfObstacles.setPreferredSize(new Dimension(80, 25));
+        this.numberOfGroups = new JTextField();
+        this.numberOfGroups.setPreferredSize(new Dimension(80, 25));
 
         //panels where to put every couple (label + spinner)
-        JPanel line1 = new JPanel();
-        line1.add(numPeopleLabel);
-        line1.add(numberOfPeople);
+        JPanel line1 = new JPanel(new BorderLayout());
+        line1.add(numPeopleLabel, BorderLayout.WEST);
+        line1.add(numberOfPeople, BorderLayout.EAST);
         panel.add(line1, gbdPanel);
 
-        JPanel line2 = new JPanel();
-        line2.add(numWayPointsLabel);
-        line2.add(numberOfWayPoints);
+        JPanel line2 = new JPanel(new BorderLayout());
+        line2.add(numWayPointsLabel, BorderLayout.WEST);
+        line2.add(numberOfWayPoints, BorderLayout.EAST);
         panel.add(line2, gbdPanel);
 
-        JPanel line3 = new JPanel();
-        line3.add(numObstaclesLabel);
-        line3.add(numberOfObstacles);
+        JPanel line3 = new JPanel(new BorderLayout());
+        line3.add(numObstaclesLabel, BorderLayout.WEST);
+        line3.add(numberOfObstacles, BorderLayout.EAST);
         panel.add(line3, gbdPanel);
 
-        JPanel line4 = new JPanel();
-        line4.add(numGroupsLabel);
-        line4.add(numberOfGroups);
+        JPanel line4 = new JPanel(new BorderLayout());
+        line4.add(numGroupsLabel, BorderLayout.WEST);
+        line4.add(numberOfGroups, BorderLayout.EAST);
         panel.add(line4, gbdPanel);
     }
 
@@ -169,17 +163,39 @@ public class SettingPanel extends JPanel {
 
     private void setParameters(){
         //controls before setting parameters
-        if((int)this.numberOfPeople.getValue() == 0)
-            JOptionPane.showMessageDialog(null, "Insert a value in the 'number of people' field");
-        if((int)this.numberOfGroups.getValue() == 0)
-            JOptionPane.showMessageDialog(null, "Insert a value in the 'number of groups' field");
-        if((int)this.numberOfObstacles.getValue() == 0)
-            JOptionPane.showMessageDialog(null, "Insert a value in the 'number of obstacles' field");
-        if((int)this.numberOfWayPoints.getValue() == 0)
-            JOptionPane.showMessageDialog(null, "Insert a value in the 'number of way points' field");
+        if(this.numberOfPeople.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'number of people' field");
+            return;
+        } else if(Integer.parseInt(this.numberOfPeople.getText()) == 0){
+            JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'number of people' field");
+            return;
+        }
+        if(this.numberOfWayPoints.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'number of way points' field");
+            return;
+        }else if(Integer.parseInt(this.numberOfWayPoints.getText()) == 0){
+            JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'number of way points' field");
+            return;
+        }
+        if(this.numberOfObstacles.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'number of obstacles' field");
+            return;
+        }else if(Integer.parseInt(this.numberOfObstacles.getText()) == 0){
+            JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'number of obstacles' field");
+            return;
+        }
+        if(this.numberOfGroups.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'number of groups' field");
+            return;
+        } else if(Integer.parseInt(this.numberOfGroups.getText()) == 0){
+            JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'number of groups' field");
+            return;
+        }
 
-        Simulation.getInstance().setParameters((int)this.numberOfPeople.getValue(), (int)this.numberOfGroups.getValue(),
-                (int)this.numberOfObstacles.getValue(), (int)this.numberOfWayPoints.getValue());
+
+
+        Simulation.getInstance().setParameters(Integer.parseInt(this.numberOfPeople.getText()), Integer.parseInt(this.numberOfGroups.getText()),
+                Integer.parseInt(this.numberOfObstacles.getText()), Integer.parseInt(this.numberOfWayPoints.getText()));
     }
 
     private void startSimulation(){
@@ -191,10 +207,10 @@ public class SettingPanel extends JPanel {
 
     private void stopSimulation(){
         if(new AllertWindow("Do you really want to stop the simulation? It will restore all the settings").isConfirmed()) {
-            this.numberOfPeople.setValue(0);
-            this.numberOfObstacles.setValue(0);
-            this.numberOfGroups.setValue(0);
-            this.numberOfWayPoints.setValue(0);
+            this.numberOfPeople.setText("");
+            this.numberOfObstacles.setText("");
+            this.numberOfGroups.setText("");
+            this.numberOfWayPoints.setText("");
             disableButtons();
             Simulation.getInstance().stopSimulation();
         }
@@ -214,19 +230,19 @@ public class SettingPanel extends JPanel {
         return frame;
     }
 
-    public JSpinner getNumberOfPeople() {
+    public JTextField getNumberOfPeople() {
         return numberOfPeople;
     }
 
-    public JSpinner getNumberOfWayPoints() {
+    public JTextField getNumberOfWayPoints() {
         return numberOfWayPoints;
     }
 
-    public JSpinner getNumberOfGroups() {
+    public JTextField getNumberOfGroups() {
         return numberOfGroups;
     }
 
-    public JSpinner getNumberOfObstacles() {
+    public JTextField getNumberOfObstacles() {
         return numberOfObstacles;
     }
 }
