@@ -7,6 +7,7 @@ import support.constants.Constant;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ActiveEntitiesPanel extends JTabbedPane{
     private static ActiveEntitiesPanel instance;
@@ -51,30 +52,29 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         setPedestriansTab();
     }
 
-    public static void setActiveEntitiesTab(){
-        Crowd crowd = Simulation.getInstance().getCrowd();
-        ArrayList<Obstacle> obstacles = Simulation.getInstance().getObstacles();
-        ArrayList<WayPoint> wayPoints = Simulation.getInstance().getWayPoints();
 
-        DefaultListModel obstacleModel = new DefaultListModel();
-        for(int i = 0; i < obstacles.size(); i++)
-            obstacleModel.add(i,obstacleModel.get(i));
-        JList obstacleList = new JList<>(obstacleModel);
-
-    }
-
-    private void setObstaclesTab(){
-        //setta il listener per quando c'è da mostrare la lista
-
+    public void setObstaclesTab(){
         if(Simulation.getInstance().getNumberOfObstacles() == 0){
             obstaclesTab.setLayout(new GridBagLayout());
             JLabel noObstacles = new JLabel("Start the simulation to view the active obstacles");
             noObstacles.setForeground(Color.GRAY);
             obstaclesTab.add(noObstacles);
+        }else {
+            List<Obstacle> obstaclesList = Simulation.getInstance().getObstacles();
+            DefaultListModel listModel = new DefaultListModel();
+
+            for(int i = 1; i <= obstaclesList.size(); i++) {
+                listModel.add(i-1, "Obstacle " + i + ": " + "[" + (int)obstaclesList.get(i-1).getPosition().getX() + ", " + (int)obstaclesList.get(i-1).getPosition().getY() + "]");
+            }
+
+            this.obstaclesTab.removeAll();
+            this.repaint();
+            JList obstacles = new JList(listModel);
+            this.obstaclesTab.add(obstacles);
         }
     }
 
-    private void setWayPointsTab(){
+    public void setWayPointsTab(){
         //setta il listener per quando c'è da mostrare la lista
 
         if(Simulation.getInstance().getNumberOfWayPoints() == 0){

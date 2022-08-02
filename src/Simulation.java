@@ -40,11 +40,13 @@ public class Simulation extends JPanel{
     protected void startSimulation(){
         if(!missingInputs()){
             this.crowd = new Crowd(this.numberOfPeople);
-            this.obstacles = createObstacles();
-            this.wayPoints = createWayPoints();
+            createObstacles();
+            createWayPoints();
 
             //Printing entities on "active entities panel"
-
+            ActiveEntitiesPanel.getInstance().setObstaclesTab();
+            ActiveEntitiesPanel.getInstance().setWayPointsTab();
+            //setta anche pannello dei pedestrian
         }
     }
 
@@ -56,34 +58,30 @@ public class Simulation extends JPanel{
         this.setBackground(Color.WHITE);
     }
 
-    private ArrayList<Obstacle> createObstacles(){
-        ArrayList<Obstacle> obstacleList = new ArrayList<>();
-        Point point = new Point();
-        Obstacle obstacle = new Obstacle(point);
+    private void createObstacles(){
+        this.obstacles = new ArrayList<>();
 
         for(int i = 0; i < this.numberOfObstacles; i++){
+            Point point = new Point();
+            Obstacle o = new Obstacle(point);
             point.x = new Random().nextInt(this.getWidth());
             point.y = new Random().nextInt(this.getHeight());
-            obstacle.setPosition(point);
-            obstacleList.add(obstacle);
+            o.setPosition(point);
+            this.obstacles.add(i, o);
         }
-
-        return obstacleList;
     }
 
-    private ArrayList<WayPoint> createWayPoints(){
-        ArrayList<WayPoint> wayPointsList = new ArrayList<>();
-        Point point = new Point();
-        WayPoint wayPoint = new WayPoint(point);
+    private void createWayPoints(){
+        this.wayPoints = new ArrayList<WayPoint>();
 
-        for(int i = 0; i < this.numberOfObstacles; i++){
+        for(int i = 0; i < this.numberOfWayPoints; i++){
+            Point point = new Point();
+            WayPoint w = new WayPoint(point);
             point.x = new Random().nextInt(this.getWidth());
             point.y = new Random().nextInt(this.getHeight());
-            wayPoint.setPosition(point);
-            wayPointsList.add(wayPoint);
+            w.setPosition(point);
+            this.wayPoints.add(i, w);
         }
-
-        return wayPointsList;
     }
 
 

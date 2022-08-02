@@ -165,12 +165,21 @@ public class SettingPanel extends JPanel {
         gbd.gridy = 100000;
         gbd.weighty = 1;
         panel.add(this.confirmButton, gbd);
-
     }
 
     private void setParameters(){
-        Simulation.getInstance().setParameters((int)numberOfPeople.getValue(), (int)numberOfWayPoints.getValue(),
-                (int)numberOfGroups.getValue(), (int)numberOfObstacles.getValue());
+        //controls before setting parameters
+        if((int)this.numberOfPeople.getValue() == 0)
+            JOptionPane.showMessageDialog(null, "Insert a value in the 'number of people' field");
+        if((int)this.numberOfGroups.getValue() == 0)
+            JOptionPane.showMessageDialog(null, "Insert a value in the 'number of groups' field");
+        if((int)this.numberOfObstacles.getValue() == 0)
+            JOptionPane.showMessageDialog(null, "Insert a value in the 'number of obstacles' field");
+        if((int)this.numberOfWayPoints.getValue() == 0)
+            JOptionPane.showMessageDialog(null, "Insert a value in the 'number of way points' field");
+
+        Simulation.getInstance().setParameters((int)this.numberOfPeople.getValue(), (int)this.numberOfGroups.getValue(),
+                (int)this.numberOfObstacles.getValue(), (int)this.numberOfWayPoints.getValue());
     }
 
     private void startSimulation(){
