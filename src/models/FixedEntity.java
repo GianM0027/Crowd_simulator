@@ -12,4 +12,12 @@ public class FixedEntity {
         this.position = position;
         this.bounds = new Bounds(position);
     }
+
+    public void setPosition(Point position) {
+        this.position = position;
+    }
+
+    public Point getPosition() {
+        return position;
+    }
 }

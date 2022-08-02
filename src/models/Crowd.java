@@ -1,8 +1,12 @@
 package models;
 
-public class Crowd {
-    static int crowdSize;
+import java.util.ArrayList;
 
-    //constructor linked to GUI
-    //pass information to Group and Pedestrian
+public class Crowd {
+    private int crowdSize;
+    private ArrayList<Group> groups;
+
+    public Crowd(int size){
+        this.crowdSize = size;
+    }
 }

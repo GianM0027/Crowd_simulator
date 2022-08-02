@@ -1,9 +1,20 @@
+import models.Crowd;
+import models.Obstacle;
+import models.WayPoint;
+import support.constants.Constant;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Simulation extends JPanel{
 
     private static Simulation instance;
+
+    private Crowd crowd;
+    private ArrayList<Obstacle> obstacles;
+    private ArrayList<WayPoint> wayPoints;
 
     private int numberOfPeople;
     private int numberOfGroups;
@@ -15,8 +26,6 @@ public class Simulation extends JPanel{
         this.numberOfObstacles = 0;
         this.numberOfPeople = 0;
         this.numberOfWayPoints = 0;
-
-        //set building bounds
     }
 
 
@@ -29,22 +38,52 @@ public class Simulation extends JPanel{
 
 
     protected void startSimulation(){
-        if(missingInputs()){
-            System.out.println("Missing Parameters");
-            this.setBackground(Color.RED);
-        }
-        else {
-            System.out.println("Simulation Started");
-            this.setBackground(Color.GREEN);
-        }
+        if(!missingInputs()){
+            this.crowd = new Crowd(this.numberOfPeople);
+            this.obstacles = createObstacles();
+            this.wayPoints = createWayPoints();
 
+            //Printing entities on "active entities panel"
+
+        }
     }
+
     protected void pauseSimulation(){
         this.setBackground(Color.GRAY);
     }
     protected void stopSimulation(){
         setParameters(0,0,0,0);
         this.setBackground(Color.WHITE);
+    }
+
+    private ArrayList<Obstacle> createObstacles(){
+        ArrayList<Obstacle> obstacleList = new ArrayList<>();
+        Point point = new Point();
+        Obstacle obstacle = new Obstacle(point);
+
+        for(int i = 0; i < this.numberOfObstacles; i++){
+            point.x = new Random().nextInt(this.getWidth());
+            point.y = new Random().nextInt(this.getHeight());
+            obstacle.setPosition(point);
+            obstacleList.add(obstacle);
+        }
+
+        return obstacleList;
+    }
+
+    private ArrayList<WayPoint> createWayPoints(){
+        ArrayList<WayPoint> wayPointsList = new ArrayList<>();
+        Point point = new Point();
+        WayPoint wayPoint = new WayPoint(point);
+
+        for(int i = 0; i < this.numberOfObstacles; i++){
+            point.x = new Random().nextInt(this.getWidth());
+            point.y = new Random().nextInt(this.getHeight());
+            wayPoint.setPosition(point);
+            wayPointsList.add(wayPoint);
+        }
+
+        return wayPointsList;
     }
 
 
@@ -71,6 +110,18 @@ public class Simulation extends JPanel{
 
     public int getNumberOfWayPoints() {
         return numberOfWayPoints;
+    }
+
+    public Crowd getCrowd() {
+        return crowd;
+    }
+
+    public ArrayList<Obstacle> getObstacles() {
+        return obstacles;
+    }
+
+    public ArrayList<WayPoint> getWayPoints() {
+        return wayPoints;
     }
 
     public void setParameters(int numberOfPeople, int numberOfGroups, int numberOfObstacles, int numberOfWayPoints){

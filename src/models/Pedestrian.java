@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 
-public class Pedestrian extends Group{
+public class Pedestrian {
     private int gender;
     private int age;
     private int velocity;

@@ -13,7 +13,7 @@ public class Main {
         //declaring panels
         SettingPanel settingsPanel = new SettingPanel(homePage);
         SimulationPanel simulationPanel = new SimulationPanel(homePage);
-        ActiveEntitiesPanel activeEntitiesPanel = new ActiveEntitiesPanel(homePage);
+        ActiveEntitiesPanel activeEntitiesPanel = ActiveEntitiesPanel.getInstance();
 
         //gbd for settings panel
         GridBagConstraints gbdSettings = new GridBagConstraints();

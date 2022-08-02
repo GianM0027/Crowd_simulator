@@ -1,66 +1,93 @@
+import models.Crowd;
+import models.Obstacle;
+import models.WayPoint;
 import support.*;
 import support.constants.Constant;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ActiveEntitiesPanel extends JTabbedPane{
-    private JFrame frame;
+    private static ActiveEntitiesPanel instance;
+    private JPanel obstaclesTab;
+    private JPanel wayPointsTab;
+    private JSplitPane researchAndPeople;
+    private JPanel researchFilters;
+    private JPanel activePedestrians;
 
-    public ActiveEntitiesPanel(JFrame frame){
-        this.frame = frame;
+
+    public ActiveEntitiesPanel(){
         this.setBorder(BorderFactory.createEtchedBorder());
 
         setInternalLayout();
     }
 
+    //only one instance of the panel at a time
+    public static ActiveEntitiesPanel getInstance(){
+        if(instance == null)
+            instance = new ActiveEntitiesPanel();
+        return instance;
+    }
 
     private void setInternalLayout(){
         //split panes for the two tabs
-        JPanel obstaclesTab = new JPanel();
-        JPanel wayPointsTab = new JPanel();
-        JSplitPane researchAndPeople = new JSplitPane();
+        this.obstaclesTab = new JPanel();
+        this.wayPointsTab = new JPanel();
+        this.researchAndPeople = new JSplitPane();
         this.addTab("Obstacles", obstaclesTab);
         this.addTab("Way Points", wayPointsTab);
         this.addTab("Pedestrians", researchAndPeople);
 
         //panel to split in researchAndPeople tab
-        JPanel researchFilters = new JPanel();
-        JPanel activePedestrians = new JPanel();
+        this.researchFilters = new JPanel();
+        this.activePedestrians = new JPanel();
         researchAndPeople.setLeftComponent(researchFilters);
         researchAndPeople.setRightComponent(activePedestrians);
 
         //setting Tabs
-        setObstaclesTab(obstaclesTab);
-        setWayPointsTab(wayPointsTab);
-        setPedestriansTab(researchFilters, activePedestrians);
+        setObstaclesTab();
+        setWayPointsTab();
+        setPedestriansTab();
     }
 
-    private void setObstaclesTab(JPanel panel){
+    public static void setActiveEntitiesTab(){
+        Crowd crowd = Simulation.getInstance().getCrowd();
+        ArrayList<Obstacle> obstacles = Simulation.getInstance().getObstacles();
+        ArrayList<WayPoint> wayPoints = Simulation.getInstance().getWayPoints();
+
+        DefaultListModel obstacleModel = new DefaultListModel();
+        for(int i = 0; i < obstacles.size(); i++)
+            obstacleModel.add(i,obstacleModel.get(i));
+        JList obstacleList = new JList<>(obstacleModel);
+
+    }
+
+    private void setObstaclesTab(){
         //setta il listener per quando c'è da mostrare la lista
 
         if(Simulation.getInstance().getNumberOfObstacles() == 0){
-            panel.setLayout(new GridBagLayout());
+            obstaclesTab.setLayout(new GridBagLayout());
             JLabel noObstacles = new JLabel("Start the simulation to view the active obstacles");
             noObstacles.setForeground(Color.GRAY);
-            panel.add(noObstacles);
+            obstaclesTab.add(noObstacles);
         }
     }
 
-    private void setWayPointsTab(JPanel panel){
+    private void setWayPointsTab(){
         //setta il listener per quando c'è da mostrare la lista
 
         if(Simulation.getInstance().getNumberOfWayPoints() == 0){
-            panel.setLayout(new GridBagLayout());
+            wayPointsTab.setLayout(new GridBagLayout());
             JLabel noObstacles = new JLabel("Start the simulation to view the active way points");
             noObstacles.setForeground(Color.GRAY);
-            panel.add(noObstacles);
+            wayPointsTab.add(noObstacles);
         }
     }
 
-    private void setPedestriansTab(JPanel leftPanel, JPanel rightPanel){
+    private void setPedestriansTab(){
         //setting filters layout
-        leftPanel.setLayout(new GridBagLayout());
+        researchFilters.setLayout(new GridBagLayout());
         GridBagConstraints gbd = new GridBagConstraints();
         gbd.insets = new Insets(5,5,5,5);
 
@@ -69,20 +96,20 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         JComboBox<String> genderBox = new JComboBox<>(optionsGender);
         gbd.gridx = 0;
         gbd.gridy = 0;
-        leftPanel.add(gender, gbd);
+        researchFilters.add(gender, gbd);
         gbd.gridx = 1;
         gbd.gridy = 0;
-        leftPanel.add(genderBox, gbd);
+        researchFilters.add(genderBox, gbd);
 
         JLabel age = new JLabel("Age:");
         String[] optionsAge = {"All", "Child", "Young", "Old"};
         JComboBox<String> ageBox = new JComboBox<>(optionsAge);
         gbd.gridx = 0;
         gbd.gridy = 1;
-        leftPanel.add(age, gbd);
+        researchFilters.add(age, gbd);
         gbd.gridx = 1;
         gbd.gridy = 1;
-        leftPanel.add(ageBox, gbd);
+        researchFilters.add(ageBox, gbd);
 
         JLabel velocity = new JLabel("Velocity:");
         JSlider velocitySlider = new RangeSlider(Constant.MIN_VELOCITY, Constant.MAX_VELOCITY);
@@ -97,27 +124,33 @@ public class ActiveEntitiesPanel extends JTabbedPane{
 
         gbd.gridx = 0;
         gbd.gridy = 2;
-        leftPanel.add(velocity, gbd);
+        researchFilters.add(velocity, gbd);
         gbd.gridx = 1;
         gbd.gridy = 2;
-        leftPanel.add(velocitySlider, gbd);
+        researchFilters.add(velocitySlider, gbd);
 
-        JLabel energy = new JLabel("Energy:");
-
-
-
-        //setta il listener per quando c'è da mostrare la lista
 
         if(Simulation.getInstance().getNumberOfPeople() == 0){
-            rightPanel.setLayout(new GridBagLayout());
+            activePedestrians.setLayout(new GridBagLayout());
             JLabel noObstacles = new JLabel("Start the simulation to view the active pedestrians");
             noObstacles.setForeground(Color.GRAY);
-            rightPanel.add(noObstacles);
+            activePedestrians.add(noObstacles);
         }
     }
 
+    public JPanel getObstaclesTab() {
+        return obstaclesTab;
+    }
 
-    public JFrame getFrame() {
-        return frame;
+    public JPanel getWayPointsTab() {
+        return wayPointsTab;
+    }
+
+    public JPanel getResearchFilters() {
+        return researchFilters;
+    }
+
+    public JPanel getActivePedestrians() {
+        return activePedestrians;
     }
 }
