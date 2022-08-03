@@ -1,4 +1,5 @@
 import models.Obstacle;
+import models.WayPoint;
 import support.*;
 import support.constants.Constant;
 
@@ -64,11 +65,10 @@ public class ActiveEntitiesPanel extends JTabbedPane{
     public void setObstaclesTab(){
         //first of writing on this tab every label or old list must be canceled from the panel
         this.obstaclesTab.removeAll();
-        this.obstaclesTab.repaint();
+        obstaclesTab.setLayout(new GridBagLayout());
 
         //if the number of obstacles in the simulation is 0 (the simulation has not started yet) an apposite message is shown
         if(Simulation.getInstance().getNumberOfObstacles() == 0){
-            obstaclesTab.setLayout(new GridBagLayout());
             JLabel noObstacles = new JLabel("Start the simulation to view the active obstacles");
             noObstacles.setForeground(Color.GRAY);
             obstaclesTab.add(noObstacles);
@@ -85,14 +85,21 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             this.obstaclesTab.removeAll();
             this.repaint();
             JList obstacles = new JList(listModel);
-            this.obstaclesTab.add(obstacles);
+
+            JScrollPane scrollPane = new JScrollPane(obstacles);
+            scrollPane.setPreferredSize(new Dimension(this.obstaclesTab.getWidth()-10,this.obstaclesTab.getHeight()-10));
+            this.obstaclesTab.add(scrollPane);
         }
+        this.obstaclesTab.repaint();
     }
 
     /**
      * Set the tab that shows the active way points
      * */
     public void setWayPointsTab(){
+        //first of writing on this tab every label or old list must be canceled from the panel
+        this.wayPointsTab.removeAll();
+        wayPointsTab.setLayout(new GridBagLayout());
 
         //if the number of way points in the simulation is 0 (the simulation has not started yet) an apposite message is shown
         if(Simulation.getInstance().getNumberOfWayPoints() == 0){
@@ -101,6 +108,24 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             noObstacles.setForeground(Color.GRAY);
             wayPointsTab.add(noObstacles);
         }
+        //else if the simulation is started, you retrieve the list of obstacles and show it
+        else {
+            List<WayPoint> wayPointsList = Simulation.getInstance().getWayPoints();
+            DefaultListModel listModel = new DefaultListModel();
+
+            for(int i = 1; i <= wayPointsList.size(); i++) {
+                listModel.add(i-1, "Way Point " + i + ": " + "[" + (int)wayPointsList.get(i-1).getPosition().getX() + ", " + (int)wayPointsList.get(i-1).getPosition().getY() + "]");
+            }
+
+            this.wayPointsTab.removeAll();
+            this.repaint();
+            JList wayPoints = new JList(listModel);
+
+            JScrollPane scrollPane = new JScrollPane(wayPoints);
+            scrollPane.setPreferredSize(new Dimension(this.wayPointsTab.getWidth()-10,this.wayPointsTab.getHeight()-10));
+            this.wayPointsTab.add(scrollPane);
+        }
+        this.wayPointsTab.repaint();
     }
 
     /**

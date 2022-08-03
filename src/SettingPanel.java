@@ -11,6 +11,7 @@ public class SettingPanel extends JPanel {
     private JTextField numberOfPeople, numberOfWayPoints, numberOfGroups, numberOfObstacles;
     private JButton playButton, pauseButton, stopButton, confirmButton;
 
+
     public SettingPanel(JFrame frame){
         this.setBorder(BorderFactory.createEtchedBorder());
         this.setLayout(new BorderLayout(10,10));

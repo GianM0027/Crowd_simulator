@@ -13,6 +13,7 @@ import java.util.Random;
 public class Simulation extends JPanel{
 
     private static Simulation instance;
+    private Animation animation;
 
     private Crowd crowd;
     private ArrayList<Obstacle> obstacles;
@@ -46,7 +47,7 @@ public class Simulation extends JPanel{
      * */
     protected void startSimulation(){
         if(!missingInputs()){
-            this.crowd = new Crowd(this.numberOfPeople);
+            this.crowd = new Crowd(this.numberOfPeople, this.numberOfGroups);
             createObstacles();
             createWayPoints();
 
@@ -54,6 +55,11 @@ public class Simulation extends JPanel{
             ActiveEntitiesPanel.getInstance().setObstaclesTab();
             ActiveEntitiesPanel.getInstance().setWayPointsTab();
             //setta anche pannello dei pedestrian
+
+            animation = new Animation(this, this.crowd, this.obstacles, this.wayPoints);
+            this.add(animation);
+            this.revalidate();
+            this.repaint();
         }
     }
 
@@ -61,7 +67,7 @@ public class Simulation extends JPanel{
      *
      * */
     protected void pauseSimulation(){
-        this.setBackground(Color.GRAY);
+        return;
     }
 
     /**
@@ -69,6 +75,7 @@ public class Simulation extends JPanel{
      * */
     protected void stopSimulation(){
         setParameters(0,0,0,0);
+        ActiveEntitiesPanel.getInstance().setObstaclesTab();
     }
 
     /**
@@ -91,7 +98,7 @@ public class Simulation extends JPanel{
      *
      * */
     private void createWayPoints(){
-        this.wayPoints = new ArrayList<WayPoint>();
+        this.wayPoints = new ArrayList<>();
 
         for(int i = 0; i < this.numberOfWayPoints; i++){
             Point point = new Point();
