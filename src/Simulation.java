@@ -1,13 +1,15 @@
 import models.Crowd;
 import models.Obstacle;
 import models.WayPoint;
-import support.constants.Constant;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Contain all the settings and contents of the actual simulation
+ * */
 public class Simulation extends JPanel{
 
     private static Simulation instance;
@@ -29,7 +31,9 @@ public class Simulation extends JPanel{
     }
 
 
-    //only one instance of the simulation at a time
+    /**
+     * only one instance of the simulation at a time
+     * */
     public static Simulation getInstance(){
         if(instance == null)
             instance = new Simulation();
@@ -37,6 +41,9 @@ public class Simulation extends JPanel{
     }
 
 
+    /**
+     *
+     * */
     protected void startSimulation(){
         if(!missingInputs()){
             this.crowd = new Crowd(this.numberOfPeople);
@@ -50,14 +57,23 @@ public class Simulation extends JPanel{
         }
     }
 
+    /**
+     *
+     * */
     protected void pauseSimulation(){
         this.setBackground(Color.GRAY);
     }
+
+    /**
+     *
+     * */
     protected void stopSimulation(){
         setParameters(0,0,0,0);
-        this.setBackground(Color.WHITE);
     }
 
+    /**
+     *
+     * */
     private void createObstacles(){
         this.obstacles = new ArrayList<>();
 
@@ -71,6 +87,9 @@ public class Simulation extends JPanel{
         }
     }
 
+    /**
+     *
+     * */
     private void createWayPoints(){
         this.wayPoints = new ArrayList<WayPoint>();
 
@@ -84,14 +103,15 @@ public class Simulation extends JPanel{
         }
     }
 
-
+    /**
+     *
+     * */
     public boolean missingInputs(){
         if (this.numberOfGroups == 0 || this.numberOfPeople == 0 || this.numberOfObstacles == 0 || this.numberOfWayPoints == 0)
             return true;
         else
             return false;
     }
-
 
 
     public int getNumberOfPeople() {
@@ -121,6 +141,7 @@ public class Simulation extends JPanel{
     public ArrayList<WayPoint> getWayPoints() {
         return wayPoints;
     }
+
 
     public void setParameters(int numberOfPeople, int numberOfGroups, int numberOfObstacles, int numberOfWayPoints){
         this.numberOfGroups = numberOfGroups;

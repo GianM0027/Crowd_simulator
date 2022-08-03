@@ -48,6 +48,7 @@ public class Main {
         gbdActiveEntities.anchor = GridBagConstraints.CENTER;
         gbdActiveEntities.fill = GridBagConstraints.BOTH;
 
+        //adding 3 sections on the homepage
         homePage.add(settingsPanel, gbdSettings);
         homePage.add(simulationPanel, gbdSimulation);
         homePage.add(activeEntitiesPanel, gbdActiveEntities);

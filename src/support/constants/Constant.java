@@ -10,15 +10,14 @@ public class Constant {
     public static final int OLD = 5;
     public static final int MIN_VELOCITY = 5;
     public static final int MAX_VELOCITY = 15;
-    public static final int MIN_ENERGY_CHILD = 00000000000;
-    public static final int MAX_ENERGY_CHILD = 0000000000;
-    public static final int MIN_ENERGY_YOUNG = 00000000000;
-    public static final int MAX_ENERGY_YOUNG = 0000000000;
-    public static final int MIN_ENERGY_OLD = 00000000000;
-    public static final int MAX_ENERGY_OLD = 0000000000;
-    public static final int MAX_PEOPLE = 1000000;
-    public static final int MAX_OBSTACLES = 1000000;
-    public static final int MAX_GROUPS = 1000000;
-    public static final int MAX_WAY_POINTS = 1000000;
+    public static final int MIN_ENERGY_CHILD = 40;
+    public static final int MAX_ENERGY_CHILD = 50;
+    public static final int MIN_ENERGY_YOUNG = 30;
+    public static final int MAX_ENERGY_YOUNG = 50;
+    public static final int MIN_ENERGY_OLD = 20;
+    public static final int MAX_ENERGY_OLD = 40;
+
+
+    public static final int BOUNDS_DISTANCE = 1;
 
 }

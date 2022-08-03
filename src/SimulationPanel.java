@@ -1,13 +1,12 @@
-import models.Group;
-
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * General setting of the simulation panel, division of spaces and basic layout
+ * */
 public class SimulationPanel extends JPanel{
-    private JFrame frame;
 
     public SimulationPanel(JFrame frame){
-        this.frame = frame;
         this.setBorder(BorderFactory.createEtchedBorder());
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
@@ -19,6 +18,9 @@ public class SimulationPanel extends JPanel{
         this.add(Simulation.getInstance(), BorderLayout.CENTER);
     }
 
+    /**
+     * Set top bar of the simulation panel
+     * */
     private void setTopBar(){
         JToolBar topBar = new JToolBar();
         topBar.setBackground(Color.LIGHT_GRAY);
@@ -29,8 +31,5 @@ public class SimulationPanel extends JPanel{
         this.add(topBar,BorderLayout.NORTH);
     }
 
-    public JFrame getFrame() {
-        return frame;
-    }
 }
 

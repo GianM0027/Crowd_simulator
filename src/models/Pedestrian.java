@@ -6,7 +6,9 @@ import java.awt.*;
 import java.util.List;
 import java.util.Random;
 
-
+/**
+ * Every Pedestrian is a mobile entity with its own characteristics
+ * */
 public class Pedestrian {
     private int gender;
     private int age;
@@ -24,6 +26,10 @@ public class Pedestrian {
         this.bounds = new Bounds(this.position);
     }
 
+    /**
+     * Assigns a value of energy to a pedestrian according to their age (the function uses constants MIN_ENERGY_* and
+     * MAX_ENERGY_*)
+     * */
     private int assignEnergy() {
         return switch (this.age) {
             case Constant.CHILD -> new Random().nextInt(Constant.MAX_ENERGY_CHILD + 1) + Constant.MIN_ENERGY_CHILD;

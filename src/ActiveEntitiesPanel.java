@@ -1,14 +1,14 @@
-import models.Crowd;
 import models.Obstacle;
-import models.WayPoint;
 import support.*;
 import support.constants.Constant;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A tabbed pane that shows all the currently active entities
+ * */
 public class ActiveEntitiesPanel extends JTabbedPane{
     private static ActiveEntitiesPanel instance;
     private JPanel obstaclesTab;
@@ -24,15 +24,21 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         setInternalLayout();
     }
 
-    //only one instance of the panel at a time
+    /**
+     * There must be only one instance of the panel at a time, every access to public methods of the class ActiveEntitiesPanel
+     * is done through this function
+     * */
     public static ActiveEntitiesPanel getInstance(){
         if(instance == null)
             instance = new ActiveEntitiesPanel();
         return instance;
     }
 
+    /**
+     * Set three tabs, one for obstacles, one for way points, one for pedestrians with their content
+     * */
     private void setInternalLayout(){
-        //split panes for the two tabs
+        //declaring and adding panes to the three tabs
         this.obstaclesTab = new JPanel();
         this.wayPointsTab = new JPanel();
         this.researchAndPeople = new JSplitPane();
@@ -40,26 +46,35 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         this.addTab("Way Points", wayPointsTab);
         this.addTab("Pedestrians", researchAndPeople);
 
-        //panel to split in researchAndPeople tab
+        //panels to split in researchAndPeople tab
         this.researchFilters = new JPanel();
         this.activePedestrians = new JPanel();
         researchAndPeople.setLeftComponent(researchFilters);
         researchAndPeople.setRightComponent(activePedestrians);
 
-        //setting Tabs
+        //setting internal layout of Tabs
         setObstaclesTab();
         setWayPointsTab();
         setPedestriansTab();
     }
 
-
+    /**
+     * Set the tab that shows the active obstacles
+     * */
     public void setObstaclesTab(){
+        //first of writing on this tab every label or old list must be canceled from the panel
+        this.obstaclesTab.removeAll();
+        this.obstaclesTab.repaint();
+
+        //if the number of obstacles in the simulation is 0 (the simulation has not started yet) an apposite message is shown
         if(Simulation.getInstance().getNumberOfObstacles() == 0){
             obstaclesTab.setLayout(new GridBagLayout());
             JLabel noObstacles = new JLabel("Start the simulation to view the active obstacles");
             noObstacles.setForeground(Color.GRAY);
             obstaclesTab.add(noObstacles);
-        }else {
+        }
+        //else if the simulation is started, you retrieve the list of obstacles and show it
+        else {
             List<Obstacle> obstaclesList = Simulation.getInstance().getObstacles();
             DefaultListModel listModel = new DefaultListModel();
 
@@ -74,9 +89,12 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         }
     }
 
+    /**
+     * Set the tab that shows the active way points
+     * */
     public void setWayPointsTab(){
-        //setta il listener per quando c'è da mostrare la lista
 
+        //if the number of way points in the simulation is 0 (the simulation has not started yet) an apposite message is shown
         if(Simulation.getInstance().getNumberOfWayPoints() == 0){
             wayPointsTab.setLayout(new GridBagLayout());
             JLabel noObstacles = new JLabel("Start the simulation to view the active way points");
@@ -85,12 +103,16 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         }
     }
 
+    /**
+     * Set the tab that shows the active pedestrians and that allows to research them filtering the results
+     * */
     private void setPedestriansTab(){
         //setting filters layout
         researchFilters.setLayout(new GridBagLayout());
         GridBagConstraints gbd = new GridBagConstraints();
         gbd.insets = new Insets(5,5,5,5);
 
+        //dropdown menu to select gender
         JLabel gender = new JLabel("Gender:");
         String[] optionsGender = {"All", "Male", "Female"};
         JComboBox<String> genderBox = new JComboBox<>(optionsGender);
@@ -101,6 +123,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         gbd.gridy = 0;
         researchFilters.add(genderBox, gbd);
 
+        //dropdown menu to select age
         JLabel age = new JLabel("Age:");
         String[] optionsAge = {"All", "Child", "Young", "Old"};
         JComboBox<String> ageBox = new JComboBox<>(optionsAge);
@@ -111,6 +134,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         gbd.gridy = 1;
         researchFilters.add(ageBox, gbd);
 
+        //range slider to select a range of velocity to consider
         JLabel velocity = new JLabel("Velocity:");
         JSlider velocitySlider = new RangeSlider(Constant.MIN_VELOCITY, Constant.MAX_VELOCITY);
         velocitySlider.setFocusable(false);
@@ -129,7 +153,9 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         gbd.gridy = 2;
         researchFilters.add(velocitySlider, gbd);
 
+        //vedi se aggiungere anche opzione di ricerca per energia
 
+        //if the number of pedestrians in the simulation is 0 (the simulation has not started yet) an apposite message is shown
         if(Simulation.getInstance().getNumberOfPeople() == 0){
             activePedestrians.setLayout(new GridBagLayout());
             JLabel noObstacles = new JLabel("Start the simulation to view the active pedestrians");

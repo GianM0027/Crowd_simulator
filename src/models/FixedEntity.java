@@ -4,6 +4,9 @@ import support.Bounds;
 
 import java.awt.*;
 
+/**
+ * Every entity that does not have to move around is a "FixedEntity" (obstacles and way points)
+ * */
 public class FixedEntity {
     private Point position;
     private Bounds bounds;

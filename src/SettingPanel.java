@@ -3,25 +3,24 @@ import support.AllertWindow;
 import javax.swing.*;
 import java.awt.*;
 
-
-import static support.constants.Constant.*;
-
-
+/**
+ * Panel with controls and settings of the simulation
+ * */
 public class SettingPanel extends JPanel {
-    private JFrame frame;
 
     private JTextField numberOfPeople, numberOfWayPoints, numberOfGroups, numberOfObstacles;
     private JButton playButton, pauseButton, stopButton, confirmButton;
 
     public SettingPanel(JFrame frame){
-        this.frame = frame;
         this.setBorder(BorderFactory.createEtchedBorder());
         this.setLayout(new BorderLayout(10,10));
 
         setInternalLayout();
     }
 
-
+    /**
+     * Set the internal layout
+     * */
     private void setInternalLayout(){
         //declaring 2 sections (1 containing topBar + buttons, 1 scrollable contains options and settings)
         JPanel topPanel = new JPanel(new BorderLayout(10,10));
@@ -37,13 +36,16 @@ public class SettingPanel extends JPanel {
         addButtons(topPanel);
 
         //Adding label and text fields into the panel
-        addLabelsAndSpinners(optionsPanel);
+        addOptionLabelTextField(optionsPanel);
 
         //Adding button for stopping the simulation (last thing to add in this page)
         addConfirmButton(optionsPanel);
     }
 
 
+    /**
+     * Set a grey bar on the top of the panel with the name of that panel
+     * */
     private void setTopBar(JPanel panel){
         JToolBar topBar = new JToolBar();
         topBar.setBackground(Color.LIGHT_GRAY);
@@ -54,6 +56,9 @@ public class SettingPanel extends JPanel {
         panel.add(topBar,BorderLayout.NORTH);
     }
 
+    /**
+     * Add play button, pause button and stop button
+     * */
     private void addButtons(JPanel panel){
         JPanel buttonsPanel = new JPanel(new GridBagLayout());
 
@@ -62,13 +67,14 @@ public class SettingPanel extends JPanel {
         Icon pauseButton = new ImageIcon("src/media/pauseButton.png");
         Icon stopButton = new ImageIcon("src/media/stopButton.png");
 
+        //gbd and add buttons
         GridBagConstraints gbd = new GridBagConstraints();
         gbd.insets = new Insets(5,10,5,10);
 
         gbd.gridx = 0;
         this.pauseButton = new JButton(pauseButton);
         this.pauseButton.setFocusable(false);
-        this.pauseButton.addActionListener(e -> Simulation.getInstance().pauseSimulation());
+        this.pauseButton.addActionListener(e -> pauseSimulation());
         buttonsPanel.add(this.pauseButton, gbd);
 
         gbd.gridx = 1;
@@ -83,12 +89,16 @@ public class SettingPanel extends JPanel {
         this.stopButton.addActionListener(e -> stopSimulation());
         buttonsPanel.add(this.stopButton, gbd);
 
-        disableButtons();
+        //when there is not an active simulation stop and pause buttons are disabled
+        disableStopPauseButtons();
 
         panel.add(buttonsPanel, BorderLayout.CENTER);
     }
 
-    private void addLabelsAndSpinners(JPanel panel){
+    /**
+     * Add all the options for the simulation, every added field in this function has a label and a text field to fill
+     * */
+    private void addOptionLabelTextField(JPanel panel){
         //Gbd option for instructions and for every couple (label + spinner)
         GridBagConstraints gbdPanel = new GridBagConstraints();
         gbdPanel.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -147,22 +157,27 @@ public class SettingPanel extends JPanel {
         panel.add(line4, gbdPanel);
     }
 
+    /**
+     * Add the "confirm" button at the bottom of the page
+     * */
     private void addConfirmButton(JPanel panel){
         this.confirmButton = new JButton("Confirm");
         this.confirmButton.addActionListener(e -> setParameters());
         this.confirmButton.setFocusable(false);
 
+        //gbd settings
         GridBagConstraints gbd = new GridBagConstraints();
         gbd.fill = GridBagConstraints.HORIZONTAL;
         gbd.anchor = GridBagConstraints.PAGE_END;
         gbd.insets = new Insets(10,20,10,20);
         gbd.gridy = 100000;
         gbd.weighty = 1;
+
         panel.add(this.confirmButton, gbd);
     }
 
     private void setParameters(){
-        //controls before setting parameters
+        //controls before setting parameters, if any field is empty a warning message will be shown
         if(this.numberOfPeople.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'number of people' field");
             return;
@@ -192,57 +207,52 @@ public class SettingPanel extends JPanel {
             return;
         }
 
-
-
+        //if all the fields are filled, you set the parameters of the simulation even in the "Simulation" class
         Simulation.getInstance().setParameters(Integer.parseInt(this.numberOfPeople.getText()), Integer.parseInt(this.numberOfGroups.getText()),
                 Integer.parseInt(this.numberOfObstacles.getText()), Integer.parseInt(this.numberOfWayPoints.getText()));
     }
 
+    /**
+     *
+     * */
     private void startSimulation(){
         if(Simulation.getInstance().missingInputs())
             return;
         Simulation.getInstance().startSimulation();
-        enableButtons();
+        enableStopPauseButtons();
     }
 
+    /**
+     *
+     * */
+    private void pauseSimulation(){
+        this.playButton.setEnabled(true);
+        Simulation.getInstance().pauseSimulation();
+    }
+
+    /**
+     *
+     * */
     private void stopSimulation(){
         if(new AllertWindow("Do you really want to stop the simulation? It will restore all the settings").isConfirmed()) {
             this.numberOfPeople.setText("");
             this.numberOfObstacles.setText("");
             this.numberOfGroups.setText("");
             this.numberOfWayPoints.setText("");
-            disableButtons();
+            disableStopPauseButtons();
             Simulation.getInstance().stopSimulation();
         }
     }
 
-    public void disableButtons(){
+    public void disableStopPauseButtons(){
+        this.playButton.setEnabled(true);
         this.stopButton.setEnabled(false);
         this.pauseButton.setEnabled(false);
     }
 
-    public void enableButtons(){
+    public void enableStopPauseButtons(){
+        this.playButton.setEnabled(false);
         this.stopButton.setEnabled(true);
         this.pauseButton.setEnabled(true);
-    }
-
-    public JFrame getFrame() {
-        return frame;
-    }
-
-    public JTextField getNumberOfPeople() {
-        return numberOfPeople;
-    }
-
-    public JTextField getNumberOfWayPoints() {
-        return numberOfWayPoints;
-    }
-
-    public JTextField getNumberOfGroups() {
-        return numberOfGroups;
-    }
-
-    public JTextField getNumberOfObstacles() {
-        return numberOfObstacles;
     }
 }
