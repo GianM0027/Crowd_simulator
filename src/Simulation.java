@@ -1,6 +1,7 @@
 import models.Crowd;
 import models.Obstacle;
 import models.WayPoint;
+import support.Sort;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,6 +57,9 @@ public class Simulation extends JPanel{
             ActiveEntitiesPanel.getInstance().setWayPointsTab();
             //setta anche pannello dei pedestrian
 
+            this.removeAll();
+            this.revalidate();
+            this.repaint();
             animation = new Animation(this, this.crowd, this.obstacles, this.wayPoints);
             this.add(animation);
             this.revalidate();
@@ -76,6 +80,11 @@ public class Simulation extends JPanel{
     protected void stopSimulation(){
         setParameters(0,0,0,0);
         ActiveEntitiesPanel.getInstance().setObstaclesTab();
+        ActiveEntitiesPanel.getInstance().setWayPointsTab();
+
+        this.removeAll();
+        this.revalidate();
+        this.repaint();
     }
 
     /**
@@ -92,6 +101,8 @@ public class Simulation extends JPanel{
             o.setPosition(point);
             this.obstacles.add(i, o);
         }
+
+        Sort.sortObstacles(this.obstacles);
     }
 
     /**
@@ -108,6 +119,7 @@ public class Simulation extends JPanel{
             w.setPosition(point);
             this.wayPoints.add(i, w);
         }
+        Sort.sortWayPoints(this.wayPoints);
     }
 
     /**

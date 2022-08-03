@@ -40,6 +40,5 @@ public class Animation extends JPanel {
             g2D.setPaint(Color.red);
             g2D.fillOval(wayPoints.get(i).getPosition().x, wayPoints.get(i).getPosition().y, 10, 10);
         }
-
     }
 }
