@@ -217,10 +217,15 @@ public class SettingPanel extends JPanel {
      *
      * */
     private void startSimulation(){
-        if(Simulation.getInstance().missingInputs())
-            return;
-        Simulation.getInstance().startSimulation();
-        enableStopPauseButtons();
+        if(!Simulation.getInstance().isRunning()) {
+            Simulation.getInstance().setIsRunning(true);
+            Simulation.getInstance().startSimulation();
+            enableStopPauseButtons();
+        }
+        else{
+            enableStopPauseButtons();
+            //riprendi simulazione da dove si era lasciata dopo la pausa
+        }
     }
 
     /**

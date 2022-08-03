@@ -12,9 +12,9 @@ import java.util.Random;
  * Contain all the settings and contents of the actual simulation
  * */
 public class Simulation extends JPanel{
-
     private static Simulation instance;
     private Animation animation;
+    private boolean isRunning;
 
     private Crowd crowd;
     private ArrayList<Obstacle> obstacles;
@@ -26,6 +26,7 @@ public class Simulation extends JPanel{
     private int numberOfWayPoints;
 
     public Simulation(){
+        this.isRunning = false;
         this.numberOfGroups = 0;
         this.numberOfObstacles = 0;
         this.numberOfPeople = 0;
@@ -47,24 +48,22 @@ public class Simulation extends JPanel{
      *
      * */
     protected void startSimulation(){
-        if(!missingInputs()){
-            this.crowd = new Crowd(this.numberOfPeople, this.numberOfGroups);
-            createObstacles();
-            createWayPoints();
+        this.crowd = new Crowd(this.numberOfPeople, this.numberOfGroups);
+        createObstacles();
+        createWayPoints();
 
-            //Printing entities on "active entities panel"
-            ActiveEntitiesPanel.getInstance().setObstaclesTab();
-            ActiveEntitiesPanel.getInstance().setWayPointsTab();
-            //setta anche pannello dei pedestrian
+        //Printing entities on "active entities panel"
+        ActiveEntitiesPanel.getInstance().setObstaclesTab();
+        ActiveEntitiesPanel.getInstance().setWayPointsTab();
+        //setta anche pannello dei pedestrian
 
-            this.removeAll();
-            this.revalidate();
-            this.repaint();
-            animation = new Animation(this, this.crowd, this.obstacles, this.wayPoints);
-            this.add(animation);
-            this.revalidate();
-            this.repaint();
-        }
+        this.removeAll();
+        this.revalidate();
+        this.repaint();
+        animation = new Animation(this, this.crowd, this.obstacles, this.wayPoints);
+        this.add(animation);
+        this.revalidate();
+        this.repaint();
     }
 
     /**
@@ -81,7 +80,9 @@ public class Simulation extends JPanel{
         setParameters(0,0,0,0);
         ActiveEntitiesPanel.getInstance().setObstaclesTab();
         ActiveEntitiesPanel.getInstance().setWayPointsTab();
+        //setta anche il tab dei pedoni
 
+        this.setIsRunning(false);
         this.removeAll();
         this.revalidate();
         this.repaint();
@@ -122,16 +123,6 @@ public class Simulation extends JPanel{
         Sort.sortWayPoints(this.wayPoints);
     }
 
-    /**
-     *
-     * */
-    public boolean missingInputs(){
-        if (this.numberOfGroups == 0 || this.numberOfPeople == 0 || this.numberOfObstacles == 0 || this.numberOfWayPoints == 0)
-            return true;
-        else
-            return false;
-    }
-
 
     public int getNumberOfPeople() {
         return numberOfPeople;
@@ -161,6 +152,13 @@ public class Simulation extends JPanel{
         return wayPoints;
     }
 
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public void setIsRunning(boolean running) {
+        isRunning = running;
+    }
 
     public void setParameters(int numberOfPeople, int numberOfGroups, int numberOfObstacles, int numberOfWayPoints){
         this.numberOfGroups = numberOfGroups;
