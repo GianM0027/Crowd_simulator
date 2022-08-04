@@ -2,6 +2,7 @@ import models.Obstacle;
 import models.Pedestrian;
 import models.WayPoint;
 import support.Support;
+import support.constants.Constant;
 
 import javax.swing.*;
 import java.awt.*;
@@ -104,8 +105,8 @@ public class Simulation extends JPanel{
         for(int i = 0; i < this.numberOfObstacles; i++){
             Point point = new Point();
             Obstacle o = new Obstacle(point);
-            point.x = new Random().nextInt(this.getWidth());
-            point.y = new Random().nextInt(this.getHeight());
+            point.x = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getWidth() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
+            point.y = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
             o.setPosition(point);
             this.obstacles.add(i, o);
         }
@@ -122,8 +123,8 @@ public class Simulation extends JPanel{
         for(int i = 0; i < this.numberOfWayPoints; i++){
             Point point = new Point();
             WayPoint w = new WayPoint(point);
-            point.x = new Random().nextInt(this.getWidth());
-            point.y = new Random().nextInt(this.getHeight());
+            point.x = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getWidth() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
+            point.y = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
             w.setPosition(point);
             this.wayPoints.add(i, w);
         }
@@ -139,8 +140,8 @@ public class Simulation extends JPanel{
         for(int i = 0; i < numberOfPeople; i++){
             Point point = new Point();
             Pedestrian p = new Pedestrian(point, i, null);
-            point.x = new Random().nextInt(this.getWidth());
-            point.y = new Random().nextInt(this.getHeight());
+            point.x = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getWidth() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
+            point.y = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
             p.setPosition(point);
             this.crowd.add(i, p);
         }

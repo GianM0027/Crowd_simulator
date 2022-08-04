@@ -21,6 +21,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
     private JPanel activePedestrians;
 
 
+    private JComboBox orderBy;
     private JComboBox ageFilter;
     private JComboBox genderFilter;
     private JSlider velocityFilter;
@@ -153,11 +154,24 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         //first of writing on this tab every label or old list must be canceled from the panel
         this.researchFilters.removeAll();
 
-        //setting filters layout
+        //setting "order by" menu
         researchFilters.setLayout(new GridBagLayout());
         GridBagConstraints gbd = new GridBagConstraints();
         gbd.insets = new Insets(5,10,5,10);
         gbd.anchor = GridBagConstraints.LINE_START;
+
+        JLabel orderByLabel = new JLabel("Order by:");
+        String[] optionsOrderBy = {"Default", "Gender", "Age", "Velocity", "Energy"};
+        this.orderBy = new JComboBox<>(optionsOrderBy);
+        orderBy.addActionListener(e -> updateFilteredCrowd());
+        gbd.gridx = 0;
+        gbd.gridy = 0;
+        researchFilters.add(orderByLabel, gbd);
+        gbd.gridx = 1;
+        gbd.gridy = 0;
+        gbd.fill = GridBagConstraints.HORIZONTAL;
+        researchFilters.add(orderBy, gbd);
+
 
         //dropdown menu to select gender
         JLabel gender = new JLabel("Gender:");
@@ -165,10 +179,10 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         this.genderFilter = new JComboBox<>(optionsGender);
         genderFilter.addActionListener(e -> updateFilteredCrowd());
         gbd.gridx = 0;
-        gbd.gridy = 0;
+        gbd.gridy = 1;
         researchFilters.add(gender, gbd);
         gbd.gridx = 1;
-        gbd.gridy = 0;
+        gbd.gridy = 1;
         researchFilters.add(genderFilter, gbd);
 
         //dropdown menu to select age
@@ -177,10 +191,10 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         this.ageFilter = new JComboBox<>(optionsAge);
         ageFilter.addActionListener(e -> updateFilteredCrowd());
         gbd.gridx = 0;
-        gbd.gridy = 1;
+        gbd.gridy = 2;
         researchFilters.add(age, gbd);
         gbd.gridx = 1;
-        gbd.gridy = 1;
+        gbd.gridy = 2;
         researchFilters.add(ageFilter, gbd);
 
         //range slider to select a range of velocity to consider
@@ -196,10 +210,10 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         velocityFilter.setPaintTicks(true);
         velocityFilter.addChangeListener(e -> updateFilteredCrowd());
         gbd.gridx = 0;
-        gbd.gridy = 2;
+        gbd.gridy = 3;
         researchFilters.add(velocity, gbd);
         gbd.gridx = 1;
-        gbd.gridy = 2;
+        gbd.gridy = 3;
         gbd.ipady = 5;
         researchFilters.add(velocityFilter, gbd);
 
@@ -216,10 +230,10 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         energyFilter.setPaintTicks(true);
         energyFilter.addChangeListener(e -> updateFilteredCrowd());
         gbd.gridx = 0;
-        gbd.gridy = 3;
+        gbd.gridy = 4;
         researchFilters.add(energy, gbd);
         gbd.gridx = 1;
-        gbd.gridy = 3;
+        gbd.gridy = 4;
         gbd.ipady = 5;
         researchFilters.add(energyFilter, gbd);
     }
@@ -261,7 +275,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
     }
 
     public void updateFilteredCrowd(){
-        List<Pedestrian> filteredCrowd = new ArrayList<>(Simulation.getInstance().getCrowd());
+        ArrayList<Pedestrian> filteredCrowd = new ArrayList<>(Simulation.getInstance().getCrowd());
 
         String genderFilter = this.genderFilter.getSelectedItem().toString();
         String ageFilter = this.ageFilter.getSelectedItem().toString();
@@ -280,15 +294,21 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         if(minEnergyFilter != Constant.MIN_ENERGY_OLD || maxEnergyFilter  != Constant.MAX_ENERGY_CHILD)
             filteredCrowd.removeIf(p -> p.getEnergy() < minEnergyFilter || p.getEnergy() > maxEnergyFilter);
 
-        setPedestriansTab(filteredCrowd);
+        //check if it is required a specific sorting
+        switch (orderBy.getSelectedItem().toString()){
+            case "Gender":
+                Support.sortPedestriansByGender(filteredCrowd);
+            case "Age":
+                Support.sortPedestriansByAge(filteredCrowd);
+            case "Velocity":
+                Support.sortPedestriansByVelocity(filteredCrowd);
+            case "Energy":
+                Support.sortPedestriansByEnergy(filteredCrowd);
+            default:
 
-        //test
-        System.out.println("Age: " + ageFilter);
-        System.out.println("Gender: " + genderFilter);
-        System.out.println("min velocity: " + minVelocityFilter);
-        System.out.println("max velocity: " + maxVelocityFilter);
-        System.out.println("min Energy: " + minEnergyFilter);
-        System.out.println("max Energy: " + maxEnergyFilter);
+        }
+
+        setPedestriansTab(filteredCrowd);
     }
 
 
