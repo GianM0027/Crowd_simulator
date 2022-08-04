@@ -1,6 +1,7 @@
 package models;
 
 import support.Bounds;
+import support.Support;
 import support.constants.Constant;
 import java.awt.*;
 import java.util.List;
@@ -18,9 +19,9 @@ public class Pedestrian {
     private Bounds bounds;
 
     public Pedestrian(Point position, int groupId, List<WayPoint> goalsList){
-        this.gender = new Random().nextInt(Constant.FEMALE+1)+Constant.MALE; //random among MALE and FEMALE
-        this.age = new Random().nextInt(Constant.OLD+1)+Constant.CHILD; //random among CHILD, YOUNG and OLD
-        this.velocity = new Random().nextInt(Constant.MAX_VELOCITY+1)+Constant.MIN_VELOCITY;
+        this.gender = Support.getRandomValue(Constant.MALE, Constant.FEMALE); //random among MALE and FEMALE
+        this.age = Support.getRandomValue(Constant.CHILD, Constant.OLD); //random among CHILD, YOUNG and OLD
+        this.velocity = Support.getRandomValue(Constant.MIN_VELOCITY, Constant.MAX_VELOCITY);
         this.energy = assignEnergy();
         this.position = position;
         this.bounds = new Bounds(this.position);
@@ -32,9 +33,9 @@ public class Pedestrian {
      * */
     private int assignEnergy() {
         return switch (this.age) {
-            case Constant.CHILD -> new Random().nextInt(Constant.MAX_ENERGY_CHILD + 1) + Constant.MIN_ENERGY_CHILD;
-            case Constant.YOUNG -> new Random().nextInt(Constant.MAX_ENERGY_YOUNG + 1) + Constant.MIN_ENERGY_YOUNG;
-            case Constant.OLD -> new Random().nextInt(Constant.MAX_ENERGY_OLD + 1) + Constant.MIN_ENERGY_OLD;
+            case Constant.CHILD -> Support.getRandomValue(Constant.MIN_ENERGY_CHILD, Constant.MAX_ENERGY_CHILD);
+            case Constant.YOUNG -> Support.getRandomValue(Constant.MIN_ENERGY_YOUNG, Constant.MAX_ENERGY_YOUNG);
+            case Constant.OLD -> Support.getRandomValue(Constant.MIN_ENERGY_OLD, Constant.MAX_ENERGY_OLD);
             default -> 0;
         };
     }
@@ -61,6 +62,10 @@ public class Pedestrian {
             return "Young";
         else
             return "Old";
+    }
+
+    public String getPositionString(){
+        return "[" + this.position.x + ", " + this.position.y + "]";
     }
 
     public int getVelocity() {

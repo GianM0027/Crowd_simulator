@@ -97,7 +97,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             DefaultListModel listModel = new DefaultListModel();
 
             for(int i = 1; i <= obstaclesList.size(); i++) {
-                listModel.add(i-1, "Obstacle " + i + ": " + "[" + (int)obstaclesList.get(i-1).getPosition().getX() + ", " + (int)obstaclesList.get(i-1).getPosition().getY() + "]");
+                listModel.add(i-1, "Obstacle " + i + ": " + obstaclesList.get(i-1).getPositionString());
             }
 
             this.obstaclesTab.removeAll();
@@ -132,7 +132,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             DefaultListModel listModel = new DefaultListModel();
 
             for(int i = 1; i <= wayPointsList.size(); i++) {
-                listModel.add(i-1, "Way Point " + i + ": " + "[" + (int)wayPointsList.get(i-1).getPosition().getX() + ", " + (int)wayPointsList.get(i-1).getPosition().getY() + "]");
+                listModel.add(i-1, "Way Point " + i + ": " + wayPointsList.get(i-1).getPositionString());
             }
 
             this.wayPointsTab.removeAll();
@@ -244,8 +244,9 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             DefaultListModel listModel = new DefaultListModel();
 
             for(int i = 1; i <= crowd.size(); i++) {
-                listModel.add(i-1, "Pedestrian " + i + ": " + "[" + (int)crowd.get(i-1).getPosition().getX() + ", " + (int)crowd.get(i-1).getPosition().getY() + "]" +
-                        " - " + crowd.get(i-1).getGenderString() + " - " + crowd.get(i-1).getAgeString());
+                listModel.add(i-1, "Pedestrian " + i + ": " + crowd.get(i-1).getPositionString() +
+                        "   -   " + crowd.get(i-1).getGenderString() + "   -   " + crowd.get(i-1).getAgeString() +
+                        "   -   " + "Velocity: " + crowd.get(i-1).getVelocity() + "   -   " + "Energy: " + crowd.get(i-1).getEnergy());
             }
 
             this.activePedestrians.removeAll();

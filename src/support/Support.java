@@ -3,8 +3,9 @@ package support;
 import models.*;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class Sort {
+public class Support {
 
     public static void sortObstacles(ArrayList<Obstacle> list){
         int n = list.size();
@@ -45,4 +46,12 @@ public class Sort {
     public static void sortPedestriansByAge(ArrayList<Pedestrian> list){}
     public static void sortPedestriansByVelocity(ArrayList<Pedestrian> list){}
     public static void sortPedestriansByEnergy(ArrayList<Pedestrian> list){}
+
+
+
+    public static int getRandomValue(int Min, int Max) {
+        // Get and return the random integer
+        // within Min and Max
+        return ThreadLocalRandom.current().nextInt(Min, Max + 1);
+    }
 }

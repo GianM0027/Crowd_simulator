@@ -2,7 +2,7 @@ package models;
 
 import java.awt.*;
 
-public class WayPoint extends FixedEntity{
+public class WayPoint extends FixedEntity {
 
     //attributi way points
 

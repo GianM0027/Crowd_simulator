@@ -23,4 +23,8 @@ public class FixedEntity {
     public Point getPosition() {
         return position;
     }
+
+    public String getPositionString(){
+        return "[" + this.position.x + ", " + this.position.y + "]";
+    }
 }

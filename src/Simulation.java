@@ -1,7 +1,7 @@
 import models.Obstacle;
 import models.Pedestrian;
 import models.WayPoint;
-import support.Sort;
+import support.Support;
 
 import javax.swing.*;
 import java.awt.*;
@@ -110,7 +110,7 @@ public class Simulation extends JPanel{
             this.obstacles.add(i, o);
         }
 
-        Sort.sortObstacles(this.obstacles);
+        Support.sortObstacles(this.obstacles);
     }
 
     /**
@@ -127,7 +127,7 @@ public class Simulation extends JPanel{
             w.setPosition(point);
             this.wayPoints.add(i, w);
         }
-        Sort.sortWayPoints(this.wayPoints);
+        Support.sortWayPoints(this.wayPoints);
     }
 
     /**
