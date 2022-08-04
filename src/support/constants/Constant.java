@@ -18,6 +18,8 @@ public class Constant {
     public static final int MAX_ENERGY_OLD = 40;
 
 
+    /** animation's constants */
+    public static final int ENTITY_SIZE = 8;
     public static final int BOUNDS_DISTANCE = 1;
 
 }

@@ -38,4 +38,68 @@ public class Pedestrian {
             default -> 0;
         };
     }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getGenderString() {
+        if(this.getGender() == Constant.MALE)
+            return "Male";
+        else
+            return "Female";
+    }
+
+    public String getAgeString() {
+        if(this.getAge() == Constant.CHILD)
+            return "Child";
+        else if(this.getAge() == Constant.YOUNG)
+            return "Young";
+        else
+            return "Old";
+    }
+
+    public int getVelocity() {
+        return velocity;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public Point getPosition() {
+        return position;
+    }
+
+    public Bounds getBounds() {
+        return bounds;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setVelocity(int velocity) {
+        this.velocity = velocity;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    public void setPosition(Point position) {
+        this.position = position;
+    }
+
+    public void setBounds(Bounds bounds) {
+        this.bounds = bounds;
+    }
 }

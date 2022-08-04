@@ -1,11 +1,12 @@
-import models.Crowd;
 import models.Obstacle;
+import models.Pedestrian;
 import models.WayPoint;
 import support.Sort;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -16,7 +17,7 @@ public class Simulation extends JPanel{
     private Animation animation;
     private boolean isRunning;
 
-    private Crowd crowd;
+    private ArrayList<Pedestrian> crowd;
     private ArrayList<Obstacle> obstacles;
     private ArrayList<WayPoint> wayPoints;
 
@@ -44,18 +45,20 @@ public class Simulation extends JPanel{
     }
 
 
+    /***************************************    SIMULATION CONTROLS    *****************************************/
     /**
      *
      * */
     protected void startSimulation(){
-        this.crowd = new Crowd(this.numberOfPeople, this.numberOfGroups);
+        createCrowd();
         createObstacles();
         createWayPoints();
 
         //Printing entities on "active entities panel"
         ActiveEntitiesPanel.getInstance().setObstaclesTab();
         ActiveEntitiesPanel.getInstance().setWayPointsTab();
-        //setta anche pannello dei pedestrian
+        ActiveEntitiesPanel.getInstance().setPedestriansTab(this.crowd);
+        ActiveEntitiesPanel.getInstance().updateFilteredCrowd();
 
         this.removeAll();
         this.revalidate();
@@ -78,9 +81,11 @@ public class Simulation extends JPanel{
      * */
     protected void stopSimulation(){
         setParameters(0,0,0,0);
+        this.crowd.clear();
         ActiveEntitiesPanel.getInstance().setObstaclesTab();
         ActiveEntitiesPanel.getInstance().setWayPointsTab();
-        //setta anche il tab dei pedoni
+        ActiveEntitiesPanel.getInstance().setFiltersTab();
+        ActiveEntitiesPanel.getInstance().setPedestriansTab(this.crowd);
 
         this.setIsRunning(false);
         this.removeAll();
@@ -88,6 +93,8 @@ public class Simulation extends JPanel{
         this.repaint();
     }
 
+
+    /***************************************    ENTITIES CREATION    *****************************************/
     /**
      *
      * */
@@ -123,7 +130,25 @@ public class Simulation extends JPanel{
         Sort.sortWayPoints(this.wayPoints);
     }
 
+    /**
+     *
+     * */
+    private void createCrowd(){
+        this.crowd = new ArrayList<>();
 
+        for(int i = 0; i < numberOfPeople; i++){
+            Point point = new Point();
+            Pedestrian p = new Pedestrian(point, i, null);
+            point.x = new Random().nextInt(this.getWidth());
+            point.y = new Random().nextInt(this.getHeight());
+            p.setPosition(point);
+            this.crowd.add(i, p);
+        }
+
+    }
+
+
+    /***************************************    ACCESSORS    *****************************************/
     public int getNumberOfPeople() {
         return numberOfPeople;
     }
@@ -140,7 +165,7 @@ public class Simulation extends JPanel{
         return numberOfWayPoints;
     }
 
-    public Crowd getCrowd() {
+    public List<Pedestrian> getCrowd() {
         return crowd;
     }
 

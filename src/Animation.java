@@ -1,6 +1,7 @@
-import models.Crowd;
 import models.Obstacle;
+import models.Pedestrian;
 import models.WayPoint;
+import support.constants.Constant;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,11 +13,11 @@ import java.util.List;
 public class Animation extends JPanel {
 
     private JPanel panel;
-    private Crowd crowd;
+    private List<Pedestrian> crowd;
     private List<Obstacle> obstacles;
     private List<WayPoint> wayPoints;
 
-    public Animation(JPanel panel, Crowd crowd, List<Obstacle> obstacles, List<WayPoint> wayPoints){
+    public Animation(JPanel panel, List<Pedestrian> crowd, List<Obstacle> obstacles, List<WayPoint> wayPoints){
         this.panel = panel;
         this.crowd = crowd;
         this.obstacles = obstacles;
@@ -32,13 +33,13 @@ public class Animation extends JPanel {
         //draw obstacles
         for(int i = 0; i < obstacles.size(); i++){
             g2D.setPaint(Color.BLACK);
-            g2D.fillRect(obstacles.get(i).getPosition().x, obstacles.get(i).getPosition().y, 10, 10);
+            g2D.fillRect(obstacles.get(i).getPosition().x, obstacles.get(i).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
         }
 
         //draw way points
         for(int i = 0; i < wayPoints.size(); i++){
             g2D.setPaint(Color.red);
-            g2D.fillOval(wayPoints.get(i).getPosition().x, wayPoints.get(i).getPosition().y, 10, 10);
+            g2D.fillOval(wayPoints.get(i).getPosition().x, wayPoints.get(i).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
         }
     }
 }

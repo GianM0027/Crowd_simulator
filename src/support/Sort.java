@@ -1,7 +1,6 @@
 package support;
 
-import models.Obstacle;
-import models.WayPoint;
+import models.*;
 
 import java.util.ArrayList;
 
@@ -42,4 +41,8 @@ public class Sort {
             list.set(i, temp);
         }
     }
+
+    public static void sortPedestriansByAge(ArrayList<Pedestrian> list){}
+    public static void sortPedestriansByVelocity(ArrayList<Pedestrian> list){}
+    public static void sortPedestriansByEnergy(ArrayList<Pedestrian> list){}
 }

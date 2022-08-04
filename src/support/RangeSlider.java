@@ -1,6 +1,5 @@
 package support;
 
-
 import javax.swing.JSlider;
 
 /**

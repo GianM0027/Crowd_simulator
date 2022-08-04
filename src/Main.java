@@ -43,7 +43,7 @@ public class Main {
         gbdActiveEntities.gridy = 1;
         gbdActiveEntities.gridheight = 1;
         gbdActiveEntities.gridwidth = 1;
-        gbdActiveEntities.weighty = 0.4;
+        gbdActiveEntities.weighty = 0.2;
         gbdActiveEntities.weightx = 1;
         gbdActiveEntities.anchor = GridBagConstraints.CENTER;
         gbdActiveEntities.fill = GridBagConstraints.BOTH;
