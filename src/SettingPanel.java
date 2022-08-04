@@ -217,6 +217,9 @@ public class SettingPanel extends JPanel {
      *
      * */
     private void startSimulation(){
+        if(Simulation.getInstance().missingParameters())
+            return;
+
         if(!Simulation.getInstance().isRunning()) {
             Simulation.getInstance().setIsRunning(true);
             Simulation.getInstance().startSimulation();

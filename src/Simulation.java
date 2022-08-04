@@ -192,4 +192,10 @@ public class Simulation extends JPanel{
         this.numberOfWayPoints = numberOfWayPoints;
     }
 
+    public boolean missingParameters(){
+        if (this.numberOfGroups == 0 || this.numberOfObstacles == 0 || this.numberOfPeople == 0 || this.numberOfWayPoints == 0)
+            return true;
+        return false;
+    }
+
 }
