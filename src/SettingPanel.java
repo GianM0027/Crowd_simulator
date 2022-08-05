@@ -1,5 +1,6 @@
 import support.AllertWindow;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,7 +13,7 @@ public class SettingPanel extends JPanel {
     private JButton playButton, pauseButton, stopButton, confirmButton;
 
 
-    public SettingPanel(JFrame frame){
+    public SettingPanel(){
         this.setBorder(BorderFactory.createEtchedBorder());
         this.setLayout(new BorderLayout(10,10));
 
@@ -64,9 +65,10 @@ public class SettingPanel extends JPanel {
         JPanel buttonsPanel = new JPanel(new GridBagLayout());
 
         //icons
-        Icon playButton = new ImageIcon("src/media/playButton.png");
-        Icon pauseButton = new ImageIcon("src/media/pauseButton.png");
-        Icon stopButton = new ImageIcon("src/media/stopButton.png");
+        ClassLoader cl = this.getClass().getClassLoader();
+        ImageIcon playButton = new ImageIcon(cl.getResource("media/playButton.png"));
+        ImageIcon pauseButton = new ImageIcon(cl.getResource("media/pauseButton.png"));
+        ImageIcon stopButton = new ImageIcon(cl.getResource("media/stopButton.png"));
 
         //gbd and add buttons
         GridBagConstraints gbd = new GridBagConstraints();

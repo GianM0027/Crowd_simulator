@@ -11,7 +11,7 @@ public class Main {
         homePage.setLayout(new GridBagLayout());
 
         //declaring panels
-        SettingPanel settingsPanel = new SettingPanel(homePage);
+        SettingPanel settingsPanel = new SettingPanel();
         SimulationPanel simulationPanel = new SimulationPanel(homePage);
         ActiveEntitiesPanel activeEntitiesPanel = ActiveEntitiesPanel.getInstance();
 

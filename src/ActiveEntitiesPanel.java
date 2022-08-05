@@ -274,6 +274,10 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         this.activePedestrians.repaint();
     }
 
+    /**
+     * Every time there is a change in the settings of the "filters panel", this function modifies, updates and shows the
+     * list of active pedestrians and the active pedestrians' tab
+     * */
     public void updateFilteredCrowd(){
         ArrayList<Pedestrian> filteredCrowd = new ArrayList<>(Simulation.getInstance().getCrowd());
 
@@ -305,7 +309,6 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             case "Energy":
                 Support.sortPedestriansByEnergy(filteredCrowd);
             default:
-
         }
 
         setPedestriansTab(filteredCrowd);
