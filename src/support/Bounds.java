@@ -25,6 +25,7 @@ public class Bounds {
         this.upLeft = new Point(position.x - Constant.BOUNDS_DISTANCE,position.y + Constant.BOUNDS_DISTANCE);
         this.upRight = new Point(position.x + Constant.BOUNDS_DISTANCE,position.y + Constant.BOUNDS_DISTANCE);
         this.bottomLeft = new Point(position.x - Constant.BOUNDS_DISTANCE,position.y - Constant.BOUNDS_DISTANCE);
+        this.bottomRight = new Point(position.x - Constant.BOUNDS_DISTANCE,position.y - Constant.BOUNDS_DISTANCE);
         this.up = new Point(position.x,position.y - Constant.BOUNDS_DISTANCE);
         this.left = new Point(position.x - Constant.BOUNDS_DISTANCE, position.y);
         this.right = new Point(position.x + Constant.BOUNDS_DISTANCE, position.y);

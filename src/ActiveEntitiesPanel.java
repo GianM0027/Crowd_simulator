@@ -174,7 +174,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
 
 
         //dropdown menu to select gender
-        JLabel gender = new JLabel("Gender:");
+        JLabel gender = new JLabel("Filter by Gender:");
         String[] optionsGender = {"All", "Male", "Female"};
         this.genderFilter = new JComboBox<>(optionsGender);
         genderFilter.addActionListener(e -> updateFilteredCrowd());
@@ -186,7 +186,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         researchFilters.add(genderFilter, gbd);
 
         //dropdown menu to select age
-        JLabel age = new JLabel("Age:");
+        JLabel age = new JLabel("Filter by Age:");
         String[] optionsAge = {"All", "Child", "Young", "Old"};
         this.ageFilter = new JComboBox<>(optionsAge);
         ageFilter.addActionListener(e -> updateFilteredCrowd());
@@ -198,7 +198,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         researchFilters.add(ageFilter, gbd);
 
         //range slider to select a range of velocity to consider
-        JLabel velocity = new JLabel("Velocity:");
+        JLabel velocity = new JLabel("Filter by Velocity:");
         this.velocityFilter = new RangeSlider(Constant.MIN_VELOCITY, Constant.MAX_VELOCITY);
         velocityFilter.setFocusable(false);
         velocityFilter.setMinorTickSpacing(1);
@@ -218,7 +218,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         researchFilters.add(velocityFilter, gbd);
 
         //range slider to select a range of velocity to consider
-        JLabel energy = new JLabel("Energy:");
+        JLabel energy = new JLabel("Fileter by Energy:");
         this.energyFilter = new RangeSlider(Constant.MIN_ENERGY_OLD, Constant.MAX_ENERGY_CHILD);
         energyFilter.setFocusable(false);
         energyFilter.setMinorTickSpacing(1);
@@ -279,7 +279,10 @@ public class ActiveEntitiesPanel extends JTabbedPane{
      * list of active pedestrians and the active pedestrians' tab
      * */
     public void updateFilteredCrowd(){
-        ArrayList<Pedestrian> filteredCrowd = new ArrayList<>(Simulation.getInstance().getCrowd());
+        ArrayList<Pedestrian> filteredCrowd = new ArrayList<>();
+
+        if(Simulation.getInstance().getCrowd() != null)
+            filteredCrowd = new ArrayList<>(Simulation.getInstance().getCrowd());
 
         String genderFilter = this.genderFilter.getSelectedItem().toString();
         String ageFilter = this.ageFilter.getSelectedItem().toString();
