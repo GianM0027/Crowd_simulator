@@ -302,13 +302,18 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         switch (orderBy.getSelectedItem().toString()){
             case "Gender":
                 Support.sortPedestriansByGender(filteredCrowd);
+                break;
             case "Age":
                 Support.sortPedestriansByAge(filteredCrowd);
+                break;
             case "Velocity":
                 Support.sortPedestriansByVelocity(filteredCrowd);
+                break;
             case "Energy":
                 Support.sortPedestriansByEnergy(filteredCrowd);
+                break;
             default:
+                System.out.println("Default");
         }
 
         setPedestriansTab(filteredCrowd);

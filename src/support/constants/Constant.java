@@ -8,8 +8,8 @@ public class Constant {
     public static final int CHILD = 3;
     public static final int YOUNG = 4;
     public static final int OLD = 5;
-    public static final int MIN_VELOCITY = 5;
-    public static final int MAX_VELOCITY = 15;
+    public static final int MIN_VELOCITY = 4;
+    public static final int MAX_VELOCITY = 12;
     public static final int MIN_ENERGY_CHILD = 40;
     public static final int MAX_ENERGY_CHILD = 50;
     public static final int MIN_ENERGY_YOUNG = 30;
