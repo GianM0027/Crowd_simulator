@@ -31,14 +31,18 @@ public class Animation extends JPanel {
         Graphics2D g2D = (Graphics2D) g;
 
         //draw obstacles
+        g2D.setPaint(Color.BLACK);
         for(int i = 0; i < obstacles.size(); i++){
-            g2D.setPaint(Color.BLACK);
             g2D.fillRect(obstacles.get(i).getPosition().x, obstacles.get(i).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
+            g2D.drawRoundRect((int)obstacles.get(i).getPosition().getX() - Constant.BOUNDS_DISTANCE,
+                    (int)obstacles.get(i).getPosition().getY() - Constant.BOUNDS_DISTANCE,
+                    obstacles.get(i).getBounds().getWidth(), obstacles.get(i).getBounds().getHeight(),
+                    obstacles.get(i).getBounds().getWidth()/4,obstacles.get(i).getBounds().getHeight()/4);
         }
 
         //draw way points
+        g2D.setPaint(Color.red);
         for(int i = 0; i < wayPoints.size(); i++){
-            g2D.setPaint(Color.red);
             g2D.fillOval(wayPoints.get(i).getPosition().x, wayPoints.get(i).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
         }
     }

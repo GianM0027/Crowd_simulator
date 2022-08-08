@@ -16,6 +16,11 @@ public class FixedEntity {
         this.bounds = new Bounds(position);
     }
 
+
+    public Bounds getBounds() {
+        return bounds;
+    }
+
     public void setPosition(Point position) {
         this.position = position;
     }

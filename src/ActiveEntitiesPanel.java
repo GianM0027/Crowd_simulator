@@ -30,7 +30,6 @@ public class ActiveEntitiesPanel extends JTabbedPane{
 
     public ActiveEntitiesPanel(){
         this.setBorder(BorderFactory.createEtchedBorder());
-
         setInternalLayout();
     }
 
@@ -64,7 +63,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
                 GridBagConstraints.FIRST_LINE_START,GridBagConstraints.BOTH,new Insets(0,0,0,0),0,0);
         GridBagConstraints gbdPedestrian = new GridBagConstraints(1,0,1,1,1,1,
                 GridBagConstraints.FIRST_LINE_START,GridBagConstraints.BOTH,new Insets(0,0,0,0),0,0);
-        this.researchFilters = new JPanel();
+        this.researchFilters = new JPanel(new GridBagLayout());
         this.activePedestrians = new JPanel();
         activePedestrians.setBorder(BorderFactory.createEtchedBorder());
         researchFilters.setBorder(BorderFactory.createEtchedBorder());
@@ -106,7 +105,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             JList obstacles = new JList(listModel);
 
             JScrollPane scrollPane = new JScrollPane(obstacles);
-            scrollPane.setPreferredSize(new Dimension(this.obstaclesTab.getWidth()-10,this.obstaclesTab.getHeight()-10));
+            scrollPane.setPreferredSize(new Dimension(this.wayPointsTab.getWidth()-8,this.wayPointsTab.getHeight()-8));
             this.obstaclesTab.add(scrollPane);
         }
         this.obstaclesTab.repaint();
@@ -141,7 +140,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             JList wayPoints = new JList(listModel);
 
             JScrollPane scrollPane = new JScrollPane(wayPoints);
-            scrollPane.setPreferredSize(new Dimension(this.wayPointsTab.getWidth()-10,this.wayPointsTab.getHeight()-10));
+            scrollPane.setPreferredSize(new Dimension(this.wayPointsTab.getWidth()-8,this.wayPointsTab.getHeight()-8));
             this.wayPointsTab.add(scrollPane);
         }
         this.wayPointsTab.repaint();
@@ -155,87 +154,80 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         this.researchFilters.removeAll();
 
         //setting "order by" menu
-        researchFilters.setLayout(new GridBagLayout());
-        GridBagConstraints gbd = new GridBagConstraints();
-        gbd.insets = new Insets(5,10,5,10);
-        gbd.anchor = GridBagConstraints.LINE_START;
-
+        GridBagConstraints gbdOrderByLabel = new GridBagConstraints(0,0,1,1,0,0,GridBagConstraints.LINE_START,
+                GridBagConstraints.HORIZONTAL,new Insets(5,10,5,10),0,0);
         JLabel orderByLabel = new JLabel("Order by:");
         String[] optionsOrderBy = {"Default", "Gender", "Age", "Velocity", "Energy"};
         this.orderBy = new JComboBox<>(optionsOrderBy);
         orderBy.addActionListener(e -> updateFilteredCrowd());
-        gbd.gridx = 0;
-        gbd.gridy = 0;
-        researchFilters.add(orderByLabel, gbd);
-        gbd.gridx = 1;
-        gbd.gridy = 0;
-        gbd.fill = GridBagConstraints.HORIZONTAL;
-        researchFilters.add(orderBy, gbd);
-
+        researchFilters.add(orderByLabel, gbdOrderByLabel);
+        GridBagConstraints gbdOrderByField = new GridBagConstraints(1,0,1,1,0,0,GridBagConstraints.LINE_START,
+                GridBagConstraints.HORIZONTAL,new Insets(5,10,5,10),0,0);
+        researchFilters.add(orderBy, gbdOrderByField);
 
         //dropdown menu to select gender
         JLabel gender = new JLabel("Filter by Gender:");
         String[] optionsGender = {"All", "Male", "Female"};
         this.genderFilter = new JComboBox<>(optionsGender);
         genderFilter.addActionListener(e -> updateFilteredCrowd());
-        gbd.gridx = 0;
-        gbd.gridy = 1;
-        researchFilters.add(gender, gbd);
-        gbd.gridx = 1;
-        gbd.gridy = 1;
-        researchFilters.add(genderFilter, gbd);
+        GridBagConstraints gbdGenderLabel = new GridBagConstraints(0,1,1,1,0,0,GridBagConstraints.LINE_START,
+                GridBagConstraints.HORIZONTAL,new Insets(5,10,5,10),0,0);
+        researchFilters.add(gender, gbdGenderLabel);
+        GridBagConstraints gbdGenderField = new GridBagConstraints(1,1,1,1,0,0,GridBagConstraints.LINE_START,
+                GridBagConstraints.HORIZONTAL,new Insets(5,10,5,10),0,0);
+        researchFilters.add(genderFilter, gbdGenderField);
 
         //dropdown menu to select age
         JLabel age = new JLabel("Filter by Age:");
         String[] optionsAge = {"All", "Child", "Young", "Old"};
         this.ageFilter = new JComboBox<>(optionsAge);
         ageFilter.addActionListener(e -> updateFilteredCrowd());
-        gbd.gridx = 0;
-        gbd.gridy = 2;
-        researchFilters.add(age, gbd);
-        gbd.gridx = 1;
-        gbd.gridy = 2;
-        researchFilters.add(ageFilter, gbd);
+        GridBagConstraints gbdAgeLabel = new GridBagConstraints(0,2,1,1,0,0,GridBagConstraints.LINE_START,
+                GridBagConstraints.HORIZONTAL,new Insets(5,10,5,10),0,0);
+        researchFilters.add(age, gbdAgeLabel);
+        GridBagConstraints gbdAgeField = new GridBagConstraints(1,2,1,1,0,0,GridBagConstraints.LINE_START,
+                GridBagConstraints.HORIZONTAL,new Insets(5,10,5,10),0,0);
+        researchFilters.add(ageFilter, gbdAgeField);
 
         //range slider to select a range of velocity to consider
         JLabel velocity = new JLabel("Filter by Velocity:");
         this.velocityFilter = new RangeSlider(Constant.MIN_VELOCITY, Constant.MAX_VELOCITY);
         velocityFilter.setFocusable(false);
         velocityFilter.setMinorTickSpacing(1);
-        velocityFilter.setMinorTickSpacing(1);
-        velocityFilter.setValue(Constant.MIN_VELOCITY); //value è il valore del pallino di sinistra
-        velocityFilter.setExtent(Constant.MAX_VELOCITY); //extent + value è il valore del pallino di destra
         velocityFilter.setMajorTickSpacing(2);
+        velocityFilter.setValue(Constant.MIN_VELOCITY);
+        velocityFilter.setExtent(Constant.MAX_VELOCITY);
         velocityFilter.setPaintLabels(true);
         velocityFilter.setPaintTicks(true);
         velocityFilter.addChangeListener(e -> updateFilteredCrowd());
-        gbd.gridx = 0;
-        gbd.gridy = 3;
-        researchFilters.add(velocity, gbd);
-        gbd.gridx = 1;
-        gbd.gridy = 3;
-        gbd.ipady = 5;
-        researchFilters.add(velocityFilter, gbd);
+        GridBagConstraints gbdVelocityLabel = new GridBagConstraints(0,3,1,1,0,0,GridBagConstraints.LINE_START,
+                GridBagConstraints.HORIZONTAL,new Insets(5,10,5,10),0,5);
+        researchFilters.add(velocity, gbdVelocityLabel);
+        GridBagConstraints gbdVelocityField = new GridBagConstraints(1,3,1,1,0,0,GridBagConstraints.LINE_START,
+                GridBagConstraints.HORIZONTAL,new Insets(5,10,5,10),0,5);
+        researchFilters.add(velocityFilter, gbdVelocityField);
 
         //range slider to select a range of velocity to consider
         JLabel energy = new JLabel("Fileter by Energy:");
         this.energyFilter = new RangeSlider(Constant.MIN_ENERGY_OLD, Constant.MAX_ENERGY_CHILD);
         energyFilter.setFocusable(false);
         energyFilter.setMinorTickSpacing(1);
-        energyFilter.setMinorTickSpacing(1);
-        energyFilter.setValue(Constant.MIN_ENERGY_OLD); //value è il valore del pallino di sinistra
-        energyFilter.setExtent(Constant.MAX_ENERGY_CHILD); //extent + value è il valore del pallino di destra
         energyFilter.setMajorTickSpacing(5);
+        energyFilter.setValue(Constant.MIN_ENERGY_OLD);
+        energyFilter.setExtent(Constant.MAX_ENERGY_CHILD);
         energyFilter.setPaintLabels(true);
         energyFilter.setPaintTicks(true);
         energyFilter.addChangeListener(e -> updateFilteredCrowd());
-        gbd.gridx = 0;
-        gbd.gridy = 4;
-        researchFilters.add(energy, gbd);
-        gbd.gridx = 1;
-        gbd.gridy = 4;
-        gbd.ipady = 5;
-        researchFilters.add(energyFilter, gbd);
+        GridBagConstraints gbdEnergyLabel = new GridBagConstraints(0,4,1,1,0,0,GridBagConstraints.LINE_START,
+                GridBagConstraints.HORIZONTAL,new Insets(5,10,5,10),0,5);
+        researchFilters.add(energy, gbdEnergyLabel);
+        GridBagConstraints gbdEnergyField = new GridBagConstraints(1,4,1,1,0,0,GridBagConstraints.LINE_START,
+                GridBagConstraints.HORIZONTAL,new Insets(5,10,5,10),0,5);
+        researchFilters.add(energyFilter, gbdEnergyField);
+
+        if(!Simulation.getInstance().isRunning())
+            disableFilters();
+        else enableFilters();
     }
 
     /**
@@ -268,7 +260,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             JList pedestiansList = new JList(listModel);
 
             JScrollPane scrollPane = new JScrollPane(pedestiansList);
-            scrollPane.setPreferredSize(new Dimension(this.activePedestrians.getWidth()-12,this.activePedestrians.getHeight()-12));
+            scrollPane.setPreferredSize(new Dimension(this.activePedestrians.getWidth()-8,this.activePedestrians.getHeight()-8));
             this.activePedestrians.add(scrollPane);
         }
         this.activePedestrians.repaint();
@@ -316,7 +308,6 @@ public class ActiveEntitiesPanel extends JTabbedPane{
                 Support.sortPedestriansByEnergy(filteredCrowd);
                 break;
             default:
-                System.out.println("Default");
         }
 
         setPedestriansTab(filteredCrowd);
@@ -324,7 +315,6 @@ public class ActiveEntitiesPanel extends JTabbedPane{
 
 
     /***************************************    ACCESSORS    *****************************************/
-
     public JPanel getObstaclesTab() {
         return obstaclesTab;
     }
@@ -339,5 +329,21 @@ public class ActiveEntitiesPanel extends JTabbedPane{
 
     public JPanel getActivePedestrians() {
         return activePedestrians;
+    }
+
+    public void disableFilters(){
+        orderBy.setEnabled(false);
+        ageFilter.setEnabled(false);
+        genderFilter.setEnabled(false);
+        velocityFilter.setEnabled(false);
+        energyFilter.setEnabled(false);
+    }
+
+    public void enableFilters(){
+        orderBy.setEnabled(true);
+        ageFilter.setEnabled(true);
+        genderFilter.setEnabled(true);
+        velocityFilter.setEnabled(true);
+        energyFilter.setEnabled(true);
     }
 }

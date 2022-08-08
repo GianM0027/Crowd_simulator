@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Contain all the settings and contents of the actual simulation
@@ -59,6 +58,7 @@ public class Simulation extends JPanel{
         ActiveEntitiesPanel.getInstance().setObstaclesTab();
         ActiveEntitiesPanel.getInstance().setWayPointsTab();
         ActiveEntitiesPanel.getInstance().setPedestriansTab(this.crowd);
+        ActiveEntitiesPanel.getInstance().enableFilters();
         ActiveEntitiesPanel.getInstance().updateFilteredCrowd();
 
         this.removeAll();
@@ -86,6 +86,7 @@ public class Simulation extends JPanel{
         ActiveEntitiesPanel.getInstance().setObstaclesTab();
         ActiveEntitiesPanel.getInstance().setWayPointsTab();
         ActiveEntitiesPanel.getInstance().setFiltersTab();
+        ActiveEntitiesPanel.getInstance().disableFilters();
         ActiveEntitiesPanel.getInstance().setPedestriansTab(this.crowd);
 
         this.setIsRunning(false);

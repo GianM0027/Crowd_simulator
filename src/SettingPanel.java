@@ -109,11 +109,11 @@ public class SettingPanel extends JPanel {
         gbdPanel.insets = new Insets(5,5,0,5);
 
         //instructions for setting panel
-        JLabel instructions1 = new JLabel("Set values for each field, then press \"confirm\"");
+        JLabel instructions1 = new JLabel("Set values for each field, press \"confirm\" to apply");
         instructions1.setForeground(Color.GRAY);
         panel.add(instructions1,gbdPanel);
-        gbdPanel.insets = new Insets(0,5,15,5);
-        JLabel instructions2 = new JLabel("to apply them to the simulation:");
+        gbdPanel.insets = new Insets(0,5,20,5);
+        JLabel instructions2 = new JLabel("them to the simulation, then click on the play button");
         instructions2.setForeground(Color.GRAY);
         panel.add(instructions2,gbdPanel);
 
