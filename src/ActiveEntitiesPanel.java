@@ -97,12 +97,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             DefaultListModel listModel = new DefaultListModel();
 
             for(int i = 1; i <= obstaclesList.size(); i++) {
-                listModel.add(i-1, "Obstacle " + i + ": " + obstaclesList.get(i-1).getPositionString() +
-                        "      --> center: " + obstaclesList.get(i-1).getBounds().getCenter() +
-                        "  up: " + obstaclesList.get(i-1).getBounds().getUp() +
-                        "  bottom: " + obstaclesList.get(i-1).getBounds().getBottom() +
-                        "  left: " + obstaclesList.get(i-1).getBounds().getLeft() +
-                        "  right: " + obstaclesList.get(i-1).getBounds().getRight());
+                listModel.add(i-1, "Obstacle " + i + ": " + obstaclesList.get(i-1).getPositionString());
             }
 
             this.obstaclesTab.removeAll();
@@ -301,16 +296,16 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         //check if it is required a specific sorting
         switch (orderBy.getSelectedItem().toString()){
             case "Gender":
-                Support.sortPedestriansByGender(filteredCrowd);
+                Support.sortByGender(filteredCrowd, 0, filteredCrowd.size()-1);
                 break;
             case "Age":
-                Support.sortPedestriansByAge(filteredCrowd);
+                Support.sortByAge(filteredCrowd, 0, filteredCrowd.size()-1);
                 break;
             case "Velocity":
-                Support.sortPedestriansByVelocity(filteredCrowd);
+                Support.quickSortByVelocity(filteredCrowd, 0, filteredCrowd.size()-1);
                 break;
             case "Energy":
-                Support.sortPedestriansByEnergy(filteredCrowd);
+                Support.quickSortByEnergy(filteredCrowd, 0, filteredCrowd.size()-1);
                 break;
             default:
         }
