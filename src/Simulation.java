@@ -22,13 +22,13 @@ public class Simulation extends JPanel{
     private ArrayList<WayPoint> wayPoints;
 
     private int numberOfPeople;
-    private int numberOfGroups;
+    private int sizeOfGroups;
     private int numberOfObstacles;
     private int numberOfWayPoints;
 
     public Simulation(){
         this.isRunning = false;
-        this.numberOfGroups = 0;
+        this.sizeOfGroups = 0;
         this.numberOfObstacles = 0;
         this.numberOfPeople = 0;
         this.numberOfWayPoints = 0;
@@ -154,8 +154,8 @@ public class Simulation extends JPanel{
         return numberOfPeople;
     }
 
-    public int getNumberOfGroups() {
-        return numberOfGroups;
+    public int getSizeOfGroups() {
+        return sizeOfGroups;
     }
 
     public int getNumberOfObstacles() {
@@ -187,14 +187,14 @@ public class Simulation extends JPanel{
     }
 
     public void setParameters(int numberOfPeople, int numberOfGroups, int numberOfObstacles, int numberOfWayPoints){
-        this.numberOfGroups = numberOfGroups;
+        this.sizeOfGroups = numberOfGroups;
         this.numberOfObstacles = numberOfObstacles;
         this.numberOfPeople = numberOfPeople;
         this.numberOfWayPoints = numberOfWayPoints;
     }
 
     public boolean missingParameters(){
-        if (this.numberOfGroups == 0 || this.numberOfObstacles == 0 || this.numberOfPeople == 0 || this.numberOfWayPoints == 0)
+        if (this.sizeOfGroups == 0 || this.numberOfObstacles == 0 || this.numberOfPeople == 0 || this.numberOfWayPoints == 0)
             return true;
         return false;
     }

@@ -8,7 +8,7 @@ import java.awt.*;
  * */
 public class SettingPanel extends JPanel {
 
-    private JTextField numberOfPeople, numberOfWayPoints, numberOfGroups, numberOfObstacles;
+    private JTextField numberOfPeople, numberOfWayPoints, sizeOfGroups, numberOfObstacles;
     private JButton playButton, pauseButton, stopButton, confirmButton;
 
 
@@ -125,7 +125,7 @@ public class SettingPanel extends JPanel {
         JLabel numPeopleLabel = new JLabel("Number of people:");
         JLabel numWayPointsLabel = new JLabel("Number of way points:");
         JLabel numObstaclesLabel = new JLabel("Number of obstacles:");
-        JLabel numGroupsLabel = new JLabel("Number of groups:");
+        JLabel numGroupsLabel = new JLabel("Size of groups:");
 
         //spinners
         this.numberOfPeople = new JTextField();
@@ -134,8 +134,8 @@ public class SettingPanel extends JPanel {
         this.numberOfWayPoints.setPreferredSize(new Dimension(80, 25));
         this.numberOfObstacles = new JTextField();
         this.numberOfObstacles.setPreferredSize(new Dimension(80, 25));
-        this.numberOfGroups = new JTextField();
-        this.numberOfGroups.setPreferredSize(new Dimension(80, 25));
+        this.sizeOfGroups = new JTextField();
+        this.sizeOfGroups.setPreferredSize(new Dimension(80, 25));
 
         //panels where to put every couple (label + spinner)
         JPanel line1 = new JPanel(new BorderLayout());
@@ -155,7 +155,7 @@ public class SettingPanel extends JPanel {
 
         JPanel line4 = new JPanel(new BorderLayout());
         line4.add(numGroupsLabel, BorderLayout.WEST);
-        line4.add(numberOfGroups, BorderLayout.EAST);
+        line4.add(sizeOfGroups, BorderLayout.EAST);
         panel.add(line4, gbdPanel);
     }
 
@@ -201,16 +201,19 @@ public class SettingPanel extends JPanel {
             JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'number of obstacles' field");
             return;
         }
-        if(this.numberOfGroups.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'number of groups' field");
+        if(this.sizeOfGroups.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'size of groups' field");
             return;
-        } else if(Integer.parseInt(this.numberOfGroups.getText()) == 0){
-            JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'number of groups' field");
+        } else if(Integer.parseInt(this.sizeOfGroups.getText()) == 0){
+            JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'size of groups' field");
+            return;
+        } else if(Integer.parseInt(this.sizeOfGroups.getText()) > Integer.parseInt(this.numberOfPeople.getText())){
+            JOptionPane.showMessageDialog(null, "The size of groups in the 'size of groups' field must be bigger than the value in the 'number of people' field");
             return;
         }
 
         //if all the fields are filled, you set the parameters of the simulation even in the "Simulation" class
-        Simulation.getInstance().setParameters(Integer.parseInt(this.numberOfPeople.getText()), Integer.parseInt(this.numberOfGroups.getText()),
+        Simulation.getInstance().setParameters(Integer.parseInt(this.numberOfPeople.getText()), Integer.parseInt(this.sizeOfGroups.getText()),
                 Integer.parseInt(this.numberOfObstacles.getText()), Integer.parseInt(this.numberOfWayPoints.getText()));
     }
 
@@ -247,7 +250,7 @@ public class SettingPanel extends JPanel {
         if(new ConfirmationWindow("Do you really want to stop the simulation? It will restore all the settings").isConfirmed()) {
             this.numberOfPeople.setText("");
             this.numberOfObstacles.setText("");
-            this.numberOfGroups.setText("");
+            this.sizeOfGroups.setText("");
             this.numberOfWayPoints.setText("");
             disableStopPauseButtons();
             Simulation.getInstance().stopSimulation();
