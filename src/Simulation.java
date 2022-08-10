@@ -74,8 +74,13 @@ public class Simulation extends JPanel{
      *
      * */
     protected void pauseSimulation(){
-        return;
+        this.animation.pause();
     }
+
+    protected void resumeSimulation(){
+        this.animation.resume();
+    }
+
 
     /**
      *

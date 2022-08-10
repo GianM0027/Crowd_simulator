@@ -231,7 +231,7 @@ public class SettingPanel extends JPanel {
         }
         else{
             enableStopPauseButtons();
-            //riprendi simulazione da dove si era lasciata dopo la pausa
+            Simulation.getInstance().resumeSimulation();
         }
     }
 

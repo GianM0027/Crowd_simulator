@@ -102,6 +102,7 @@ public class Pedestrian {
 
     public void setPosition(Point position) {
         this.position = position;
+        this.bounds = new Bounds(position);
     }
 
     public void setBounds(Bounds bounds) {
