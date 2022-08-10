@@ -1,6 +1,5 @@
-import support.AllertWindow;
+import support.ConfirmationWindow;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 
@@ -245,7 +244,7 @@ public class SettingPanel extends JPanel {
      *
      * */
     private void stopSimulation(){
-        if(new AllertWindow("Do you really want to stop the simulation? It will restore all the settings").isConfirmed()) {
+        if(new ConfirmationWindow("Do you really want to stop the simulation? It will restore all the settings").isConfirmed()) {
             this.numberOfPeople.setText("");
             this.numberOfObstacles.setText("");
             this.numberOfGroups.setText("");

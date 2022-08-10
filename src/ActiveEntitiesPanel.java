@@ -97,7 +97,12 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             DefaultListModel listModel = new DefaultListModel();
 
             for(int i = 1; i <= obstaclesList.size(); i++) {
-                listModel.add(i-1, "Obstacle " + i + ": " + obstaclesList.get(i-1).getPositionString());
+                listModel.add(i-1, "Obstacle " + i + ": " + obstaclesList.get(i-1).getPositionString() +
+                        "      --> center: " + obstaclesList.get(i-1).getBounds().getCenter() +
+                        "  up: " + obstaclesList.get(i-1).getBounds().getUp() +
+                        "  bottom: " + obstaclesList.get(i-1).getBounds().getBottom() +
+                        "  left: " + obstaclesList.get(i-1).getBounds().getLeft() +
+                        "  right: " + obstaclesList.get(i-1).getBounds().getRight());
             }
 
             this.obstaclesTab.removeAll();

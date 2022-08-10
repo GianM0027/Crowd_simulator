@@ -33,17 +33,22 @@ public class Animation extends JPanel {
         //draw obstacles
         g2D.setPaint(Color.BLACK);
         for(int i = 0; i < obstacles.size(); i++){
-            g2D.fillRect(obstacles.get(i).getPosition().x, obstacles.get(i).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
-            g2D.drawRoundRect((int)obstacles.get(i).getPosition().getX() - Constant.BOUNDS_DISTANCE,
-                    (int)obstacles.get(i).getPosition().getY() - Constant.BOUNDS_DISTANCE,
-                    obstacles.get(i).getBounds().getWidth(), obstacles.get(i).getBounds().getHeight(),
-                    obstacles.get(i).getBounds().getWidth()/4,obstacles.get(i).getBounds().getHeight()/4);
+            //entity
+            g2D.fillOval(obstacles.get(i).getPosition().x, obstacles.get(i).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
+
+            //bounds
+            g2D.drawOval(obstacles.get(i).getBounds().getUpLeft().x, obstacles.get(i).getBounds().getLeft().y,
+                    obstacles.get(i).getBounds().getWidth(), obstacles.get(i).getBounds().getHeight());
         }
 
         //draw way points
         g2D.setPaint(Color.red);
         for(int i = 0; i < wayPoints.size(); i++){
             g2D.fillOval(wayPoints.get(i).getPosition().x, wayPoints.get(i).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
+
+            //bounds
+            g2D.drawOval(wayPoints.get(i).getBounds().getUpLeft().x, wayPoints.get(i).getBounds().getLeft().y,
+                    wayPoints.get(i).getBounds().getWidth(), wayPoints.get(i).getBounds().getHeight());
         }
     }
 }

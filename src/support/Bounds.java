@@ -9,6 +9,8 @@ import java.awt.*;
  * Calculates bounds of any entity
  * */
 public class Bounds {
+
+    private Point center; //exact position of the entity
     private Point upLeft;
     private Point upRight;
     private Point bottomLeft;
@@ -26,18 +28,25 @@ public class Bounds {
      * */
     public Bounds(Point position){
 
-        this.upLeft = new Point(position.x - Constant.BOUNDS_DISTANCE,position.y + Constant.BOUNDS_DISTANCE);
-        this.upRight = new Point(position.x + Constant.BOUNDS_DISTANCE + Constant.ENTITY_SIZE,position.y + Constant.BOUNDS_DISTANCE);
-        this.bottomLeft = new Point(position.x - Constant.BOUNDS_DISTANCE,position.y - Constant.ENTITY_SIZE - Constant.BOUNDS_DISTANCE);
-        this.bottomRight = new Point(position.x + Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE,position.y - Constant.ENTITY_SIZE - Constant.BOUNDS_DISTANCE);
+        this.center = new Point(position.x + Constant.ENTITY_SIZE/2, position.y - Constant.BOUNDS_DISTANCE);
 
-        this.up = new Point(position.x + Constant.ENTITY_SIZE/2,position.y + Constant.BOUNDS_DISTANCE);
-        this.left = new Point(position.x - Constant.BOUNDS_DISTANCE, position.y - Constant.ENTITY_SIZE/2);
-        this.right = new Point(position.x + Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, position.y - Constant.ENTITY_SIZE/2);
-        this.bottom = new Point(position.x + Constant.ENTITY_SIZE/2,position.y - Constant.ENTITY_SIZE - Constant.BOUNDS_DISTANCE);
+        this.up = new Point(this.center.x, position.y + Constant.BOUNDS_DISTANCE);
+        this.bottom = new Point(this.center.x,position.y - Constant.ENTITY_SIZE - Constant.BOUNDS_DISTANCE);
+
+        this.left = new Point(position.x - Constant.BOUNDS_DISTANCE, this.center.y);
+        this.right = new Point(position.x + Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.center.y);
+
+        this.upLeft = new Point(this.left.x,this.up.y);
+        this.upRight = new Point(this.right.x, this.up.y);
+        this.bottomLeft = new Point(this.left.x, this.bottom.y);
+        this.bottomRight = new Point(this.right.x, this.bottom.y);
 
         this.width = this.right.x - this.left.x;
         this.height = this.up.y - this.bottom.y;
+    }
+
+    public Point getCenter() {
+        return center;
     }
 
     public Point getUpLeft() {

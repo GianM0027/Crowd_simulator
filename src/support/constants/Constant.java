@@ -20,6 +20,6 @@ public class Constant {
 
     /** animation's constants */
     public static final int ENTITY_SIZE = 8;
-    public static final int BOUNDS_DISTANCE = 3;
+    public static final int BOUNDS_DISTANCE = ENTITY_SIZE/4;
 
 }

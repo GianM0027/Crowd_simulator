@@ -105,10 +105,10 @@ public class Simulation extends JPanel{
 
         for(int i = 0; i < this.numberOfObstacles; i++){
             Point point = new Point();
-            Obstacle o = new Obstacle(point);
             point.x = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getWidth() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
             point.y = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
-            o.setPosition(point);
+
+            Obstacle o = new Obstacle(point);
             this.obstacles.add(i, o);
         }
 
@@ -123,10 +123,10 @@ public class Simulation extends JPanel{
 
         for(int i = 0; i < this.numberOfWayPoints; i++){
             Point point = new Point();
-            WayPoint w = new WayPoint(point);
             point.x = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getWidth() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
             point.y = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
-            w.setPosition(point);
+
+            WayPoint w = new WayPoint(point);
             this.wayPoints.add(i, w);
         }
         Support.sortWayPoints(this.wayPoints);
@@ -140,10 +140,9 @@ public class Simulation extends JPanel{
 
         for(int i = 0; i < numberOfPeople; i++){
             Point point = new Point();
-            Pedestrian p = new Pedestrian(point, i, null);
             point.x = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getWidth() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
             point.y = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
-            p.setPosition(point);
+            Pedestrian p = new Pedestrian(point, i, null);
             this.crowd.add(i, p);
         }
 
