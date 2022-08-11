@@ -1,3 +1,4 @@
+import models.Group;
 import models.Obstacle;
 import models.Pedestrian;
 import models.WayPoint;
@@ -8,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Implements the movement and the printing functions of the simulation
@@ -16,12 +18,15 @@ public class Animation extends JPanel implements ActionListener {
 
     private JPanel panel;
     private List<Pedestrian> crowd;
+
+    private List<Group> groups;
     private List<Obstacle> obstacles;
     private List<WayPoint> wayPoints;
     private Timer timer;
 
-    public Animation(JPanel panel, List<Pedestrian> crowd, List<Obstacle> obstacles, List<WayPoint> wayPoints){
+    public Animation(JPanel panel, List<Pedestrian> crowd, List<Obstacle> obstacles, List<WayPoint> wayPoints, List<Group> groups){
         this.panel = panel;
+        this.groups = groups;
         this.crowd = crowd;
         this.obstacles = obstacles;
         this.wayPoints = wayPoints;
@@ -64,14 +69,21 @@ public class Animation extends JPanel implements ActionListener {
                     wayPoints.get(i).getBounds().getWidth(), wayPoints.get(i).getBounds().getHeight());
         }
 
-        //draw pedestrians
-        g2D.setPaint(Color.blue);
-        for(int i = 0; i < crowd.size(); i++){
-            g2D.fillOval(crowd.get(i).getPosition().x, crowd.get(i).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
+        //draw groups of pedestrians
+        for(int i = 0; i < groups.size(); i++){
 
-            //bounds
-            g2D.drawOval(crowd.get(i).getBounds().getUpLeft().x, crowd.get(i).getBounds().getLeft().y,
-                    crowd.get(i).getBounds().getWidth(), crowd.get(i).getBounds().getHeight());
+            g2D.setPaint(groups.get(i).getColor());
+
+            for(int j = 0; j < groups.get(i).getSizeGroup(); j++){
+                g2D.fillOval(groups.get(i).getPedestrians().get(j).getPosition().x,
+                        groups.get(i).getPedestrians().get(j).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
+
+                //bounds
+                g2D.drawOval(groups.get(i).getPedestrians().get(j).getBounds().getLeft().x,
+                        groups.get(i).getPedestrians().get(j).getBounds().getLeft().y,
+                        groups.get(i).getPedestrians().get(j).getBounds().getWidth(),
+                        groups.get(i).getPedestrians().get(j).getBounds().getHeight());
+            }
         }
     }
 

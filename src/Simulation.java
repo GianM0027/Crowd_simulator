@@ -1,3 +1,4 @@
+import models.Group;
 import models.Obstacle;
 import models.Pedestrian;
 import models.WayPoint;
@@ -8,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Contain all the settings and contents of the actual simulation
@@ -18,10 +20,12 @@ public class Simulation extends JPanel{
     private boolean isRunning;
 
     private ArrayList<Pedestrian> crowd;
+    private ArrayList<Group> groups;
     private ArrayList<Obstacle> obstacles;
     private ArrayList<WayPoint> wayPoints;
 
     private int numberOfPeople;
+    private int numberOfGroups;
     private int sizeOfGroups;
     private int numberOfObstacles;
     private int numberOfWayPoints;
@@ -64,7 +68,7 @@ public class Simulation extends JPanel{
         this.removeAll();
         this.revalidate();
         this.repaint();
-        animation = new Animation(this, this.crowd, this.obstacles, this.wayPoints);
+        animation = new Animation(this, this.crowd, this.obstacles, this.wayPoints, this.groups);
         this.add(animation);
         this.revalidate();
         this.repaint();
@@ -142,7 +146,9 @@ public class Simulation extends JPanel{
      * */
     private void createCrowd(){
         this.crowd = new ArrayList<>();
+        this.groups = new ArrayList<>();
 
+        //create the crowd
         for(int i = 0; i < numberOfPeople; i++){
             Point point = new Point();
             point.x = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getWidth() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
@@ -151,6 +157,24 @@ public class Simulation extends JPanel{
             this.crowd.add(i, p);
         }
 
+        //divide the crowd into groups
+        int groupIndex = 0;
+        this.numberOfGroups = (int)Math.floor((double) numberOfPeople/sizeOfGroups);
+        for(int i = 1; i <= numberOfGroups; i++){
+            Group group = new Group(i, null, crowd.subList(groupIndex, groupIndex + sizeOfGroups));
+            group.setColor(new Color(new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat()));
+            this.groups.add(i-1, group);
+            groupIndex += sizeOfGroups;
+        }
+        if(numberOfPeople%sizeOfGroups != 0){
+            this.numberOfGroups++;
+            this.groups.add(0, new Group(0, null, crowd.subList(groupIndex, crowd.size())));
+        }
+
+
+        for(int i = 0; i < groups.size(); i++)
+            System.out.println(groups.get(i));
+        System.out.println("\n");
     }
 
 

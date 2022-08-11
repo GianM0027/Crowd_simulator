@@ -11,19 +11,25 @@ import java.util.Random;
  * Every Pedestrian is a mobile entity with its own characteristics
  * */
 public class Pedestrian {
+    private Color color;
     private int gender;
     private int age;
     private int velocity;
     private int energy;
     private Point position;
     private Bounds bounds;
+    private int groupID;
+    private List<WayPoint> goalsList;
 
     public Pedestrian(Point position, int groupId, List<WayPoint> goalsList){
+        this.position = position;
+        this.groupID = groupId;
+        this.goalsList = goalsList;
+
         this.gender = Support.getRandomValue(Constant.MALE, Constant.FEMALE); //random among MALE and FEMALE
         this.age = Support.getRandomValue(Constant.CHILD, Constant.OLD); //random among CHILD, YOUNG and OLD
         this.velocity = Support.getRandomValue(Constant.MIN_VELOCITY, Constant.MAX_VELOCITY);
         this.energy = assignEnergy();
-        this.position = position;
         this.bounds = new Bounds(this.position);
     }
 
@@ -62,6 +68,18 @@ public class Pedestrian {
             return "Young";
         else
             return "Old";
+    }
+
+    public int getGroupID() {
+        return groupID;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public List<WayPoint> getGoalsList() {
+        return goalsList;
     }
 
     public String getPositionString(){
@@ -103,6 +121,14 @@ public class Pedestrian {
     public void setPosition(Point position) {
         this.position = position;
         this.bounds = new Bounds(position);
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public void setGoalsList(List<WayPoint> goalsList) {
+        this.goalsList = goalsList;
     }
 
     public void setBounds(Bounds bounds) {

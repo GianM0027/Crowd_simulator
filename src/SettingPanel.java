@@ -218,17 +218,21 @@ public class SettingPanel extends JPanel {
     }
 
     /**
-     *
+     * Functionality of the "play button", it start a new simulation or resume an existing one
      * */
     private void startSimulation(){
+        //when pressed the play button but there are not valid parameters in the fields nothing happens
         if(Simulation.getInstance().missingParameters())
             return;
 
+        //if it does not exist a simulation yet, you create a new one
         if(!Simulation.getInstance().isRunning()) {
             Simulation.getInstance().setIsRunning(true);
             Simulation.getInstance().startSimulation();
             enableStopPauseButtons();
         }
+
+        //if already exists an active simulation, you resume the stopped animation
         else{
             enableStopPauseButtons();
             Simulation.getInstance().resumeSimulation();
@@ -236,7 +240,7 @@ public class SettingPanel extends JPanel {
     }
 
     /**
-     *
+     * Functionality of the "pause button", stop the timer of the currently active animation
      * */
     private void pauseSimulation(){
         this.playButton.setEnabled(true);
@@ -244,7 +248,7 @@ public class SettingPanel extends JPanel {
     }
 
     /**
-     *
+     * Functionality of the "stop button", reset the simulation and all its parameters
      * */
     private void stopSimulation(){
         if(new ConfirmationWindow("Do you really want to stop the simulation? It will restore all the settings").isConfirmed()) {
@@ -257,6 +261,9 @@ public class SettingPanel extends JPanel {
         }
     }
 
+    /**
+     * Auxiliary functions
+     * */
     public void disableStopPauseButtons(){
         this.playButton.setEnabled(true);
         this.stopButton.setEnabled(false);
