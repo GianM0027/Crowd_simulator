@@ -58,7 +58,7 @@ public class Simulation extends JPanel{
         createObstacles();
         createWayPoints();
 
-        //Printing entities on "active entities panel"
+        //Printing entities on the "active entities panel"
         ActiveEntitiesPanel.getInstance().setObstaclesTab();
         ActiveEntitiesPanel.getInstance().setWayPointsTab();
         ActiveEntitiesPanel.getInstance().setPedestriansTab(this.crowd);
@@ -91,6 +91,9 @@ public class Simulation extends JPanel{
      * */
     protected void stopSimulation(){
         setParameters(0,0,0,0);
+        this.groups.clear();
+        this.wayPoints.clear();
+        this.obstacles.clear();
         this.crowd.clear();
         ActiveEntitiesPanel.getInstance().setObstaclesTab();
         ActiveEntitiesPanel.getInstance().setWayPointsTab();
@@ -105,7 +108,7 @@ public class Simulation extends JPanel{
     }
 
 
-    /***************************************    ENTITIES CREATION    *****************************************/
+    /***************************************     ENTITIES CREATION     *****************************************/
     /**
      *
      * */

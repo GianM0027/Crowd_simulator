@@ -6,7 +6,7 @@ import java.awt.*;
  * */
 public class SimulationPanel extends JPanel{
 
-    public SimulationPanel(JFrame frame){
+    public SimulationPanel(){
         this.setBorder(BorderFactory.createEtchedBorder());
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());

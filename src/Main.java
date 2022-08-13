@@ -12,7 +12,7 @@ public class Main {
 
         //declaring panels
         SettingPanel settingsPanel = new SettingPanel();
-        SimulationPanel simulationPanel = new SimulationPanel(homePage);
+        SimulationPanel simulationPanel = new SimulationPanel();
         ActiveEntitiesPanel activeEntitiesPanel = ActiveEntitiesPanel.getInstance();
 
         //gbd for settings panel

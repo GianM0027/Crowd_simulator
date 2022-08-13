@@ -50,21 +50,20 @@ public class ActiveEntitiesPanel extends JTabbedPane{
      * */
     private void setInternalLayout(){
         //declaring and adding panes to the three tabs
-        this.obstaclesTab = new JPanel();
-        this.wayPointsTab = new JPanel();
-        this.researchAndPeople = new JPanel();
+        this.obstaclesTab = new JPanel(new GridBagLayout());
+        this.wayPointsTab = new JPanel(new GridBagLayout());
+        this.researchAndPeople = new JPanel(new GridBagLayout());
         this.addTab("Obstacles", obstaclesTab);
         this.addTab("Way Points", wayPointsTab);
         this.addTab("Pedestrians", researchAndPeople);
 
         //panels to split in researchAndPeople tab
-        researchAndPeople.setLayout(new GridBagLayout());
         GridBagConstraints gbdResearch = new GridBagConstraints(0,0,1,1,0.01,1,
                 GridBagConstraints.FIRST_LINE_START,GridBagConstraints.BOTH,new Insets(0,0,0,0),0,0);
         GridBagConstraints gbdPedestrian = new GridBagConstraints(1,0,1,1,1,1,
                 GridBagConstraints.FIRST_LINE_START,GridBagConstraints.BOTH,new Insets(0,0,0,0),0,0);
         this.researchFilters = new JPanel(new GridBagLayout());
-        this.activePedestrians = new JPanel();
+        this.activePedestrians = new JPanel(new GridBagLayout());
         activePedestrians.setBorder(BorderFactory.createEtchedBorder());
         researchFilters.setBorder(BorderFactory.createEtchedBorder());
         researchAndPeople.add(researchFilters, gbdResearch);
@@ -83,7 +82,6 @@ public class ActiveEntitiesPanel extends JTabbedPane{
     public void setObstaclesTab(){
         //first of writing on this tab every label or old list must be canceled from the panel
         this.obstaclesTab.removeAll();
-        obstaclesTab.setLayout(new GridBagLayout());
 
         //if the number of obstacles in the simulation is 0 (the simulation has not started yet) an apposite message is shown
         if(Simulation.getInstance().getNumberOfObstacles() == 0){
@@ -100,12 +98,10 @@ public class ActiveEntitiesPanel extends JTabbedPane{
                 listModel.add(i-1, "Obstacle " + i + ": " + obstaclesList.get(i-1).getPositionString());
             }
 
-            this.obstaclesTab.removeAll();
-            this.repaint();
             JList obstacles = new JList(listModel);
 
             JScrollPane scrollPane = new JScrollPane(obstacles);
-            scrollPane.setPreferredSize(new Dimension(this.wayPointsTab.getWidth()-8,this.wayPointsTab.getHeight()-8));
+            scrollPane.setPreferredSize(new Dimension(this.wayPointsTab.getWidth()-8,this.wayPointsTab.getHeight()-1));
             this.obstaclesTab.add(scrollPane);
         }
         this.obstaclesTab.repaint();
@@ -117,14 +113,12 @@ public class ActiveEntitiesPanel extends JTabbedPane{
     public void setWayPointsTab(){
         //first of writing on this tab every label or old list must be canceled from the panel
         this.wayPointsTab.removeAll();
-        wayPointsTab.setLayout(new GridBagLayout());
 
         //if the number of way points in the simulation is 0 (the simulation has not started yet) an apposite message is shown
         if(Simulation.getInstance().getNumberOfWayPoints() == 0){
-            wayPointsTab.setLayout(new GridBagLayout());
-            JLabel noObstacles = new JLabel("Start the simulation to view the active way points");
-            noObstacles.setForeground(Color.GRAY);
-            wayPointsTab.add(noObstacles);
+            JLabel noWayPoints = new JLabel("Start the simulation to view the active way points");
+            noWayPoints.setForeground(Color.GRAY);
+            wayPointsTab.add(noWayPoints);
         }
         //else if the simulation is started, you retrieve the list of way points and show it
         else {
@@ -135,12 +129,10 @@ public class ActiveEntitiesPanel extends JTabbedPane{
                 listModel.add(i-1, "Way Point " + i + ": " + wayPointsList.get(i-1).getPositionString());
             }
 
-            this.wayPointsTab.removeAll();
-            this.repaint();
             JList wayPoints = new JList(listModel);
 
             JScrollPane scrollPane = new JScrollPane(wayPoints);
-            scrollPane.setPreferredSize(new Dimension(this.wayPointsTab.getWidth()-8,this.wayPointsTab.getHeight()-8));
+            scrollPane.setPreferredSize(new Dimension(this.wayPointsTab.getWidth()-8,this.wayPointsTab.getHeight()-1));
             this.wayPointsTab.add(scrollPane);
         }
         this.wayPointsTab.repaint();
@@ -208,7 +200,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         researchFilters.add(velocityFilter, gbdVelocityField);
 
         //range slider to select a range of velocity to consider
-        JLabel energy = new JLabel("Fileter by Energy:");
+        JLabel energy = new JLabel("Filter by Energy:");
         this.energyFilter = new RangeSlider(Constant.MIN_ENERGY_OLD, Constant.MAX_ENERGY_CHILD);
         energyFilter.setFocusable(false);
         energyFilter.setMinorTickSpacing(1);
@@ -236,11 +228,9 @@ public class ActiveEntitiesPanel extends JTabbedPane{
     public void setPedestriansTab(List<Pedestrian> crowd){
         //first of writing on this tab every label or old list must be canceled from the panel
         this.activePedestrians.removeAll();
-        activePedestrians.setLayout(new GridBagLayout());
 
         //if the number of pedestrians in the simulation is 0 or there are not pedestrians that fulfill the filters, an apposite message is shown
         if(Simulation.getInstance().getNumberOfPeople() == 0 || crowd == null || crowd.isEmpty()){
-            activePedestrians.setLayout(new GridBagLayout());
             JLabel noObstacles = new JLabel("There are no pedestrians to show");
             noObstacles.setForeground(Color.GRAY);
             activePedestrians.add(noObstacles);
@@ -256,13 +246,13 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             }
 
             this.activePedestrians.removeAll();
-            this.repaint();
             JList pedestiansList = new JList(listModel);
 
             JScrollPane scrollPane = new JScrollPane(pedestiansList);
             scrollPane.setPreferredSize(new Dimension(this.activePedestrians.getWidth()-8,this.activePedestrians.getHeight()-8));
             this.activePedestrians.add(scrollPane);
         }
+        this.activePedestrians.revalidate();
         this.activePedestrians.repaint();
     }
 

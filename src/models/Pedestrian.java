@@ -20,6 +20,8 @@ public class Pedestrian {
     private Bounds bounds;
     private int groupID;
     private List<WayPoint> goalsList;
+    int xVelocity = 1;
+    int yVelocity = 1;
 
     public Pedestrian(Point position, int groupId, List<WayPoint> goalsList){
         this.position = position;
@@ -32,6 +34,7 @@ public class Pedestrian {
         this.energy = assignEnergy();
         this.bounds = new Bounds(this.position);
     }
+
 
     /**
      * Assigns a value of energy to a pedestrian according to their age (the function uses constants MIN_ENERGY_* and
@@ -100,6 +103,22 @@ public class Pedestrian {
 
     public Bounds getBounds() {
         return bounds;
+    }
+
+    public int getxVelocity() {
+        return xVelocity;
+    }
+
+    public int getyVelocity() {
+        return yVelocity;
+    }
+
+    public void setxVelocity(int xVelocity) {
+        this.xVelocity = xVelocity;
+    }
+
+    public void setyVelocity(int yVelocity) {
+        this.yVelocity = yVelocity;
     }
 
     public void setGender(int gender) {

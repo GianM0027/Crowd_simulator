@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Support functions indipendet from specific classes
+ * Support functions independent of specific classes
  * */
 public class Support {
 
+
+    /**********************************   SORTING FUNCTIONS   **********************************/
     public static void sortObstacles(ArrayList<Obstacle> list){
         int n = list.size();
 
@@ -162,6 +164,9 @@ public class Support {
             }
         }
     }
+
+
+    /**********************************   ENTITIES MOVEMENT AND BEHAVIOR FUNCTIONS   **********************************/
 
 
 }

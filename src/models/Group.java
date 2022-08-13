@@ -28,11 +28,6 @@ public class Group {
         this.goalsList = goalsList;
     }
 
-    public Group(int groupID, List<WayPoint> goalsList, int sizeGroup){
-        this.sizeGroup = sizeGroup;
-        this.groupID = groupID;
-        this.goalsList = goalsList;
-    }
 
     public boolean addComponent(Pedestrian p){
         if(this.pedestrians.size() == sizeGroup)

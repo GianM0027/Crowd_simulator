@@ -18,10 +18,11 @@ public class Animation extends JPanel implements ActionListener {
 
     private JPanel panel;
     private List<Pedestrian> crowd;
-
     private List<Group> groups;
     private List<Obstacle> obstacles;
     private List<WayPoint> wayPoints;
+
+    //simulation parameters
     private Timer timer;
 
     public Animation(JPanel panel, List<Pedestrian> crowd, List<Obstacle> obstacles, List<WayPoint> wayPoints, List<Group> groups){
@@ -55,8 +56,18 @@ public class Animation extends JPanel implements ActionListener {
             g2D.fillOval(obstacles.get(i).getPosition().x, obstacles.get(i).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
 
             //bounds
-            g2D.drawOval(obstacles.get(i).getBounds().getUpLeft().x, obstacles.get(i).getBounds().getLeft().y,
+            g2D.drawOval(obstacles.get(i).getBounds().getUpLeft().x, obstacles.get(i).getBounds().getUpLeft().y,
                     obstacles.get(i).getBounds().getWidth(), obstacles.get(i).getBounds().getHeight());
+
+            g2D.drawOval(obstacles.get(i).getBounds().getCenter().x,obstacles.get(i).getBounds().getCenter().y, 2, 2);
+            g2D.drawOval(obstacles.get(i).getBounds().getUpLeft().x,obstacles.get(i).getBounds().getUpLeft().y, 2, 2);
+            g2D.drawOval(obstacles.get(i).getBounds().getLeft().x,obstacles.get(i).getBounds().getLeft().y, 2, 2);
+            g2D.drawOval(obstacles.get(i).getBounds().getBottomLeft().x,obstacles.get(i).getBounds().getBottomLeft().y, 2, 2);
+            g2D.drawOval(obstacles.get(i).getBounds().getUp().x,obstacles.get(i).getBounds().getUp().y, 2, 2);
+            g2D.drawOval(obstacles.get(i).getBounds().getBottom().x,obstacles.get(i).getBounds().getBottom().y, 2, 2);
+            g2D.drawOval(obstacles.get(i).getBounds().getUpRight().x,obstacles.get(i).getBounds().getUpRight().y, 2, 2);
+            g2D.drawOval(obstacles.get(i).getBounds().getRight().x,obstacles.get(i).getBounds().getRight().y, 2, 2);
+            g2D.drawOval(obstacles.get(i).getBounds().getBottomRight().x,obstacles.get(i).getBounds().getBottomRight().y, 2, 2);
         }
 
         //draw way points
@@ -65,8 +76,18 @@ public class Animation extends JPanel implements ActionListener {
             g2D.fillOval(wayPoints.get(i).getPosition().x, wayPoints.get(i).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
 
             //bounds
-            g2D.drawOval(wayPoints.get(i).getBounds().getUpLeft().x, wayPoints.get(i).getBounds().getLeft().y,
+            g2D.drawOval(wayPoints.get(i).getBounds().getUpLeft().x, wayPoints.get(i).getBounds().getUpLeft().y,
                     wayPoints.get(i).getBounds().getWidth(), wayPoints.get(i).getBounds().getHeight());
+
+            g2D.drawOval(wayPoints.get(i).getBounds().getCenter().x,wayPoints.get(i).getBounds().getCenter().y, 2, 2);
+            g2D.drawOval(wayPoints.get(i).getBounds().getUpLeft().x,wayPoints.get(i).getBounds().getUpLeft().y, 2, 2);
+            g2D.drawOval(wayPoints.get(i).getBounds().getLeft().x,wayPoints.get(i).getBounds().getLeft().y, 2, 2);
+            g2D.drawOval(wayPoints.get(i).getBounds().getBottomLeft().x,wayPoints.get(i).getBounds().getBottomLeft().y, 2, 2);
+            g2D.drawOval(wayPoints.get(i).getBounds().getUp().x,wayPoints.get(i).getBounds().getUp().y, 2, 2);
+            g2D.drawOval(wayPoints.get(i).getBounds().getBottom().x,wayPoints.get(i).getBounds().getBottom().y, 2, 2);
+            g2D.drawOval(wayPoints.get(i).getBounds().getUpRight().x,wayPoints.get(i).getBounds().getUpRight().y, 2, 2);
+            g2D.drawOval(wayPoints.get(i).getBounds().getRight().x,wayPoints.get(i).getBounds().getRight().y, 2, 2);
+            g2D.drawOval(wayPoints.get(i).getBounds().getBottomRight().x,wayPoints.get(i).getBounds().getBottomRight().y, 2, 2);
         }
 
         //draw groups of pedestrians
@@ -79,8 +100,8 @@ public class Animation extends JPanel implements ActionListener {
                         groups.get(i).getPedestrians().get(j).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
 
                 //bounds
-                g2D.drawOval(groups.get(i).getPedestrians().get(j).getBounds().getLeft().x,
-                        groups.get(i).getPedestrians().get(j).getBounds().getLeft().y,
+                g2D.drawOval(groups.get(i).getPedestrians().get(j).getBounds().getUpLeft().x,
+                        groups.get(i).getPedestrians().get(j).getBounds().getUpLeft().y,
                         groups.get(i).getPedestrians().get(j).getBounds().getWidth(),
                         groups.get(i).getPedestrians().get(j).getBounds().getHeight());
             }
@@ -92,13 +113,21 @@ public class Animation extends JPanel implements ActionListener {
     /******************************    Handle pedestrians' movement    *************************************/
     @Override
     public void actionPerformed(ActionEvent e) {
-        int xVelocity = 1;
-        int yVelocity = 1;
 
         //random animation for testing the panel
         for(int i = 0; i < crowd.size(); i++){
-            crowd.get(i).setPosition(new Point(crowd.get(i).getPosition().x + xVelocity, crowd.get(i).getPosition().y));
+            if(crowd.get(i).getBounds().getRight().x == panel.getWidth()-1){
+                crowd.get(i).setxVelocity(-1);
+                crowd.get(i).setPosition(new Point(crowd.get(i).getPosition().x + crowd.get(i).getxVelocity(), crowd.get(i).getPosition().y));
+            }
+            if(crowd.get(i).getBounds().getLeft().x == 0) {
+                crowd.get(i).setxVelocity(1);
+                crowd.get(i).setPosition(new Point(crowd.get(i).getPosition().x + crowd.get(i).getxVelocity(), crowd.get(i).getPosition().y));
+            }
+
+            crowd.get(i).setPosition(new Point(crowd.get(i).getPosition().x + crowd.get(i).getxVelocity(), crowd.get(i).getPosition().y));
         }
+
 
         this.removeAll();
         repaint();
