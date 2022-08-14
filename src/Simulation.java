@@ -158,8 +158,8 @@ public class Simulation extends JPanel{
         //create the crowd
         for(int i = 0; i < numberOfPeople; i++){
             Point point = new Point();
-            point.x = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getWidth() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
-            point.y = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
+            point.x = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE,  Constant.BUILDING_DISTANCE_LEFT - Constant.ENTITY_SIZE - 2*Constant.BOUNDS_DISTANCE);
+            point.y = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.ENTITY_SIZE - Constant.BOUNDS_DISTANCE);
             Pedestrian p = new Pedestrian(point, i, null);
             this.crowd.add(i, p);
         }

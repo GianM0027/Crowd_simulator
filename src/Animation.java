@@ -67,34 +67,12 @@ public class Animation extends JPanel implements ActionListener {
         for(int i = 0; i < obstacles.size(); i++){
             //entity
             g2D.fillOval(obstacles.get(i).getPosition().x, obstacles.get(i).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
-
-            //bounds
-            g2D.drawOval(obstacles.get(i).getBounds().getCenter().x,obstacles.get(i).getBounds().getCenter().y, 2, 2);
-            g2D.drawOval(obstacles.get(i).getBounds().getUpLeft().x,obstacles.get(i).getBounds().getUpLeft().y, 2, 2);
-            g2D.drawOval(obstacles.get(i).getBounds().getLeft().x,obstacles.get(i).getBounds().getLeft().y, 2, 2);
-            g2D.drawOval(obstacles.get(i).getBounds().getBottomLeft().x,obstacles.get(i).getBounds().getBottomLeft().y, 2, 2);
-            g2D.drawOval(obstacles.get(i).getBounds().getUp().x,obstacles.get(i).getBounds().getUp().y, 2, 2);
-            g2D.drawOval(obstacles.get(i).getBounds().getBottom().x,obstacles.get(i).getBounds().getBottom().y, 2, 2);
-            g2D.drawOval(obstacles.get(i).getBounds().getUpRight().x,obstacles.get(i).getBounds().getUpRight().y, 2, 2);
-            g2D.drawOval(obstacles.get(i).getBounds().getRight().x,obstacles.get(i).getBounds().getRight().y, 2, 2);
-            g2D.drawOval(obstacles.get(i).getBounds().getBottomRight().x,obstacles.get(i).getBounds().getBottomRight().y, 2, 2);
         }
 
         //draw way points
         g2D.setPaint(Color.red);
         for(int i = 0; i < wayPoints.size(); i++){
             g2D.fillOval(wayPoints.get(i).getPosition().x, wayPoints.get(i).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
-
-            //bounds
-            g2D.drawOval(wayPoints.get(i).getBounds().getCenter().x,wayPoints.get(i).getBounds().getCenter().y, 2, 2);
-            g2D.drawOval(wayPoints.get(i).getBounds().getUpLeft().x,wayPoints.get(i).getBounds().getUpLeft().y, 2, 2);
-            g2D.drawOval(wayPoints.get(i).getBounds().getLeft().x,wayPoints.get(i).getBounds().getLeft().y, 2, 2);
-            g2D.drawOval(wayPoints.get(i).getBounds().getBottomLeft().x,wayPoints.get(i).getBounds().getBottomLeft().y, 2, 2);
-            g2D.drawOval(wayPoints.get(i).getBounds().getUp().x,wayPoints.get(i).getBounds().getUp().y, 2, 2);
-            g2D.drawOval(wayPoints.get(i).getBounds().getBottom().x,wayPoints.get(i).getBounds().getBottom().y, 2, 2);
-            g2D.drawOval(wayPoints.get(i).getBounds().getUpRight().x,wayPoints.get(i).getBounds().getUpRight().y, 2, 2);
-            g2D.drawOval(wayPoints.get(i).getBounds().getRight().x,wayPoints.get(i).getBounds().getRight().y, 2, 2);
-            g2D.drawOval(wayPoints.get(i).getBounds().getBottomRight().x,wayPoints.get(i).getBounds().getBottomRight().y, 2, 2);
         }
 
         //draw groups of pedestrians

@@ -81,7 +81,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
      * */
     public void setObstaclesTab(){
         //first of writing on this tab every old item must be canceled from the panel
-        this.obstaclesTab.removeAll();
+        obstaclesTab.removeAll();
 
         //if the number of obstacles in the simulation is 0 (the simulation has not started yet) an apposite message is shown
         if(Simulation.getInstance().getNumberOfObstacles() == 0){
@@ -102,7 +102,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
 
             JScrollPane scrollPane = new JScrollPane(obstacles);
             scrollPane.setPreferredSize(new Dimension(this.obstaclesTab.getWidth()-8,this.obstaclesTab.getHeight()-1));
-            
+
             this.obstaclesTab.add(scrollPane);
         }
 
@@ -115,7 +115,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
      * */
     public void setWayPointsTab(){
         //first of writing on this tab every label or old list must be canceled from the panel
-        this.wayPointsTab.removeAll();
+        wayPointsTab.removeAll();
 
         //if the number of way points in the simulation is 0 (the simulation has not started yet) an apposite message is shown
         if(Simulation.getInstance().getNumberOfWayPoints() == 0){
@@ -236,9 +236,9 @@ public class ActiveEntitiesPanel extends JTabbedPane{
 
         //if the number of pedestrians in the simulation is 0 or there are not pedestrians that fulfill the filters, an apposite message is shown
         if(Simulation.getInstance().getNumberOfPeople() == 0 || crowd == null || crowd.isEmpty()){
-            JLabel noObstacles = new JLabel("There are no pedestrians to show");
-            noObstacles.setForeground(Color.GRAY);
-            activePedestrians.add(noObstacles);
+            JLabel noPedestrians = new JLabel("There are no pedestrians to show");
+            noPedestrians.setForeground(Color.GRAY);
+            activePedestrians.add(noPedestrians);
         }
         //else if the simulation is started, you retrieve the list of pedestrians and show it
         else {
