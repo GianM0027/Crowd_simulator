@@ -117,8 +117,10 @@ public class Simulation extends JPanel{
 
         for(int i = 0; i < this.numberOfObstacles; i++){
             Point point = new Point();
-            point.x = Support.getRandomValue(Constant.BOUNDS_DISTANCE, this.getWidth() - Constant.ENTITY_SIZE - 2*Constant.BOUNDS_DISTANCE - 1);
-            point.y = Support.getRandomValue(Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.ENTITY_SIZE - 2*Constant.BOUNDS_DISTANCE - 1);
+            point.x = Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_STROKE + Constant.BUILDING_DISTANCE_LEFT,
+                    this.getWidth() - Constant.BUILDING_STROKE - Constant.ENTITY_SIZE - 2 * Constant.BOUNDS_DISTANCE - 1);
+            point.y = Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_DISTANCE_UP_DOWN + Constant.BUILDING_STROKE,
+                    this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.ENTITY_SIZE - 2*Constant.BOUNDS_DISTANCE - 1);
 
             Obstacle o = new Obstacle(point);
             this.obstacles.add(i, o);
@@ -135,8 +137,10 @@ public class Simulation extends JPanel{
 
         for(int i = 0; i < this.numberOfWayPoints; i++){
             Point point = new Point();
-            point.x = Support.getRandomValue(Constant.BOUNDS_DISTANCE, this.getWidth() - Constant.ENTITY_SIZE - 2*Constant.BOUNDS_DISTANCE - 1);
-            point.y = Support.getRandomValue(Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.ENTITY_SIZE - 2*Constant.BOUNDS_DISTANCE - 1);
+            point.x = Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_STROKE + Constant.BUILDING_DISTANCE_LEFT,
+                    this.getWidth() - Constant.BUILDING_STROKE - Constant.ENTITY_SIZE - 2 * Constant.BOUNDS_DISTANCE - 1);
+            point.y = Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_DISTANCE_UP_DOWN + Constant.BUILDING_STROKE,
+                    this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.ENTITY_SIZE - 2*Constant.BOUNDS_DISTANCE - 1);
 
             WayPoint w = new WayPoint(point);
             this.wayPoints.add(i, w);
@@ -173,11 +177,6 @@ public class Simulation extends JPanel{
             this.numberOfGroups++;
             this.groups.add(0, new Group(0, null, crowd.subList(groupIndex, crowd.size())));
         }
-
-
-        for(int i = 0; i < groups.size(); i++)
-            System.out.println(groups.get(i));
-        System.out.println("\n");
     }
 
 

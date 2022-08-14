@@ -54,9 +54,10 @@ public class Animation extends JPanel implements ActionListener {
 
         g2D.drawLine(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN, Constant.BUILDING_DISTANCE_LEFT, this.getHeight()/2 - 20);
         g2D.drawLine(Constant.BUILDING_DISTANCE_LEFT,this.getHeight()/2 + 20, Constant.BUILDING_DISTANCE_LEFT, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
-
-        g2D.drawLine(this.getWidth() - 1,0, this.getWidth() - 4, this.getHeight()/2 - 10);
-        g2D.drawLine(this.getWidth() - 1,this.getHeight()/2 + 10, this.getWidth() - 4, this.getHeight() - 1);
+        g2D.drawLine(this.getWidth() - Constant.BUILDING_STROKE - 1, Constant.BUILDING_DISTANCE_UP_DOWN, this.getWidth() - Constant.BUILDING_STROKE - 1, this.getHeight()/2 - 20);
+        g2D.drawLine(this.getWidth() - Constant.BUILDING_STROKE - 1,this.getHeight()/2 + 20, this.getWidth() - Constant.BUILDING_STROKE - 1, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
+        g2D.drawLine(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN, this.getWidth() - Constant.BUILDING_STROKE - 1, Constant.BUILDING_DISTANCE_UP_DOWN);
+        g2D.drawLine(Constant.BUILDING_DISTANCE_LEFT, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1, this.getWidth() - Constant.BUILDING_STROKE - 1, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
 
         g2D.setStroke(new BasicStroke(0));
 

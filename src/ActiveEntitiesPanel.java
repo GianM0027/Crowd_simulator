@@ -52,9 +52,10 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         this.obstaclesTab = new JPanel(new GridBagLayout());
         this.wayPointsTab = new JPanel(new GridBagLayout());
         JPanel researchAndPeople = new JPanel(new GridBagLayout());
+        this.addTab("Pedestrians", researchAndPeople);
         this.addTab("Obstacles", obstaclesTab);
         this.addTab("Way Points", wayPointsTab);
-        this.addTab("Pedestrians", researchAndPeople);
+
 
         //panels to split in researchAndPeople tab
         GridBagConstraints gbdResearch = new GridBagConstraints(0,0,1,1,0.01,1,
@@ -101,9 +102,11 @@ public class ActiveEntitiesPanel extends JTabbedPane{
 
             JScrollPane scrollPane = new JScrollPane(obstacles);
             scrollPane.setPreferredSize(new Dimension(this.obstaclesTab.getWidth()-8,this.obstaclesTab.getHeight()-1));
+            
             this.obstaclesTab.add(scrollPane);
         }
 
+        this.obstaclesTab.revalidate();
         this.obstaclesTab.repaint();
     }
 
@@ -136,6 +139,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             this.wayPointsTab.add(scrollPane);
         }
 
+        this.wayPointsTab.revalidate();
         this.wayPointsTab.repaint();
     }
 
