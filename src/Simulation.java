@@ -117,8 +117,8 @@ public class Simulation extends JPanel{
 
         for(int i = 0; i < this.numberOfObstacles; i++){
             Point point = new Point();
-            point.x = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getWidth() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
-            point.y = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
+            point.x = Support.getRandomValue(Constant.BOUNDS_DISTANCE, this.getWidth() - Constant.ENTITY_SIZE - 2*Constant.BOUNDS_DISTANCE - 1);
+            point.y = Support.getRandomValue(Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.ENTITY_SIZE - 2*Constant.BOUNDS_DISTANCE - 1);
 
             Obstacle o = new Obstacle(point);
             this.obstacles.add(i, o);
@@ -135,8 +135,8 @@ public class Simulation extends JPanel{
 
         for(int i = 0; i < this.numberOfWayPoints; i++){
             Point point = new Point();
-            point.x = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getWidth() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
-            point.y = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
+            point.x = Support.getRandomValue(Constant.BOUNDS_DISTANCE, this.getWidth() - Constant.ENTITY_SIZE - 2*Constant.BOUNDS_DISTANCE - 1);
+            point.y = Support.getRandomValue(Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.ENTITY_SIZE - 2*Constant.BOUNDS_DISTANCE - 1);
 
             WayPoint w = new WayPoint(point);
             this.wayPoints.add(i, w);

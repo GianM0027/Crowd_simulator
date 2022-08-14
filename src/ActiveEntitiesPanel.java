@@ -16,7 +16,6 @@ public class ActiveEntitiesPanel extends JTabbedPane{
     private static ActiveEntitiesPanel instance;
     private JPanel obstaclesTab;
     private JPanel wayPointsTab;
-    private JPanel researchAndPeople;
     private JPanel researchFilters;
     private JPanel activePedestrians;
 
@@ -52,7 +51,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         //declaring and adding panes to the three tabs
         this.obstaclesTab = new JPanel(new GridBagLayout());
         this.wayPointsTab = new JPanel(new GridBagLayout());
-        this.researchAndPeople = new JPanel(new GridBagLayout());
+        JPanel researchAndPeople = new JPanel(new GridBagLayout());
         this.addTab("Obstacles", obstaclesTab);
         this.addTab("Way Points", wayPointsTab);
         this.addTab("Pedestrians", researchAndPeople);
@@ -80,7 +79,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
      * Set the tab that shows the active obstacles
      * */
     public void setObstaclesTab(){
-        //first of writing on this tab every label or old list must be canceled from the panel
+        //first of writing on this tab every old item must be canceled from the panel
         this.obstaclesTab.removeAll();
 
         //if the number of obstacles in the simulation is 0 (the simulation has not started yet) an apposite message is shown
@@ -91,19 +90,20 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         }
         //else if the simulation is started, you retrieve the list of obstacles and show it
         else {
-            List<Obstacle> obstaclesList = Simulation.getInstance().getObstacles();
+            List<Obstacle> obstacleList = Simulation.getInstance().getObstacles();
             DefaultListModel listModel = new DefaultListModel();
 
-            for(int i = 1; i <= obstaclesList.size(); i++) {
-                listModel.add(i-1, "Obstacle " + i + ": " + obstaclesList.get(i-1).getPositionString());
+            for(int i = 1; i <= obstacleList.size(); i++) {
+                listModel.add(i-1, "Obstacle " + i + ": " + obstacleList.get(i-1).getPositionString());
             }
 
             JList obstacles = new JList(listModel);
 
             JScrollPane scrollPane = new JScrollPane(obstacles);
-            scrollPane.setPreferredSize(new Dimension(this.wayPointsTab.getWidth()-8,this.wayPointsTab.getHeight()-1));
+            scrollPane.setPreferredSize(new Dimension(this.obstaclesTab.getWidth()-8,this.obstaclesTab.getHeight()-1));
             this.obstaclesTab.add(scrollPane);
         }
+
         this.obstaclesTab.repaint();
     }
 
@@ -135,6 +135,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             scrollPane.setPreferredSize(new Dimension(this.wayPointsTab.getWidth()-8,this.wayPointsTab.getHeight()-1));
             this.wayPointsTab.add(scrollPane);
         }
+
         this.wayPointsTab.repaint();
     }
 
@@ -304,22 +305,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
     }
 
 
-    /***************************************    ACCESSORS    *****************************************/
-    public JPanel getObstaclesTab() {
-        return obstaclesTab;
-    }
-
-    public JPanel getWayPointsTab() {
-        return wayPointsTab;
-    }
-
-    public JPanel getResearchFilters() {
-        return researchFilters;
-    }
-
-    public JPanel getActivePedestrians() {
-        return activePedestrians;
-    }
+    /***************************************    SUPPORT FUNCTIONS    *****************************************/
 
     public void disableFilters(){
         orderBy.setEnabled(false);

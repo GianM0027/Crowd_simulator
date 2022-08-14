@@ -49,6 +49,18 @@ public class Animation extends JPanel implements ActionListener {
     private void draw(Graphics g){
         Graphics2D g2D = (Graphics2D) g;
 
+        //draw the building
+        g2D.setStroke(new BasicStroke(Constant.BUILDING_STROKE));
+
+        g2D.drawLine(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN, Constant.BUILDING_DISTANCE_LEFT, this.getHeight()/2 - 20);
+        g2D.drawLine(Constant.BUILDING_DISTANCE_LEFT,this.getHeight()/2 + 20, Constant.BUILDING_DISTANCE_LEFT, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
+
+        g2D.drawLine(this.getWidth() - 1,0, this.getWidth() - 4, this.getHeight()/2 - 10);
+        g2D.drawLine(this.getWidth() - 1,this.getHeight()/2 + 10, this.getWidth() - 4, this.getHeight() - 1);
+
+        g2D.setStroke(new BasicStroke(0));
+
+
         //draw obstacles
         g2D.setPaint(Color.BLACK);
         for(int i = 0; i < obstacles.size(); i++){
@@ -56,9 +68,6 @@ public class Animation extends JPanel implements ActionListener {
             g2D.fillOval(obstacles.get(i).getPosition().x, obstacles.get(i).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
 
             //bounds
-            g2D.drawOval(obstacles.get(i).getBounds().getUpLeft().x, obstacles.get(i).getBounds().getUpLeft().y,
-                    obstacles.get(i).getBounds().getWidth(), obstacles.get(i).getBounds().getHeight());
-
             g2D.drawOval(obstacles.get(i).getBounds().getCenter().x,obstacles.get(i).getBounds().getCenter().y, 2, 2);
             g2D.drawOval(obstacles.get(i).getBounds().getUpLeft().x,obstacles.get(i).getBounds().getUpLeft().y, 2, 2);
             g2D.drawOval(obstacles.get(i).getBounds().getLeft().x,obstacles.get(i).getBounds().getLeft().y, 2, 2);
@@ -76,9 +85,6 @@ public class Animation extends JPanel implements ActionListener {
             g2D.fillOval(wayPoints.get(i).getPosition().x, wayPoints.get(i).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
 
             //bounds
-            g2D.drawOval(wayPoints.get(i).getBounds().getUpLeft().x, wayPoints.get(i).getBounds().getUpLeft().y,
-                    wayPoints.get(i).getBounds().getWidth(), wayPoints.get(i).getBounds().getHeight());
-
             g2D.drawOval(wayPoints.get(i).getBounds().getCenter().x,wayPoints.get(i).getBounds().getCenter().y, 2, 2);
             g2D.drawOval(wayPoints.get(i).getBounds().getUpLeft().x,wayPoints.get(i).getBounds().getUpLeft().y, 2, 2);
             g2D.drawOval(wayPoints.get(i).getBounds().getLeft().x,wayPoints.get(i).getBounds().getLeft().y, 2, 2);
