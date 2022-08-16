@@ -48,22 +48,27 @@ public class Animation extends JPanel implements ActionListener {
     private void draw(Graphics g){
         Graphics2D g2D = (Graphics2D) g;
 
-        //draw the building
-        g2D.fillRect(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN, Constant.BUILDING_STROKE, panel.getHeight()/2 - 20);
-        g2D.fillRect(Constant.BUILDING_DISTANCE_LEFT,this.getHeight()/2 + 20, Constant.BUILDING_STROKE, this.getHeight()/2 - 20 - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
-        g2D.fillRect(this.getWidth() - Constant.BUILDING_STROKE - 1, Constant.BUILDING_DISTANCE_UP_DOWN, Constant.BUILDING_STROKE, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
-        g2D.fillRect(this.getWidth() - Constant.BUILDING_STROKE - 1, Constant.BUILDING_DISTANCE_UP_DOWN, Constant.BUILDING_STROKE, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
-        g2D.fillRect(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN, this.getWidth() - Constant.BUILDING_DISTANCE_LEFT - 1, Constant.BUILDING_STROKE);
-        g2D.fillRect(Constant.BUILDING_DISTANCE_LEFT, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1, this.getWidth() - Constant.BUILDING_DISTANCE_LEFT - 1, Constant.BUILDING_STROKE);
+        //building points
+        g2D.setStroke(new BasicStroke(Constant.BUILDING_STROKE));
 
-        //setting walls in class "building"
-        building.setEntranceUp(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN, Constant.BUILDING_STROKE, panel.getHeight()/2 - 20);
-        building.setEntranceDown(Constant.BUILDING_DISTANCE_LEFT,this.getHeight()/2 + 20, Constant.BUILDING_STROKE, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
-        building.setExitUp(this.getWidth() - Constant.BUILDING_STROKE - 1, Constant.BUILDING_DISTANCE_UP_DOWN, Constant.BUILDING_STROKE, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
-        building.setExitDown(this.getWidth() - Constant.BUILDING_STROKE - 1, Constant.BUILDING_DISTANCE_UP_DOWN, Constant.BUILDING_STROKE, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
-        building.setWallUp(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN, this.getWidth() - Constant.BUILDING_DISTANCE_LEFT - 1, Constant.BUILDING_STROKE);
-        building.setWallDown(Constant.BUILDING_DISTANCE_LEFT, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1, this.getWidth() - Constant.BUILDING_DISTANCE_LEFT - 1, Constant.BUILDING_STROKE);
+        Point entranceWallUpUp = new Point(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN);
+        Point entranceWallUpDown = new Point(Constant.BUILDING_DISTANCE_LEFT, this.panel.getHeight()/2 - 20 - Constant.BUILDING_DISTANCE_UP_DOWN);
+        Point entranceWallDownUp = new Point(Constant.BUILDING_DISTANCE_LEFT, this.panel.getHeight()/2 + 20);
+        Point entranceWallDownDown = new Point(Constant.BUILDING_DISTANCE_LEFT, this.panel.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
+        Point exitWallUpUp = new Point(this.panel.getWidth() - Constant.BUILDING_DISTANCE_RIGHT, Constant.BUILDING_DISTANCE_UP_DOWN);
+        Point exitWallUpDown = new Point(this.panel.getWidth() - Constant.BUILDING_DISTANCE_RIGHT, this.panel.getHeight()/2 - 20 - Constant.BUILDING_DISTANCE_UP_DOWN);
+        Point exitWallDownUp = new Point(this.panel.getWidth() - Constant.BUILDING_DISTANCE_RIGHT,this.panel.getHeight()/2 + 20);
+        Point exitWallDownDown = new Point(this.panel.getWidth() - Constant.BUILDING_DISTANCE_RIGHT, this.panel.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
 
+        //draw builing
+        g2D.drawLine(entranceWallUpUp.x, entranceWallUpUp.y, entranceWallUpDown.x, entranceWallUpDown.y);
+        g2D.drawLine(entranceWallDownUp.x, entranceWallDownUp.y, entranceWallDownDown.x, entranceWallDownDown.y);
+        g2D.drawLine(exitWallUpUp.x, exitWallUpUp.y, exitWallUpDown.x, exitWallUpDown.y);
+        g2D.drawLine(exitWallDownUp.x, exitWallDownUp.y, exitWallDownDown.x, exitWallDownDown.y);
+        g2D.drawLine(entranceWallUpUp.x, entranceWallUpUp.y, exitWallUpUp.x, exitWallUpUp.y);
+        g2D.drawLine(entranceWallDownDown.x, entranceWallDownDown.y, exitWallDownDown.x, exitWallDownDown.y);
+
+        g2D.setStroke(new BasicStroke(0));
 
         //draw obstacles
         g2D.setPaint(Color.BLACK);
@@ -104,7 +109,7 @@ public class Animation extends JPanel implements ActionListener {
 
         //random animation for testing the panel
         for(int i = 0; i < crowd.size(); i++){
-            if(crowd.get(i).getBounds().getRight().x == panel.getWidth()-1){
+            if(crowd.get(i).getBounds().getRight().x == panel.getWidth() - Constant.BUILDING_DISTANCE_RIGHT - 1){
                 crowd.get(i).setxVelocity(-1);
                 crowd.get(i).setPosition(new Point(crowd.get(i).getPosition().x + crowd.get(i).getxVelocity(), crowd.get(i).getPosition().y));
             }

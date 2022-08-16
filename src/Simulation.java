@@ -118,7 +118,7 @@ public class Simulation extends JPanel{
         for(int i = 0; i < this.numberOfObstacles; i++){
             Point point = new Point();
             point.x = Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_STROKE + Constant.BUILDING_DISTANCE_LEFT,
-                    this.getWidth() - Constant.BUILDING_STROKE - Constant.ENTITY_SIZE - 2 * Constant.BOUNDS_DISTANCE - 1);
+                    this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT - Constant.ENTITY_SIZE - 2 * Constant.BOUNDS_DISTANCE - 1);
             point.y = Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_DISTANCE_UP_DOWN + Constant.BUILDING_STROKE,
                     this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.ENTITY_SIZE - 2*Constant.BOUNDS_DISTANCE - 1);
 
@@ -138,7 +138,7 @@ public class Simulation extends JPanel{
         for(int i = 0; i < this.numberOfWayPoints; i++){
             Point point = new Point();
             point.x = Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_STROKE + Constant.BUILDING_DISTANCE_LEFT,
-                    this.getWidth() - Constant.BUILDING_STROKE - Constant.ENTITY_SIZE - 2 * Constant.BOUNDS_DISTANCE - 1);
+                    this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT - Constant.ENTITY_SIZE - 2 * Constant.BOUNDS_DISTANCE - 1);
             point.y = Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_DISTANCE_UP_DOWN + Constant.BUILDING_STROKE,
                     this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.ENTITY_SIZE - 2*Constant.BOUNDS_DISTANCE - 1);
 
