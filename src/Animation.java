@@ -1,7 +1,4 @@
-import models.Group;
-import models.Obstacle;
-import models.Pedestrian;
-import models.WayPoint;
+import models.*;
 import support.constants.Constant;
 
 import javax.swing.*;
@@ -21,6 +18,7 @@ public class Animation extends JPanel implements ActionListener {
     private List<Group> groups;
     private List<Obstacle> obstacles;
     private List<WayPoint> wayPoints;
+    private Building building;
 
     //simulation parameters
     private Timer timer;
@@ -31,6 +29,7 @@ public class Animation extends JPanel implements ActionListener {
         this.crowd = crowd;
         this.obstacles = obstacles;
         this.wayPoints = wayPoints;
+        this.building = new Building();
 
         this.setPreferredSize(new Dimension(this.panel.getWidth(), this.panel.getHeight()));
 
@@ -50,16 +49,20 @@ public class Animation extends JPanel implements ActionListener {
         Graphics2D g2D = (Graphics2D) g;
 
         //draw the building
-        g2D.setStroke(new BasicStroke(Constant.BUILDING_STROKE));
+        g2D.fillRect(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN, Constant.BUILDING_STROKE, panel.getHeight()/2 - 20);
+        g2D.fillRect(Constant.BUILDING_DISTANCE_LEFT,this.getHeight()/2 + 20, Constant.BUILDING_STROKE, this.getHeight()/2 - 20 - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
+        g2D.fillRect(this.getWidth() - Constant.BUILDING_STROKE - 1, Constant.BUILDING_DISTANCE_UP_DOWN, Constant.BUILDING_STROKE, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
+        g2D.fillRect(this.getWidth() - Constant.BUILDING_STROKE - 1, Constant.BUILDING_DISTANCE_UP_DOWN, Constant.BUILDING_STROKE, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
+        g2D.fillRect(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN, this.getWidth() - Constant.BUILDING_DISTANCE_LEFT - 1, Constant.BUILDING_STROKE);
+        g2D.fillRect(Constant.BUILDING_DISTANCE_LEFT, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1, this.getWidth() - Constant.BUILDING_DISTANCE_LEFT - 1, Constant.BUILDING_STROKE);
 
-        g2D.drawLine(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN, Constant.BUILDING_DISTANCE_LEFT, this.getHeight()/2 - 20);
-        g2D.drawLine(Constant.BUILDING_DISTANCE_LEFT,this.getHeight()/2 + 20, Constant.BUILDING_DISTANCE_LEFT, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
-        g2D.drawLine(this.getWidth() - Constant.BUILDING_STROKE - 1, Constant.BUILDING_DISTANCE_UP_DOWN, this.getWidth() - Constant.BUILDING_STROKE - 1, this.getHeight()/2 - 20);
-        g2D.drawLine(this.getWidth() - Constant.BUILDING_STROKE - 1,this.getHeight()/2 + 20, this.getWidth() - Constant.BUILDING_STROKE - 1, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
-        g2D.drawLine(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN, this.getWidth() - Constant.BUILDING_STROKE - 1, Constant.BUILDING_DISTANCE_UP_DOWN);
-        g2D.drawLine(Constant.BUILDING_DISTANCE_LEFT, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1, this.getWidth() - Constant.BUILDING_STROKE - 1, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
-
-        g2D.setStroke(new BasicStroke(0));
+        //setting walls in class "building"
+        building.setEntranceUp(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN, Constant.BUILDING_STROKE, panel.getHeight()/2 - 20);
+        building.setEntranceDown(Constant.BUILDING_DISTANCE_LEFT,this.getHeight()/2 + 20, Constant.BUILDING_STROKE, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
+        building.setExitUp(this.getWidth() - Constant.BUILDING_STROKE - 1, Constant.BUILDING_DISTANCE_UP_DOWN, Constant.BUILDING_STROKE, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
+        building.setExitDown(this.getWidth() - Constant.BUILDING_STROKE - 1, Constant.BUILDING_DISTANCE_UP_DOWN, Constant.BUILDING_STROKE, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
+        building.setWallUp(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN, this.getWidth() - Constant.BUILDING_DISTANCE_LEFT - 1, Constant.BUILDING_STROKE);
+        building.setWallDown(Constant.BUILDING_DISTANCE_LEFT, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1, this.getWidth() - Constant.BUILDING_DISTANCE_LEFT - 1, Constant.BUILDING_STROKE);
 
 
         //draw obstacles

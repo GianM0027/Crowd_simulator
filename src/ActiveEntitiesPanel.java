@@ -81,7 +81,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
      * */
     public void setObstaclesTab(){
         //first of writing on this tab every old item must be canceled from the panel
-        obstaclesTab.removeAll();
+        this.obstaclesTab.removeAll();
 
         //if the number of obstacles in the simulation is 0 (the simulation has not started yet) an apposite message is shown
         if(Simulation.getInstance().getNumberOfObstacles() == 0){
@@ -115,7 +115,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
      * */
     public void setWayPointsTab(){
         //first of writing on this tab every label or old list must be canceled from the panel
-        wayPointsTab.removeAll();
+        this.wayPointsTab.removeAll();
 
         //if the number of way points in the simulation is 0 (the simulation has not started yet) an apposite message is shown
         if(Simulation.getInstance().getNumberOfWayPoints() == 0){
@@ -236,17 +236,17 @@ public class ActiveEntitiesPanel extends JTabbedPane{
 
         //if the number of pedestrians in the simulation is 0 or there are not pedestrians that fulfill the filters, an apposite message is shown
         if(Simulation.getInstance().getNumberOfPeople() == 0 || crowd == null || crowd.isEmpty()){
-            JLabel noPedestrians = new JLabel("There are no pedestrians to show");
-            noPedestrians.setForeground(Color.GRAY);
-            activePedestrians.add(noPedestrians);
+            JLabel noObstacles = new JLabel("There are no pedestrians to show");
+            noObstacles.setForeground(Color.GRAY);
+            activePedestrians.add(noObstacles);
         }
         //else if the simulation is started, you retrieve the list of pedestrians and show it
         else {
             DefaultListModel listModel = new DefaultListModel();
 
             for(int i = 1; i <= crowd.size(); i++) {
-                listModel.add(i-1, "Pedestrian " + i + ": " + crowd.get(i-1).getPositionString() +
-                        "   -   " + crowd.get(i-1).getGenderString() + "   -   " + crowd.get(i-1).getAgeString() +
+                listModel.add(i-1, "Pedestrian " + i + ": " +
+                        crowd.get(i-1).getGenderString() + "   -   " + crowd.get(i-1).getAgeString() +
                         "   -   " + "Velocity: " + crowd.get(i-1).getVelocity() + "   -   " + "Energy: " + crowd.get(i-1).getEnergy());
             }
 
@@ -254,9 +254,10 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             JList pedestiansList = new JList(listModel);
 
             JScrollPane scrollPane = new JScrollPane(pedestiansList);
-            scrollPane.setPreferredSize(new Dimension(this.activePedestrians.getWidth()-8,this.activePedestrians.getHeight()-8));
+            scrollPane.setPreferredSize(new Dimension(this.activePedestrians.getWidth()-8,this.activePedestrians.getHeight()-1));
             this.activePedestrians.add(scrollPane);
         }
+
         this.activePedestrians.revalidate();
         this.activePedestrians.repaint();
     }

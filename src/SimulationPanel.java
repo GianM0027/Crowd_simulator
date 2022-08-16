@@ -8,14 +8,18 @@ public class SimulationPanel extends JPanel{
 
     public SimulationPanel(){
         this.setBorder(BorderFactory.createEtchedBorder());
-        this.setBackground(Color.WHITE);
-        this.setLayout(new BorderLayout());
+        this.setLayout(new GridBagLayout());
 
         //setting top bar
         setTopBar();
 
         //Setting simulation area
-        this.add(Simulation.getInstance(), BorderLayout.CENTER);
+        GridBagConstraints gbd = new GridBagConstraints();
+        gbd.gridy = 1;
+        gbd.weightx = 1;
+        gbd.weighty = 1;
+        gbd.fill = GridBagConstraints.BOTH;
+        this.add(Simulation.getInstance(), gbd);
     }
 
     /**
@@ -28,7 +32,12 @@ public class SimulationPanel extends JPanel{
         topBar.setFloatable(false);
         topBar.add(label);
 
-        this.add(topBar,BorderLayout.NORTH);
+        GridBagConstraints gbd = new GridBagConstraints();
+        gbd.fill = GridBagConstraints.HORIZONTAL;
+        gbd.gridy = 0;
+        gbd.weightx = 1;
+        gbd.weighty = 0;
+        this.add(topBar, gbd);
     }
 
 }
