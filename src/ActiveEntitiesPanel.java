@@ -51,15 +51,15 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         //declaring and adding panes to the three tabs
         this.obstaclesTab = new JPanel(new GridBagLayout());
         this.wayPointsTab = new JPanel(new GridBagLayout());
-        JPanel researchAndPeople1 = new JPanel(new GridBagLayout());
         JPanel researchAndPeople = new JPanel(new GridBagLayout());
+
         this.addTab("Pedestrians", researchAndPeople);
         this.addTab("Obstacles", obstaclesTab);
         this.addTab("Way Points", wayPointsTab);
 
         //panels to split in researchAndPeople tab
-        GridBagConstraints gbdResearch = new GridBagConstraints(0,0,1,1,0.01,1,
-                GridBagConstraints.FIRST_LINE_START,GridBagConstraints.BOTH,new Insets(0,0,0,0),0,0);
+        GridBagConstraints gbdResearch = new GridBagConstraints(0,0,1,1,0,1,
+                GridBagConstraints.FIRST_LINE_START,GridBagConstraints.BOTH,new Insets(0,0,0,0),10,10);
         GridBagConstraints gbdPedestrian = new GridBagConstraints(1,0,1,1,1,1,
                 GridBagConstraints.FIRST_LINE_START,GridBagConstraints.BOTH,new Insets(0,0,0,0),0,0);
         this.researchFilters = new JPanel(new GridBagLayout());
