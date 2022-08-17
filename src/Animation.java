@@ -1,4 +1,5 @@
 import models.*;
+import support.Support;
 import support.constants.Constant;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ import java.util.Random;
  * */
 public class Animation extends JPanel implements ActionListener {
 
-    private JPanel panel;
+    private JPanel parentPanel;
     private List<Pedestrian> crowd;
     private List<Group> groups;
     private List<Obstacle> obstacles;
@@ -24,14 +25,14 @@ public class Animation extends JPanel implements ActionListener {
     private Timer timer;
 
     public Animation(JPanel panel, List<Pedestrian> crowd, List<Obstacle> obstacles, List<WayPoint> wayPoints, List<Group> groups){
-        this.panel = panel;
+        this.parentPanel = panel;
         this.groups = groups;
         this.crowd = crowd;
         this.obstacles = obstacles;
         this.wayPoints = wayPoints;
         this.building = new Building();
 
-        this.setPreferredSize(new Dimension(this.panel.getWidth(), this.panel.getHeight()));
+        this.setPreferredSize(new Dimension(this.parentPanel.getWidth(), this.parentPanel.getHeight()));
 
         timer = new Timer(Constant.ANIMATION_DELAY, this);
         timer.start();
@@ -42,23 +43,33 @@ public class Animation extends JPanel implements ActionListener {
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
-        draw(g);
+        drawBuilding(g);
+        drawEntities(g);
     }
 
-    private void draw(Graphics g){
+    private void drawBuilding(Graphics g){
         Graphics2D g2D = (Graphics2D) g;
 
         //building points
         g2D.setStroke(new BasicStroke(Constant.BUILDING_STROKE));
 
         Point entranceWallUpUp = new Point(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN);
-        Point entranceWallUpDown = new Point(Constant.BUILDING_DISTANCE_LEFT, this.panel.getHeight()/2 - 20 - Constant.BUILDING_DISTANCE_UP_DOWN);
-        Point entranceWallDownUp = new Point(Constant.BUILDING_DISTANCE_LEFT, this.panel.getHeight()/2 + 20);
-        Point entranceWallDownDown = new Point(Constant.BUILDING_DISTANCE_LEFT, this.panel.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
-        Point exitWallUpUp = new Point(this.panel.getWidth() - Constant.BUILDING_DISTANCE_RIGHT, Constant.BUILDING_DISTANCE_UP_DOWN);
-        Point exitWallUpDown = new Point(this.panel.getWidth() - Constant.BUILDING_DISTANCE_RIGHT, this.panel.getHeight()/2 - 20 - Constant.BUILDING_DISTANCE_UP_DOWN);
-        Point exitWallDownUp = new Point(this.panel.getWidth() - Constant.BUILDING_DISTANCE_RIGHT,this.panel.getHeight()/2 + 20);
-        Point exitWallDownDown = new Point(this.panel.getWidth() - Constant.BUILDING_DISTANCE_RIGHT, this.panel.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
+        Point entranceWallUpDown = new Point(Constant.BUILDING_DISTANCE_LEFT, this.getHeight()/2 - 20 - Constant.BUILDING_DISTANCE_UP_DOWN);
+        Point entranceWallDownUp = new Point(Constant.BUILDING_DISTANCE_LEFT, this.getHeight()/2 + 20);
+        Point entranceWallDownDown = new Point(Constant.BUILDING_DISTANCE_LEFT, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
+        Point exitWallUpUp = new Point(this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT, Constant.BUILDING_DISTANCE_UP_DOWN);
+        Point exitWallUpDown = new Point(this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT, this.getHeight()/2 - 20 - Constant.BUILDING_DISTANCE_UP_DOWN);
+        Point exitWallDownUp = new Point(this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT,this.getHeight()/2 + 20);
+        Point exitWallDownDown = new Point(this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
+
+        building.setEntranceUpUp(entranceWallUpUp);
+        building.setEntranceUpDown(entranceWallUpDown);
+        building.setEntranceDownUp(entranceWallDownUp);
+        building.setEntranceDownDown(entranceWallDownDown);
+        building.setExitUpUp(exitWallUpUp);
+        building.setExitUpDown(exitWallUpDown);
+        building.setExitDownUp(exitWallDownUp);
+        building.setExitDownDown(exitWallDownDown);
 
         //draw builing
         g2D.drawLine(entranceWallUpUp.x, entranceWallUpUp.y, entranceWallUpDown.x, entranceWallUpDown.y);
@@ -69,6 +80,10 @@ public class Animation extends JPanel implements ActionListener {
         g2D.drawLine(entranceWallDownDown.x, entranceWallDownDown.y, exitWallDownDown.x, exitWallDownDown.y);
 
         g2D.setStroke(new BasicStroke(0));
+    }
+
+    private void drawEntities(Graphics g){
+        Graphics2D g2D = (Graphics2D) g;
 
         //draw obstacles
         g2D.setPaint(Color.BLACK);
@@ -108,21 +123,40 @@ public class Animation extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         //random animation for testing the panel
-        for(int i = 0; i < crowd.size(); i++){
-            if(crowd.get(i).getBounds().getRight().x == panel.getWidth() - Constant.BUILDING_DISTANCE_RIGHT - 1){
-                crowd.get(i).setxVelocity(-1);
-                crowd.get(i).setPosition(new Point(crowd.get(i).getPosition().x + crowd.get(i).getxVelocity(), crowd.get(i).getPosition().y));
+        for (Pedestrian pedestrian : crowd) {
+            Point goalPosition;
+
+            if(pedestrian.getGoalsList() != null && !pedestrian.getGoalsList().isEmpty())
+                goalPosition = pedestrian.getGoalsList().get(0).getPosition();
+            else
+                goalPosition = new Point(this.getWidth() + 20, this.getHeight()/2);
+
+            if (goalPosition.x > pedestrian.getPosition().x) {
+                pedestrian.setxVelocity(1);
             }
-            if(crowd.get(i).getBounds().getLeft().x == 0) {
-                crowd.get(i).setxVelocity(1);
-                crowd.get(i).setPosition(new Point(crowd.get(i).getPosition().x + crowd.get(i).getxVelocity(), crowd.get(i).getPosition().y));
+            else
+                pedestrian.setxVelocity(-1);
+            if (goalPosition.y > pedestrian.getPosition().y) {
+                pedestrian.setyVelocity(1);
+            }
+            else
+                pedestrian.setyVelocity(-1);
+
+            if(Support.distance(pedestrian.getPosition(), goalPosition) < Constant.ENTITY_SIZE){
+                pedestrian.setxVelocity(0);
+                pedestrian.setyVelocity(0);
+                pedestrian.getGoalsList().remove(0);
             }
 
-            crowd.get(i).setPosition(new Point(crowd.get(i).getPosition().x + crowd.get(i).getxVelocity(), crowd.get(i).getPosition().y));
+            if(pedestrian.getPosition().x > this.getWidth()){
+                pedestrian.setxVelocity(0);
+                pedestrian.setyVelocity(0);
+                pedestrian.getGoalsList().add(new WayPoint(new Point()));
+            }
+
+            pedestrian.setPosition(new Point(pedestrian.getPosition().x + pedestrian.getxVelocity(), pedestrian.getPosition().y + pedestrian.getyVelocity()));
         }
 
-
-        this.removeAll();
         repaint();
     }
 

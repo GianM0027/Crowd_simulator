@@ -19,7 +19,6 @@ public class Group {
     private int groupID;
     private Color color;
 
-    //Key Frame (pag 142 simulating crowd)
 
     public Group(int groupID, List<WayPoint> goalsList, List<Pedestrian> pedestrians){
         this.sizeGroup = pedestrians.size();
@@ -28,14 +27,6 @@ public class Group {
         this.goalsList = goalsList;
     }
 
-
-    public boolean addComponent(Pedestrian p){
-        if(this.pedestrians.size() == sizeGroup)
-            return false;
-
-        this.pedestrians.add(p);
-        return true;
-    }
     public int getSizeGroup() {
         return sizeGroup;
     }

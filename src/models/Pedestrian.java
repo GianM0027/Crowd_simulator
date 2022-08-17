@@ -5,7 +5,6 @@ import support.Support;
 import support.constants.Constant;
 import java.awt.*;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Every Pedestrian is a mobile entity with its own characteristics
@@ -20,8 +19,8 @@ public class Pedestrian {
     private Bounds bounds;
     private int groupID;
     private List<WayPoint> goalsList;
-    int xVelocity = 1;
-    int yVelocity = 1;
+    int xVelocity;
+    int yVelocity;
 
     public Pedestrian(Point position, int groupId, List<WayPoint> goalsList){
         this.position = position;
@@ -33,6 +32,10 @@ public class Pedestrian {
         this.velocity = Support.getRandomValue(Constant.MIN_VELOCITY, Constant.MAX_VELOCITY);
         this.energy = assignEnergy();
         this.bounds = new Bounds(this.position);
+
+        //create x/yvelocity according to pedestrian velocity
+        this.xVelocity = 0;
+        this.yVelocity = 0;
     }
 
 

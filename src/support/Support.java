@@ -2,13 +2,19 @@ package support;
 
 import models.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Support functions independent of specific classes
  * */
-public class Support {
+public abstract class Support {
+
+    //distance between two points
+    public static double distance(Point p1, Point p2){
+        return Math.sqrt(((p2.y - p1.y)*(p2.y - p1.y)) + ((p2.x - p1.x)*(p2.x - p1.x)));
+    }
 
 
     /**********************************   SORTING FUNCTIONS   **********************************/
@@ -164,9 +170,5 @@ public class Support {
             }
         }
     }
-
-
-    /**********************************   ENTITIES MOVEMENT AND BEHAVIOR FUNCTIONS   **********************************/
-
 
 }

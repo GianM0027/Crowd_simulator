@@ -54,9 +54,9 @@ public class Simulation extends JPanel{
      *
      * */
     protected void startSimulation(){
-        createCrowd();
-        createObstacles();
         createWayPoints();
+        createObstacles();
+        createCrowd();
 
         //Printing entities on the "active entities panel"
         ActiveEntitiesPanel.getInstance().setObstaclesTab();
@@ -149,7 +149,7 @@ public class Simulation extends JPanel{
     }
 
     /**
-     *
+     * Creates crowd and groups
      * */
     private void createCrowd(){
         this.crowd = new ArrayList<>();
@@ -160,7 +160,7 @@ public class Simulation extends JPanel{
             Point point = new Point();
             point.x = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE,  Constant.BUILDING_DISTANCE_LEFT - Constant.ENTITY_SIZE - 2*Constant.BOUNDS_DISTANCE);
             point.y = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.ENTITY_SIZE - Constant.BOUNDS_DISTANCE);
-            Pedestrian p = new Pedestrian(point, i, null);
+            Pedestrian p = new Pedestrian(point, i, goalsList()); //cambiare goals list
             this.crowd.add(i, p);
         }
 
@@ -168,15 +168,26 @@ public class Simulation extends JPanel{
         int groupIndex = 0;
         this.numberOfGroups = (int)Math.floor((double) numberOfPeople/sizeOfGroups);
         for(int i = 1; i <= numberOfGroups; i++){
-            Group group = new Group(i, null, crowd.subList(groupIndex, groupIndex + sizeOfGroups));
+            Group group = new Group(i, goalsList(), crowd.subList(groupIndex, groupIndex + sizeOfGroups));
             group.setColor(new Color(new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat()));
             this.groups.add(i-1, group);
             groupIndex += sizeOfGroups;
         }
         if(numberOfPeople%sizeOfGroups != 0){
             this.numberOfGroups++;
-            this.groups.add(0, new Group(0, null, crowd.subList(groupIndex, crowd.size())));
+            this.groups.add(0, new Group(0, goalsList(), crowd.subList(groupIndex, crowd.size())));
         }
+    }
+
+    /**
+     * Assign a list of goals to each group
+     * */
+    private List<WayPoint> goalsList(){
+        ArrayList<WayPoint> list = new ArrayList<>(this.wayPoints);
+
+        list.removeIf(w -> Support.getRandomValue(1, 10) <= 4); //40% of probability to remove a way point from the initial list
+
+        return list;
     }
 
 
