@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -121,16 +122,17 @@ public class Animation extends JPanel implements ActionListener {
     /******************************    Handle pedestrians' movement    *************************************/
     @Override
     public void actionPerformed(ActionEvent e) {
+        Point goalPosition;
 
         //random animation for testing the panel
         for (Pedestrian pedestrian : crowd) {
-            Point goalPosition;
 
-            if(!pedestrian.getGoalsList().isEmpty())
+            if(pedestrian.getGoalsList() != null && !pedestrian.getGoalsList().isEmpty())
                 goalPosition = pedestrian.getGoalsList().get(0).getPosition();
             else
                 goalPosition = new Point(this.getWidth() + 20, this.getHeight()/2);
 
+            //movement
             if (goalPosition.x > pedestrian.getPosition().x) {
                 pedestrian.setxVelocity(1);
             }
@@ -151,7 +153,7 @@ public class Animation extends JPanel implements ActionListener {
             if(pedestrian.getPosition().x > this.getWidth()){
                 pedestrian.setxVelocity(0);
                 pedestrian.setyVelocity(0);
-                pedestrian.getGoalsList().add(new WayPoint(new Point()));
+                pedestrian.setGoalsList(new ArrayList<WayPoint>());
             }
 
             pedestrian.setPosition(new Point(pedestrian.getPosition().x + pedestrian.getxVelocity(), pedestrian.getPosition().y + pedestrian.getyVelocity()));

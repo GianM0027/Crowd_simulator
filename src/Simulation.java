@@ -174,7 +174,7 @@ public class Simulation extends JPanel{
             group.setColor(new Color(new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat()));
 
             for(Pedestrian p : group.getPedestrians())
-                p.setGoalsList(goalsList);
+                p.setGoalsList(new ArrayList<>(goalsList));
 
             this.groups.add(i-1, group);
             groupIndex += sizeOfGroups;
