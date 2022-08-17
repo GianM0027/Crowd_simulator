@@ -160,7 +160,7 @@ public class Simulation extends JPanel{
             Point point = new Point();
             point.x = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE,  Constant.BUILDING_DISTANCE_LEFT - Constant.ENTITY_SIZE - 2*Constant.BOUNDS_DISTANCE);
             point.y = Support.getRandomValue(Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.ENTITY_SIZE - Constant.BOUNDS_DISTANCE);
-            Pedestrian p = new Pedestrian(point, i, goalsList()); //cambiare goals list
+            Pedestrian p = new Pedestrian(point, i);
             this.crowd.add(i, p);
         }
 
@@ -168,8 +168,14 @@ public class Simulation extends JPanel{
         int groupIndex = 0;
         this.numberOfGroups = (int)Math.floor((double) numberOfPeople/sizeOfGroups);
         for(int i = 1; i <= numberOfGroups; i++){
-            Group group = new Group(i, goalsList(), crowd.subList(groupIndex, groupIndex + sizeOfGroups));
+            List<WayPoint> goalsList = goalsList();
+
+            Group group = new Group(i, goalsList, crowd.subList(groupIndex, groupIndex + sizeOfGroups));
             group.setColor(new Color(new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat()));
+
+            for(Pedestrian p : group.getPedestrians())
+                p.setGoalsList(goalsList);
+
             this.groups.add(i-1, group);
             groupIndex += sizeOfGroups;
         }

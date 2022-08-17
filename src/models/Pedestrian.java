@@ -22,10 +22,9 @@ public class Pedestrian {
     int xVelocity;
     int yVelocity;
 
-    public Pedestrian(Point position, int groupId, List<WayPoint> goalsList){
+    public Pedestrian(Point position, int groupId){
         this.position = position;
         this.groupID = groupId;
-        this.goalsList = goalsList;
 
         this.gender = Support.getRandomValue(Constant.MALE, Constant.FEMALE); //random among MALE and FEMALE
         this.age = Support.getRandomValue(Constant.CHILD, Constant.OLD); //random among CHILD, YOUNG and OLD

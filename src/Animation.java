@@ -126,7 +126,7 @@ public class Animation extends JPanel implements ActionListener {
         for (Pedestrian pedestrian : crowd) {
             Point goalPosition;
 
-            if(pedestrian.getGoalsList() != null && !pedestrian.getGoalsList().isEmpty())
+            if(!pedestrian.getGoalsList().isEmpty())
                 goalPosition = pedestrian.getGoalsList().get(0).getPosition();
             else
                 goalPosition = new Point(this.getWidth() + 20, this.getHeight()/2);
