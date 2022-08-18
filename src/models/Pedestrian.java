@@ -3,7 +3,10 @@ package models;
 import support.Bounds;
 import support.Support;
 import support.constants.Constant;
+
+import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +40,66 @@ public class Pedestrian {
         this.yVelocity = 0;
     }
 
+    /**
+     * Compute next position and direction
+     * */
+    public Point nextPosition(List<WayPoint> goals, JPanel panel){
+        Point goalPosition;
+
+        if(goals != null && !goals.isEmpty())
+            goalPosition = goals.get(0).getPosition();
+        else
+            goalPosition = new Point(panel.getWidth() + 20, panel.getHeight()/2);
+
+        //movement
+        if (goalPosition.x > this.position.x) {
+            this.xVelocity = 1;
+        }
+        else
+            this.xVelocity = -1;
+        if (goalPosition.y > this.position.y) {
+            this.yVelocity = 1;
+        }
+        else
+            this.yVelocity = -1;
+
+        if(Support.distance(this.position, goalPosition) < Constant.ENTITY_SIZE){
+            this.xVelocity = 0;
+            this.yVelocity = 0;
+            this.goalsList.remove(0);
+        }
+
+        if(this.position.x > panel.getWidth()){
+            this.xVelocity = 0;
+            this.yVelocity = 0;
+            this.setGoalsList(new ArrayList<>());
+        }
+
+        return new Point(this.getPosition().x + this.getxVelocity(), this.getPosition().y + this.getyVelocity());
+    }
+
+    /**
+     * Collision avoidance
+     * */
+    public Point collisionAvoidance(List<Pedestrian> crowd, Building building, Point newPosition){
+        Point currentPosition = this.position;
+        int nPedestrians = crowd.size();
+
+        for(int i = 0; i < nPedestrians; i++){
+            if(Support.distance(newPosition, crowd.get(i).getPosition()) < this.bounds.getWidth()){
+                int x = newPosition.x - crowd.get(i).getPosition().x;
+                int y = newPosition.y - crowd.get(i).getPosition().y;
+
+                if(Support.getRandomValue(1,10) <= 5)
+                    this.yVelocity = yVelocity*-1;
+            }
+            else
+                newPosition = currentPosition;
+        }
+
+
+        return new Point(this.getPosition().x + this.getxVelocity(), this.getPosition().y + this.getyVelocity());
+    }
 
     /**
      * Assigns a value of energy to a pedestrian according to their age (the function uses constants MIN_ENERGY_* and

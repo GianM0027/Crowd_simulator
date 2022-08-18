@@ -9,6 +9,7 @@ import java.awt.*;
  * Calculates bounds of any entity
  * */
 public class Bounds {
+    private Rectangle boundsRectangle;
 
     private Point center; //exact position of the entity
     private Point upLeft;
@@ -43,6 +44,8 @@ public class Bounds {
 
         this.width = this.right.x - this.left.x;
         this.height = this.up.y - this.bottom.y;
+
+        this.boundsRectangle = new Rectangle(upLeft.x, upLeft.y, width, height);
     }
 
     public Point getCenter() {
@@ -87,5 +90,9 @@ public class Bounds {
 
     public int getHeight() {
         return height;
+    }
+
+    public Rectangle getBoundsRectangle() {
+        return boundsRectangle;
     }
 }

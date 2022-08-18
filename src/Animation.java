@@ -85,34 +85,29 @@ public class Animation extends JPanel implements ActionListener {
 
     private void drawEntities(Graphics g){
         Graphics2D g2D = (Graphics2D) g;
+        g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         //draw obstacles
         g2D.setPaint(Color.BLACK);
-        for(int i = 0; i < obstacles.size(); i++){
+        for (Obstacle obstacle : obstacles) {
             //entity
-            g2D.fillOval(obstacles.get(i).getPosition().x, obstacles.get(i).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
+            g2D.fillOval(obstacle.getPosition().x, obstacle.getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
         }
 
         //draw way points
         g2D.setPaint(Color.red);
-        for(int i = 0; i < wayPoints.size(); i++){
-            g2D.fillOval(wayPoints.get(i).getPosition().x, wayPoints.get(i).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
+        for (WayPoint wayPoint : wayPoints) {
+            g2D.fillOval(wayPoint.getPosition().x, wayPoint.getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
         }
 
         //draw groups of pedestrians
-        for(int i = 0; i < groups.size(); i++){
+        for (Group group : groups) {
 
-            g2D.setPaint(groups.get(i).getColor());
+            g2D.setPaint(group.getColor());
 
-            for(int j = 0; j < groups.get(i).getSizeGroup(); j++){
-                g2D.fillOval(groups.get(i).getPedestrians().get(j).getPosition().x,
-                        groups.get(i).getPedestrians().get(j).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
-
-                //bounds
-                g2D.drawOval(groups.get(i).getPedestrians().get(j).getBounds().getUpLeft().x,
-                        groups.get(i).getPedestrians().get(j).getBounds().getUpLeft().y,
-                        groups.get(i).getPedestrians().get(j).getBounds().getWidth(),
-                        groups.get(i).getPedestrians().get(j).getBounds().getHeight());
+            for (int j = 0; j < group.getSizeGroup(); j++) {
+                g2D.fillOval(group.getPedestrians().get(j).getPosition().x,
+                        group.getPedestrians().get(j).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
             }
         }
     }
@@ -122,41 +117,14 @@ public class Animation extends JPanel implements ActionListener {
     /******************************    Handle pedestrians' movement    *************************************/
     @Override
     public void actionPerformed(ActionEvent e) {
-        Point goalPosition;
+        Point nextPosition;
 
-        //random animation for testing the panel
+        //random animation to test the panel
         for (Pedestrian pedestrian : crowd) {
+            nextPosition = pedestrian.nextPosition(pedestrian.getGoalsList(), this);
+            //nextPosition = pedestrian.collisionAvoidance(crowd, building, nextPosition);
 
-            if(pedestrian.getGoalsList() != null && !pedestrian.getGoalsList().isEmpty())
-                goalPosition = pedestrian.getGoalsList().get(0).getPosition();
-            else
-                goalPosition = new Point(this.getWidth() + 20, this.getHeight()/2);
-
-            //movement
-            if (goalPosition.x > pedestrian.getPosition().x) {
-                pedestrian.setxVelocity(1);
-            }
-            else
-                pedestrian.setxVelocity(-1);
-            if (goalPosition.y > pedestrian.getPosition().y) {
-                pedestrian.setyVelocity(1);
-            }
-            else
-                pedestrian.setyVelocity(-1);
-
-            if(Support.distance(pedestrian.getPosition(), goalPosition) < Constant.ENTITY_SIZE){
-                pedestrian.setxVelocity(0);
-                pedestrian.setyVelocity(0);
-                pedestrian.getGoalsList().remove(0);
-            }
-
-            if(pedestrian.getPosition().x > this.getWidth()){
-                pedestrian.setxVelocity(0);
-                pedestrian.setyVelocity(0);
-                pedestrian.setGoalsList(new ArrayList<WayPoint>());
-            }
-
-            pedestrian.setPosition(new Point(pedestrian.getPosition().x + pedestrian.getxVelocity(), pedestrian.getPosition().y + pedestrian.getyVelocity()));
+            pedestrian.setPosition(nextPosition);
         }
 
         repaint();

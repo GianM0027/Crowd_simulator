@@ -23,6 +23,7 @@ public class Simulation extends JPanel{
     private ArrayList<Group> groups;
     private ArrayList<Obstacle> obstacles;
     private ArrayList<WayPoint> wayPoints;
+    private ArrayList<WayPoint> crowdGoals;
 
     private int numberOfPeople;
     private int numberOfGroups;
@@ -54,8 +55,8 @@ public class Simulation extends JPanel{
      *
      * */
     protected void startSimulation(){
-        createWayPoints();
         createObstacles();
+        createWayPoints();
         createCrowd();
 
         //Printing entities on the "active entities panel"
@@ -115,14 +116,29 @@ public class Simulation extends JPanel{
     private void createObstacles(){
         this.obstacles = new ArrayList<>();
 
-        for(int i = 0; i < this.numberOfObstacles; i++){
+        for(int i = 0; i < this.numberOfObstacles; i++) {
             Point point = new Point();
             point.x = Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_STROKE + Constant.BUILDING_DISTANCE_LEFT,
                     this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT - Constant.ENTITY_SIZE - 2 * Constant.BOUNDS_DISTANCE - 1);
             point.y = Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_DISTANCE_UP_DOWN + Constant.BUILDING_STROKE,
-                    this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.ENTITY_SIZE - 2*Constant.BOUNDS_DISTANCE - 1);
+                    this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.ENTITY_SIZE - 2 * Constant.BOUNDS_DISTANCE - 1);
 
             Obstacle o = new Obstacle(point);
+/*
+            //no overlapping controls
+            if (obstacles.size() > 0){
+                for (Obstacle obstacle : obstacles) {
+                    while(Support.distance(o.getBounds().getCenter(), obstacle.getBounds().getCenter()) <= Constant.ENTITY_SAFETY_ZONE){
+                        point.x = Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_STROKE + Constant.BUILDING_DISTANCE_LEFT,
+                                this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT - Constant.ENTITY_SIZE - 2 * Constant.BOUNDS_DISTANCE - 1);
+                        point.y = Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_DISTANCE_UP_DOWN + Constant.BUILDING_STROKE,
+                                this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.ENTITY_SIZE - 2 * Constant.BOUNDS_DISTANCE - 1);
+
+                        o.setPosition(point);
+                    }
+                }
+            }*/
+
             this.obstacles.add(i, o);
         }
 
@@ -136,6 +152,7 @@ public class Simulation extends JPanel{
         this.wayPoints = new ArrayList<>();
 
         for(int i = 0; i < this.numberOfWayPoints; i++){
+
             Point point = new Point();
             point.x = Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_STROKE + Constant.BUILDING_DISTANCE_LEFT,
                     this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT - Constant.ENTITY_SIZE - 2 * Constant.BOUNDS_DISTANCE - 1);
@@ -176,12 +193,21 @@ public class Simulation extends JPanel{
             for(Pedestrian p : group.getPedestrians())
                 p.setGoalsList(new ArrayList<>(goalsList));
 
+
             this.groups.add(i-1, group);
             groupIndex += sizeOfGroups;
         }
         if(numberOfPeople%sizeOfGroups != 0){
             this.numberOfGroups++;
             this.groups.add(0, new Group(0, goalsList(), crowd.subList(groupIndex, crowd.size())));
+        }
+
+        //create crowd goals list
+        crowdGoals = new ArrayList<>();
+        for(Group o: groups){
+            for(WayPoint w: o.getGoalsList())
+                if(!crowdGoals.contains(w))
+                    crowdGoals.add(w);
         }
     }
 
@@ -192,6 +218,9 @@ public class Simulation extends JPanel{
         ArrayList<WayPoint> list = new ArrayList<>(this.wayPoints);
 
         list.removeIf(w -> Support.getRandomValue(1, 10) <= 4); //40% of probability to remove a way point from the initial list
+
+        //add Entrance as the first way point
+        //list.add(0, new WayPoint(new Point(Constant.BUILDING_DISTANCE_LEFT, this.getHeight()/2 + 15)));
 
         return list;
     }

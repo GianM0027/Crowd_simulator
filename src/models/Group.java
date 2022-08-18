@@ -1,10 +1,6 @@
 package models;
 
-import support.Support;
-import support.constants.Constant;
-
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,6 +22,8 @@ public class Group {
         this.pedestrians = pedestrians;
         this.goalsList = goalsList;
     }
+
+
 
     public int getSizeGroup() {
         return sizeGroup;
