@@ -26,6 +26,6 @@ public class Constant {
     public static final int BUILDING_DISTANCE_UP_DOWN = 10; //not less than 10
     public static final int BUILDING_DISTANCE_LEFT = 200;
     public static final int BUILDING_DISTANCE_RIGHT = 20;
-    public static final int ANIMATION_DELAY = 10;
+    public static final int ANIMATION_DELAY = 40;
 
 }

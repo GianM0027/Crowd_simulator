@@ -22,8 +22,6 @@ public class Pedestrian {
     private Bounds bounds;
     private int groupID;
     private List<WayPoint> goalsList;
-    int xVelocity;
-    int yVelocity;
 
     public Pedestrian(Point position, int groupId){
         this.position = position;
@@ -34,10 +32,6 @@ public class Pedestrian {
         this.velocity = Support.getRandomValue(Constant.MIN_VELOCITY, Constant.MAX_VELOCITY);
         this.energy = assignEnergy();
         this.bounds = new Bounds(this.position);
-
-        //create x/yvelocity according to pedestrian velocity
-        this.xVelocity = 0;
-        this.yVelocity = 0;
     }
 
     /**
@@ -45,60 +39,66 @@ public class Pedestrian {
      * */
     public Point nextPosition(List<WayPoint> goals, JPanel panel){
         Point goalPosition;
+        Point nextPos = this.position;
 
         if(goals != null && !goals.isEmpty())
             goalPosition = goals.get(0).getPosition();
         else
             goalPosition = new Point(panel.getWidth() + 20, panel.getHeight()/2);
 
-        //movement
-        if (goalPosition.x > this.position.x) {
-            this.xVelocity = 1;
-        }
-        else
-            this.xVelocity = -1;
-        if (goalPosition.y > this.position.y) {
-            this.yVelocity = 1;
-        }
-        else
-            this.yVelocity = -1;
+
+        //motion
+        double deltaX = this.position.x - goalPosition.x;
+        double deltaY = this.position.y - goalPosition.y;
+        double angle = Math.atan2(deltaY, deltaX) + Math.toRadians(180);
+        deltaY = Math.sin(angle) * 100;
+        deltaX = Math.cos(angle) * 100;
+        nextPos.x += deltaX / (Constant.ANIMATION_DELAY);
+        nextPos.y += deltaY / (Constant.ANIMATION_DELAY);
+
 
         if(Support.distance(this.position, goalPosition) < Constant.ENTITY_SIZE){
-            this.xVelocity = 0;
-            this.yVelocity = 0;
             this.goalsList.remove(0);
         }
 
         if(this.position.x > panel.getWidth()){
-            this.xVelocity = 0;
-            this.yVelocity = 0;
             this.setGoalsList(new ArrayList<>());
         }
 
-        return new Point(this.getPosition().x + this.getxVelocity(), this.getPosition().y + this.getyVelocity());
+        return new Point(nextPos.x, nextPos.y);
     }
 
     /**
      * Collision avoidance
      * */
-    public Point collisionAvoidance(List<Pedestrian> crowd, Building building, Point newPosition){
-        Point currentPosition = this.position;
+    public Point collisionAvoidance(List<Pedestrian> crowd, Point newPosition){
         int nPedestrians = crowd.size();
 
         for(int i = 0; i < nPedestrians; i++){
             if(Support.distance(newPosition, crowd.get(i).getPosition()) < this.bounds.getWidth()){
-                int x = newPosition.x - crowd.get(i).getPosition().x;
-                int y = newPosition.y - crowd.get(i).getPosition().y;
+                double deltaX = newPosition.x - crowd.get(i).getPosition().x;
+                double deltaY = newPosition.y - crowd.get(i).getPosition().y;
+                double angle = Math.atan2(deltaY, deltaX) + Math.toRadians(180);
 
                 if(Support.getRandomValue(1,10) <= 5)
-                    this.yVelocity = yVelocity*-1;
+                    angle += 60;
+                else
+                    angle -= 60;
+
+                deltaY = Math.sin(angle) * 100;
+                deltaX = Math.cos(angle) * 100;
+
+                this.position.x += deltaX / (Constant.ANIMATION_DELAY);
+                this.position.y += deltaY / (Constant.ANIMATION_DELAY);
+
+                if(this.groupID == 0)
+                    System.out.println("X: " + this.position.x + "\tY: " + this.position.y);
             }
             else
-                newPosition = currentPosition;
+                this.position = newPosition;
         }
 
-
-        return new Point(this.getPosition().x + this.getxVelocity(), this.getPosition().y + this.getyVelocity());
+        return new Point(this.getPosition().x, this.getPosition().y);
     }
 
     /**
@@ -168,22 +168,6 @@ public class Pedestrian {
 
     public Bounds getBounds() {
         return bounds;
-    }
-
-    public int getxVelocity() {
-        return xVelocity;
-    }
-
-    public int getyVelocity() {
-        return yVelocity;
-    }
-
-    public void setxVelocity(int xVelocity) {
-        this.xVelocity = xVelocity;
-    }
-
-    public void setyVelocity(int yVelocity) {
-        this.yVelocity = yVelocity;
     }
 
     public void setGender(int gender) {

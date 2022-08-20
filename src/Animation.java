@@ -122,9 +122,7 @@ public class Animation extends JPanel implements ActionListener {
         //random animation to test the panel
         for (Pedestrian pedestrian : crowd) {
             nextPosition = pedestrian.nextPosition(pedestrian.getGoalsList(), this);
-            //nextPosition = pedestrian.collisionAvoidance(crowd, building, nextPosition);
-
-            pedestrian.setPosition(nextPosition);
+            pedestrian.collisionAvoidance(crowd, nextPosition);
         }
 
         repaint();
