@@ -7,9 +7,8 @@ import support.constants.Constant;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Contain all the settings and contents of the actual simulation
@@ -186,12 +185,17 @@ public class Simulation extends JPanel{
         this.numberOfGroups = (int)Math.floor((double) numberOfPeople/sizeOfGroups);
         for(int i = 1; i <= numberOfGroups; i++){
             List<WayPoint> goalsList = goalsList();
+            Collections.shuffle(goalsList);
 
             Group group = new Group(i, goalsList, crowd.subList(groupIndex, groupIndex + sizeOfGroups));
-            group.setColor(new Color(new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat()));
+            Color groupColor;
+            do {
+                groupColor = new Color(new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat());
+                group.setColor(groupColor);
+            }while(groupColor == Color.GRAY || groupColor == Color.WHITE || groupColor == Color.BLACK || groupColor == Color.RED);
 
             for(Pedestrian p : group.getPedestrians())
-                p.setGoalsList(new ArrayList<>(goalsList));
+                p.setGoalsList(goalsList);
 
 
             this.groups.add(i-1, group);
@@ -218,9 +222,6 @@ public class Simulation extends JPanel{
         ArrayList<WayPoint> list = new ArrayList<>(this.wayPoints);
 
         list.removeIf(w -> Support.getRandomValue(1, 10) <= 4); //40% of probability to remove a way point from the initial list
-
-        //add Entrance as the first way point
-        //list.add(0, new WayPoint(new Point(Constant.BUILDING_DISTANCE_LEFT, this.getHeight()/2 + 15)));
 
         return list;
     }

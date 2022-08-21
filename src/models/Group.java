@@ -14,6 +14,7 @@ public class Group {
     private List<WayPoint> goalsList;
     private int groupID;
     private Color color;
+    private boolean isActive;
 
 
     public Group(int groupID, List<WayPoint> goalsList, List<Pedestrian> pedestrians){
@@ -21,6 +22,7 @@ public class Group {
         this.groupID = groupID;
         this.pedestrians = pedestrians;
         this.goalsList = goalsList;
+        this.isActive = false;
     }
 
 

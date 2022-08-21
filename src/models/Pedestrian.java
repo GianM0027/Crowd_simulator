@@ -44,20 +44,27 @@ public class Pedestrian {
         if(goals != null && !goals.isEmpty())
             goalPosition = goals.get(0).getPosition();
         else
-            goalPosition = new Point(panel.getWidth() + 20, panel.getHeight()/2);
+            goalPosition = new Point(panel.getWidth() + 10, panel.getHeight()/2);
 
 
         //motion
+
         double deltaX = this.position.x - goalPosition.x;
         double deltaY = this.position.y - goalPosition.y;
-        double angle = Math.atan2(deltaY, deltaX) + Math.toRadians(180);
+        double angle = Math.atan2(deltaY, deltaX) + Math.PI;
+
+        System.out.println("DeltaX: " + deltaX + "\tDeltaY: " + deltaY + "\tAngle: " + angle);
+
         deltaY = Math.sin(angle) * 100;
         deltaX = Math.cos(angle) * 100;
-        nextPos.x += deltaX / (Constant.ANIMATION_DELAY);
-        nextPos.y += deltaY / (Constant.ANIMATION_DELAY);
+
+        System.out.println("DeltaX: " + deltaX + "\tDeltaY: " + deltaY + "\n");
+
+        nextPos.x += deltaX / Constant.ANIMATION_DELAY;
+        nextPos.y += deltaY / Constant.ANIMATION_DELAY;
 
 
-        if(Support.distance(this.position, goalPosition) < Constant.ENTITY_SIZE){
+        if(Support.distance(this.position, goalPosition) < Constant.ENTITY_SAFETY_ZONE && !goalsList.isEmpty()){
             this.goalsList.remove(0);
         }
 
@@ -75,7 +82,7 @@ public class Pedestrian {
         int nPedestrians = crowd.size();
 
         for(int i = 0; i < nPedestrians; i++){
-            if(Support.distance(newPosition, crowd.get(i).getPosition()) < this.bounds.getWidth()){
+            if(Support.distance(newPosition, crowd.get(i).getPosition()) < Constant.ENTITY_SAFETY_ZONE){
                 double deltaX = newPosition.x - crowd.get(i).getPosition().x;
                 double deltaY = newPosition.y - crowd.get(i).getPosition().y;
                 double angle = Math.atan2(deltaY, deltaX) + Math.toRadians(180);
@@ -91,8 +98,6 @@ public class Pedestrian {
                 this.position.x += deltaX / (Constant.ANIMATION_DELAY);
                 this.position.y += deltaY / (Constant.ANIMATION_DELAY);
 
-                if(this.groupID == 0)
-                    System.out.println("X: " + this.position.x + "\tY: " + this.position.y);
             }
             else
                 this.position = newPosition;
