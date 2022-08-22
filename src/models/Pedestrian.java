@@ -22,10 +22,12 @@ public class Pedestrian {
     private Bounds bounds;
     private int groupID;
     private List<WayPoint> goalsList;
+    private int goalsNumber;
 
     public Pedestrian(Point position, int groupId){
         this.position = position;
         this.groupID = groupId;
+        this.goalsNumber = 0;
 
         this.gender = Support.getRandomValue(Constant.MALE, Constant.FEMALE); //random among MALE and FEMALE
         this.age = Support.getRandomValue(Constant.CHILD, Constant.OLD); //random among CHILD, YOUNG and OLD
@@ -37,18 +39,17 @@ public class Pedestrian {
     /**
      * Compute next position and direction
      * */
-    public Point nextPosition(List<WayPoint> goals, JPanel panel){
+    public Point nextPosition(JPanel panel){
         Point goalPosition;
         Point nextPos = this.position;
 
-        if(goals != null && !goals.isEmpty())
-            goalPosition = goals.get(0).getPosition();
+        if(goalsList != null && !goalsList.isEmpty())
+            goalPosition = goalsList.get(0).getPosition();
         else
             goalPosition = new Point(panel.getWidth() + 10, panel.getHeight()/2);
 
 
         //motion
-
         double deltaX = this.position.x - goalPosition.x;
         double deltaY = this.position.y - goalPosition.y;
         double angle = Math.atan2(deltaY, deltaX) + Math.PI;
@@ -75,10 +76,34 @@ public class Pedestrian {
         return new Point(nextPos.x, nextPos.y);
     }
 
+    public Point obstacleAvoidance(List<Obstacle> obstacles, Point newPosition){
+
+        for(int i = 0; i < obstacles.size(); i++){
+            if(Support.distance(newPosition, obstacles.get(i).getPosition()) < Constant.ENTITY_SAFETY_ZONE){
+                double deltaX = newPosition.x - obstacles.get(i).getPosition().x;
+                double deltaY = newPosition.y - obstacles.get(i).getPosition().y;
+                double angle = Math.atan2(deltaY, deltaX) + Math.toRadians(180);
+
+                if(Support.getRandomValue(1,10) <= 5)
+                    angle += 60;
+                else
+                    angle -= 60;
+
+                deltaY = Math.sin(angle) * 100;
+                deltaX = Math.cos(angle) * 100;
+
+                newPosition.x += deltaX / (Constant.ANIMATION_DELAY);
+                newPosition.y += deltaY / (Constant.ANIMATION_DELAY);
+            }
+        }
+
+        return new Point(newPosition.x, newPosition.y);
+    }
+
     /**
      * Collision avoidance
      * */
-    public Point collisionAvoidance(List<Pedestrian> crowd, Point newPosition){
+    public Point pedestrianAvoidance(List<Pedestrian> crowd, Point newPosition){
         int nPedestrians = crowd.size();
 
         for(int i = 0; i < nPedestrians; i++){
@@ -95,15 +120,13 @@ public class Pedestrian {
                 deltaY = Math.sin(angle) * 100;
                 deltaX = Math.cos(angle) * 100;
 
-                this.position.x += deltaX / (Constant.ANIMATION_DELAY);
-                this.position.y += deltaY / (Constant.ANIMATION_DELAY);
+                newPosition.x += deltaX / (Constant.ANIMATION_DELAY);
+                newPosition.y += deltaY / (Constant.ANIMATION_DELAY);
 
             }
-            else
-                this.position = newPosition;
         }
 
-        return new Point(this.getPosition().x, this.getPosition().y);
+        return new Point(newPosition.x, newPosition.y);
     }
 
     /**
@@ -202,6 +225,7 @@ public class Pedestrian {
 
     public void setGoalsList(List<WayPoint> goalsList) {
         this.goalsList = goalsList;
+        goalsNumber = goalsList.size();
     }
 
     public void setBounds(Bounds bounds) {

@@ -8,6 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Building {
+    private Point entranceDoor;
+    private Point exitDoor;
+
     private Point entranceUpUp;
     private Point entranceUpDown;
     private Point entranceDownUp;
@@ -18,6 +21,10 @@ public class Building {
     private Point exitDownUp;
     private Point exitDownDown;
 
+    public Building(){
+        entranceDoor = new Point();
+        exitDoor = new Point();
+    }
 
     public void setEntranceUpUp(Point entranceUpUp) {
         this.entranceUpUp = entranceUpUp;
@@ -25,6 +32,8 @@ public class Building {
 
     public void setEntranceUpDown(Point entranceUpDown) {
         this.entranceUpDown = entranceUpDown;
+        this.entranceDoor.x = entranceUpDown.x;
+        this.entranceDoor.y = entranceUpDown.y + Constant.BUILDING_DOOR_SIZE/2;
     }
 
     public void setEntranceDownUp(Point entranceDownUp) {
@@ -41,6 +50,8 @@ public class Building {
 
     public void setExitUpDown(Point exitUpDown) {
         this.exitUpDown = exitUpDown;
+        this.exitDoor.x = exitUpDown.x;
+        this.exitDoor.y = exitUpDown.y + Constant.BUILDING_DOOR_SIZE/2;
     }
 
     public void setExitDownUp(Point exitDownUp) {

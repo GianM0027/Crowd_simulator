@@ -3,10 +3,12 @@ import support.Support;
 import support.constants.Constant;
 
 import javax.swing.*;
+import javax.swing.text.html.HTMLDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -55,12 +57,12 @@ public class Animation extends JPanel implements ActionListener {
         g2D.setStroke(new BasicStroke(Constant.BUILDING_STROKE));
 
         Point entranceWallUpUp = new Point(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN);
-        Point entranceWallUpDown = new Point(Constant.BUILDING_DISTANCE_LEFT, this.getHeight()/2 - 20 - Constant.BUILDING_DISTANCE_UP_DOWN);
-        Point entranceWallDownUp = new Point(Constant.BUILDING_DISTANCE_LEFT, this.getHeight()/2 + 20);
+        Point entranceWallUpDown = new Point(Constant.BUILDING_DISTANCE_LEFT, this.getHeight()/2 - Constant.BUILDING_DOOR_SIZE/2 - Constant.BUILDING_DISTANCE_UP_DOWN);
+        Point entranceWallDownUp = new Point(Constant.BUILDING_DISTANCE_LEFT, this.getHeight()/2 + Constant.BUILDING_DOOR_SIZE/2);
         Point entranceWallDownDown = new Point(Constant.BUILDING_DISTANCE_LEFT, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
         Point exitWallUpUp = new Point(this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT, Constant.BUILDING_DISTANCE_UP_DOWN);
-        Point exitWallUpDown = new Point(this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT, this.getHeight()/2 - 20 - Constant.BUILDING_DISTANCE_UP_DOWN);
-        Point exitWallDownUp = new Point(this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT,this.getHeight()/2 + 20);
+        Point exitWallUpDown = new Point(this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT, this.getHeight()/2 - Constant.BUILDING_DOOR_SIZE/2 - Constant.BUILDING_DISTANCE_UP_DOWN);
+        Point exitWallDownUp = new Point(this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT,this.getHeight()/2 + Constant.BUILDING_DOOR_SIZE/2);
         Point exitWallDownDown = new Point(this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
 
         building.setEntranceUpUp(entranceWallUpUp);
@@ -119,10 +121,12 @@ public class Animation extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Point nextPosition;
 
-        //random animation to test the panel
         for (Pedestrian pedestrian : crowd) {
-            nextPosition = pedestrian.nextPosition(pedestrian.getGoalsList(), this);
-            pedestrian.collisionAvoidance(crowd, nextPosition);
+            nextPosition = pedestrian.nextPosition(this);
+            nextPosition = pedestrian.pedestrianAvoidance(crowd, nextPosition);
+            nextPosition = pedestrian.obstacleAvoidance(obstacles, nextPosition);
+
+            pedestrian.setPosition(nextPosition);
         }
 
         repaint();

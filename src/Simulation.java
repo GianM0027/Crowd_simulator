@@ -195,7 +195,7 @@ public class Simulation extends JPanel{
             }while(groupColor == Color.GRAY || groupColor == Color.WHITE || groupColor == Color.BLACK || groupColor == Color.RED);
 
             for(Pedestrian p : group.getPedestrians())
-                p.setGoalsList(goalsList);
+                p.setGoalsList(new ArrayList<>(goalsList));
 
 
             this.groups.add(i-1, group);
