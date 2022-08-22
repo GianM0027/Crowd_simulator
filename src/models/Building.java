@@ -3,8 +3,6 @@ package models;
 
 import support.constants.Constant;
 
-import javax.sound.sampled.Line;
-import javax.swing.*;
 import java.awt.*;
 
 public class Building {

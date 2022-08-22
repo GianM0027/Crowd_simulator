@@ -1,6 +1,13 @@
 package support.constants;
 
 public class Constant {
+    // entities constant
+    public static final int PEDESTRIAN = -1;
+    public static final int OBSTACLE = -2;
+    public static final int WAY_POINT = -3;
+    public static final int PEDESTRIAN_SIZE = 6;
+    public static final int OBSTACLE_SIZE = 12;
+    public static final int WAYPOINT_SIZE = 3;
 
     //pedestrian constants
     public static final int MALE = 1;
@@ -19,9 +26,7 @@ public class Constant {
 
 
     /** animation's constants */
-    public static final int ENTITY_SIZE = 6;
-    public static final int BOUNDS_DISTANCE = ENTITY_SIZE/4;
-    public static final int ENTITY_SAFETY_ZONE = ENTITY_SIZE/2 + BOUNDS_DISTANCE;
+    public static final int BOUNDS_DISTANCE = PEDESTRIAN_SIZE /4;
     public static final int BUILDING_STROKE = 3;
     public static final int BUILDING_DOOR_SIZE = 40;
     public static final int BUILDING_DISTANCE_UP_DOWN = 10; //not lower than 10

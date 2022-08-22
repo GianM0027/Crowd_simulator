@@ -1,16 +1,11 @@
 import models.*;
-import support.Support;
 import support.constants.Constant;
 
 import javax.swing.*;
-import javax.swing.text.html.HTMLDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Implements the movement and the printing functions of the simulation
@@ -93,13 +88,13 @@ public class Animation extends JPanel implements ActionListener {
         g2D.setPaint(Color.BLACK);
         for (Obstacle obstacle : obstacles) {
             //entity
-            g2D.fillOval(obstacle.getPosition().x, obstacle.getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
+            g2D.fillOval(obstacle.getPosition().x, obstacle.getPosition().y, Constant.OBSTACLE_SIZE, Constant.OBSTACLE_SIZE);
         }
 
         //draw way points
         g2D.setPaint(Color.red);
         for (WayPoint wayPoint : wayPoints) {
-            g2D.fillOval(wayPoint.getPosition().x, wayPoint.getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
+            g2D.fillOval(wayPoint.getPosition().x, wayPoint.getPosition().y, Constant.WAYPOINT_SIZE, Constant.WAYPOINT_SIZE);
         }
 
         //draw groups of pedestrians
@@ -109,7 +104,7 @@ public class Animation extends JPanel implements ActionListener {
 
             for (int j = 0; j < group.getSizeGroup(); j++) {
                 g2D.fillOval(group.getPedestrians().get(j).getPosition().x,
-                        group.getPedestrians().get(j).getPosition().y, Constant.ENTITY_SIZE, Constant.ENTITY_SIZE);
+                        group.getPedestrians().get(j).getPosition().y, Constant.PEDESTRIAN_SIZE, Constant.PEDESTRIAN_SIZE);
             }
         }
     }

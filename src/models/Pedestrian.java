@@ -12,20 +12,19 @@ import java.util.List;
 /**
  * Every Pedestrian is a mobile entity with its own characteristics
  * */
-public class Pedestrian {
-    private Color color;
+public class Pedestrian extends Entity{
     private int gender;
     private int age;
     private int velocity;
     private int energy;
-    private Point position;
-    private Bounds bounds;
     private int groupID;
     private List<WayPoint> goalsList;
     private int goalsNumber;
 
     public Pedestrian(Point position, int groupId){
-        this.position = position;
+        super(position);
+        entityType = Constant.PEDESTRIAN;
+
         this.groupID = groupId;
         this.goalsNumber = 0;
 
@@ -33,7 +32,6 @@ public class Pedestrian {
         this.age = Support.getRandomValue(Constant.CHILD, Constant.OLD); //random among CHILD, YOUNG and OLD
         this.velocity = Support.getRandomValue(Constant.MIN_VELOCITY, Constant.MAX_VELOCITY);
         this.energy = assignEnergy();
-        this.bounds = new Bounds(this.position);
     }
 
     /**
@@ -65,7 +63,7 @@ public class Pedestrian {
         nextPos.y += deltaY / Constant.ANIMATION_DELAY;
 
 
-        if(Support.distance(this.position, goalPosition) < Constant.ENTITY_SAFETY_ZONE && !goalsList.isEmpty()){
+        if(Support.distance(this.position, goalPosition) < this.bounds.getWidth() && !goalsList.isEmpty()){
             this.goalsList.remove(0);
         }
 
@@ -79,7 +77,7 @@ public class Pedestrian {
     public Point obstacleAvoidance(List<Obstacle> obstacles, Point newPosition){
 
         for(int i = 0; i < obstacles.size(); i++){
-            if(Support.distance(newPosition, obstacles.get(i).getPosition()) < Constant.ENTITY_SAFETY_ZONE){
+            if(Support.distance(newPosition, obstacles.get(i).getBounds().getCenter()) <= obstacles.get(i).getBounds().getWidth()){
                 double deltaX = newPosition.x - obstacles.get(i).getPosition().x;
                 double deltaY = newPosition.y - obstacles.get(i).getPosition().y;
                 double angle = Math.atan2(deltaY, deltaX) + Math.toRadians(180);
@@ -107,7 +105,7 @@ public class Pedestrian {
         int nPedestrians = crowd.size();
 
         for(int i = 0; i < nPedestrians; i++){
-            if(Support.distance(newPosition, crowd.get(i).getPosition()) < Constant.ENTITY_SAFETY_ZONE){
+            if(Support.distance(newPosition, crowd.get(i).getPosition()) <= crowd.get(i).getBounds().getWidth()){
                 double deltaX = newPosition.x - crowd.get(i).getPosition().x;
                 double deltaY = newPosition.y - crowd.get(i).getPosition().y;
                 double angle = Math.atan2(deltaY, deltaX) + Math.toRadians(180);
@@ -166,13 +164,14 @@ public class Pedestrian {
             return "Old";
     }
 
+    public int getGoalsNumber() {
+        return goalsNumber;
+    }
+
     public int getGroupID() {
         return groupID;
     }
 
-    public Color getColor() {
-        return color;
-    }
 
     public List<WayPoint> getGoalsList() {
         return goalsList;
@@ -188,14 +187,6 @@ public class Pedestrian {
 
     public int getEnergy() {
         return energy;
-    }
-
-    public Point getPosition() {
-        return position;
-    }
-
-    public Bounds getBounds() {
-        return bounds;
     }
 
     public void setGender(int gender) {
@@ -214,21 +205,9 @@ public class Pedestrian {
         this.energy = energy;
     }
 
-    public void setPosition(Point position) {
-        this.position = position;
-        this.bounds = new Bounds(position);
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
     public void setGoalsList(List<WayPoint> goalsList) {
         this.goalsList = goalsList;
         goalsNumber = goalsList.size();
     }
 
-    public void setBounds(Bounds bounds) {
-        this.bounds = bounds;
-    }
 }

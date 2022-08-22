@@ -1,6 +1,7 @@
 package support;
 
 
+import models.Entity;
 import support.constants.Constant;
 
 import java.awt.*;
@@ -27,17 +28,44 @@ public class Bounds {
     /**
      * Initialize bounds with respect to BOUNDS_DISTANCE constant
      * */
-    public Bounds(Point position){
+    public Bounds(Entity entity){
 
-        this.center = new Point(position.x + Constant.ENTITY_SIZE/2, position.y + Constant.ENTITY_SIZE/2);
+        Point position = entity.getPosition();
 
-        this.up = new Point(this.center.x, position.y - Constant.BOUNDS_DISTANCE);
-        this.bottom = new Point(this.center.x,position.y + Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE);
+        //if the entity is a pedestrian use the "Constant.PEDESTRIAN_SIZE" to compute bounds
+        if(entity.getEntityType() == Constant.PEDESTRIAN) {
+            this.center = new Point(position.x + Constant.PEDESTRIAN_SIZE / 2, position.y + Constant.PEDESTRIAN_SIZE / 2);
 
-        this.left = new Point(position.x - Constant.BOUNDS_DISTANCE, this.center.y);
-        this.right = new Point(position.x + Constant.ENTITY_SIZE + Constant.BOUNDS_DISTANCE, this.center.y);
+            this.up = new Point(this.center.x, position.y - Constant.BOUNDS_DISTANCE);
+            this.bottom = new Point(this.center.x, position.y + Constant.PEDESTRIAN_SIZE + Constant.BOUNDS_DISTANCE);
 
-        this.upLeft = new Point(this.left.x,this.up.y);
+            this.left = new Point(position.x - Constant.BOUNDS_DISTANCE, this.center.y);
+            this.right = new Point(position.x + Constant.PEDESTRIAN_SIZE + Constant.BOUNDS_DISTANCE, this.center.y);
+        }
+
+        //if the entity is a Obstacle use the "Constant.OBSTACLE_SIZE" to compute bounds
+        else if(entity.getEntityType() == Constant.OBSTACLE) {
+            this.center = new Point(position.x + Constant.OBSTACLE_SIZE / 2, position.y + Constant.OBSTACLE_SIZE / 2);
+
+            this.up = new Point(this.center.x, position.y - Constant.BOUNDS_DISTANCE);
+            this.bottom = new Point(this.center.x, position.y + Constant.OBSTACLE_SIZE + Constant.BOUNDS_DISTANCE);
+
+            this.left = new Point(position.x - Constant.BOUNDS_DISTANCE, this.center.y);
+            this.right = new Point(position.x + Constant.OBSTACLE_SIZE + Constant.BOUNDS_DISTANCE, this.center.y);
+        }
+
+        //if the entity is a WayPoint use the "Constant.WAYPOINT_SIZE" to compute bounds
+        else {
+            this.center = new Point(position.x + Constant.WAYPOINT_SIZE / 2, position.y + Constant.WAYPOINT_SIZE / 2);
+
+            this.up = new Point(this.center.x, position.y - Constant.BOUNDS_DISTANCE);
+            this.bottom = new Point(this.center.x, position.y + Constant.WAYPOINT_SIZE + Constant.BOUNDS_DISTANCE);
+
+            this.left = new Point(position.x - Constant.BOUNDS_DISTANCE, this.center.y);
+            this.right = new Point(position.x + Constant.WAYPOINT_SIZE + Constant.BOUNDS_DISTANCE, this.center.y);
+        }
+
+        this.upLeft = new Point(this.left.x, this.up.y);
         this.upRight = new Point(this.right.x, this.up.y);
         this.bottomLeft = new Point(this.left.x, this.bottom.y);
         this.bottomRight = new Point(this.right.x, this.bottom.y);
