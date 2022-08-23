@@ -1,8 +1,8 @@
 package models;
 
-import support.Bounds;
-
 import java.awt.*;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * Every entity that does not have to move around is a "FixedEntity" (obstacles and way points)
@@ -11,19 +11,10 @@ public abstract class Entity {
 
     protected int entityType;
     protected Color color;
-    protected Point position;
-    protected Bounds bounds;
+    protected Point2D position;
 
-    public Entity(Point position) {
+    public Entity(Point2D position) {
         this.position = position;
-        this.bounds = new Bounds(this);
-    }
-
-    public Point getPosition() {
-        return position;
-    }
-    public Bounds getBounds() {
-        return bounds;
     }
 
     public int getEntityType() {
@@ -34,19 +25,12 @@ public abstract class Entity {
         return color;
     }
 
-    public void setPosition(Point position) {
-        this.position = position;
-    }
-
     public void setColor(Color color) {
         this.color = color;
     }
 
-    public void setBounds(Bounds bounds) {
-        this.bounds = bounds;
-    }
 
     public String getPositionString(){
-        return "[" + this.position.x + ", " + this.position.y + "]";
+        return "[" + (int)this.position.getX() + ", " + (int)this.position.getY() + "]";
     }
 }

@@ -3,6 +3,7 @@ package support;
 import models.*;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -12,8 +13,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class Support {
 
     //distance between two points
-    public static double distance(Point p1, Point p2){
-        return Math.sqrt(((p2.y - p1.y)*(p2.y - p1.y)) + ((p2.x - p1.x)*(p2.x - p1.x)));
+    public static double distance(Point2D p1, Point2D p2){
+        return Math.sqrt(((p2.getY() - p1.getY())*(p2.getY() - p1.getY())) + ((p2.getX() - p1.getX())*(p2.getX() - p1.getX())));
     }
 
 

@@ -1,11 +1,13 @@
 package models;
 
-import support.Bounds;
 import support.Support;
 import support.constants.Constant;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,8 @@ import java.util.List;
  * Every Pedestrian is a mobile entity with its own characteristics
  * */
 public class Pedestrian extends Entity{
+    private Rectangle2D bounds;
+    private Ellipse2D pedestrianShape;
     private int gender;
     private int age;
     private int velocity;
@@ -21,9 +25,11 @@ public class Pedestrian extends Entity{
     private List<WayPoint> goalsList;
     private int goalsNumber;
 
-    public Pedestrian(Point position, int groupId){
+    public Pedestrian(Point2D position, int groupId){
         super(position);
         entityType = Constant.PEDESTRIAN;
+        pedestrianShape = new Ellipse2D.Double(position.getX(), position.getY(), Constant.PEDESTRIAN_SIZE, Constant.PEDESTRIAN_SIZE);
+        bounds = pedestrianShape.getBounds2D();
 
         this.groupID = groupId;
         this.goalsNumber = 0;
@@ -37,9 +43,9 @@ public class Pedestrian extends Entity{
     /**
      * Compute next position and direction
      * */
-    public Point nextPosition(JPanel panel){
-        Point goalPosition;
-        Point nextPos = this.position;
+    public Point2D nextPosition(JPanel panel){
+        Point2D goalPosition;
+        Point2D nextPos = this.position;
 
         if(goalsList != null && !goalsList.isEmpty())
             goalPosition = goalsList.get(0).getPosition();
@@ -48,38 +54,34 @@ public class Pedestrian extends Entity{
 
 
         //motion
-        double deltaX = this.position.x - goalPosition.x;
-        double deltaY = this.position.y - goalPosition.y;
+        double deltaX = this.position.getX() - goalPosition.getX();
+        double deltaY = this.position.getX() - goalPosition.getX();
         double angle = Math.atan2(deltaY, deltaX) + Math.PI;
 
-        System.out.println("DeltaX: " + deltaX + "\tDeltaY: " + deltaY + "\tAngle: " + angle);
+        deltaY = Math.sin(angle);
+        deltaX = Math.cos(angle);
 
-        deltaY = Math.sin(angle) * 100;
-        deltaX = Math.cos(angle) * 100;
-
-        System.out.println("DeltaX: " + deltaX + "\tDeltaY: " + deltaY + "\n");
-
-        nextPos.x += deltaX / Constant.ANIMATION_DELAY;
-        nextPos.y += deltaY / Constant.ANIMATION_DELAY;
-
+        nextPos = new Point2D.Double(nextPos.getX() + deltaX / Constant.ANIMATION_DELAY, nextPos.getY() + deltaY / Constant.ANIMATION_DELAY);
 
         if(Support.distance(this.position, goalPosition) < this.bounds.getWidth() && !goalsList.isEmpty()){
             this.goalsList.remove(0);
         }
 
-        if(this.position.x > panel.getWidth()){
+        if(this.position.getX() > panel.getWidth()){
             this.setGoalsList(new ArrayList<>());
         }
 
-        return new Point(nextPos.x, nextPos.y);
+        return nextPos;
     }
 
-    public Point obstacleAvoidance(List<Obstacle> obstacles, Point newPosition){
+    public Point2D obstacleAvoidance(List<Obstacle> obstacles, Point2D newPosition){
+        Pedestrian p = new Pedestrian(newPosition, -1);
+        Rectangle2D futureEntityBounds = p.getPedestrianShape().getBounds2D();
 
         for(int i = 0; i < obstacles.size(); i++){
-            if(Support.distance(newPosition, obstacles.get(i).getBounds().getCenter()) <= obstacles.get(i).getBounds().getWidth()){
-                double deltaX = newPosition.x - obstacles.get(i).getPosition().x;
-                double deltaY = newPosition.y - obstacles.get(i).getPosition().y;
+            if(futureEntityBounds.intersects(obstacles.get(i).getObstacleShape().getBounds())){
+                double deltaX = newPosition.getX() - obstacles.get(i).getPosition().getX();
+                double deltaY = newPosition.getY() - obstacles.get(i).getPosition().getY();
                 double angle = Math.atan2(deltaY, deltaX) + Math.toRadians(180);
 
                 if(Support.getRandomValue(1,10) <= 5)
@@ -90,24 +92,23 @@ public class Pedestrian extends Entity{
                 deltaY = Math.sin(angle) * 100;
                 deltaX = Math.cos(angle) * 100;
 
-                newPosition.x += deltaX / (Constant.ANIMATION_DELAY);
-                newPosition.y += deltaY / (Constant.ANIMATION_DELAY);
+                newPosition = new Point2D.Double(newPosition.getX() + deltaX / (Constant.ANIMATION_DELAY), newPosition.getY() + deltaY / (Constant.ANIMATION_DELAY));
             }
         }
 
-        return new Point(newPosition.x, newPosition.y);
+        return new Point2D.Double(newPosition.getX(), newPosition.getY());
     }
 
     /**
      * Collision avoidance
      * */
-    public Point pedestrianAvoidance(List<Pedestrian> crowd, Point newPosition){
+    public Point2D pedestrianAvoidance(List<Pedestrian> crowd, Point2D newPosition){
         int nPedestrians = crowd.size();
 
         for(int i = 0; i < nPedestrians; i++){
-            if(Support.distance(newPosition, crowd.get(i).getPosition()) <= crowd.get(i).getBounds().getWidth()){
-                double deltaX = newPosition.x - crowd.get(i).getPosition().x;
-                double deltaY = newPosition.y - crowd.get(i).getPosition().y;
+            if(Support.distance(newPosition, crowd.get(i).getPosition()) <= crowd.get(i).getPedestrianShape().getWidth()){
+                double deltaX = newPosition.getX() - crowd.get(i).getPosition().getX();
+                double deltaY = newPosition.getY() - crowd.get(i).getPosition().getY();
                 double angle = Math.atan2(deltaY, deltaX) + Math.toRadians(180);
 
                 if(Support.getRandomValue(1,10) <= 5)
@@ -118,13 +119,12 @@ public class Pedestrian extends Entity{
                 deltaY = Math.sin(angle) * 100;
                 deltaX = Math.cos(angle) * 100;
 
-                newPosition.x += deltaX / (Constant.ANIMATION_DELAY);
-                newPosition.y += deltaY / (Constant.ANIMATION_DELAY);
+                newPosition = new Point2D.Double(newPosition.getX() + deltaX / (Constant.ANIMATION_DELAY), newPosition.getY() + deltaY / (Constant.ANIMATION_DELAY));
 
             }
         }
 
-        return new Point(newPosition.x, newPosition.y);
+        return new Point2D.Double(newPosition.getX(), newPosition.getY());
     }
 
     /**
@@ -168,17 +168,13 @@ public class Pedestrian extends Entity{
         return goalsNumber;
     }
 
-    public int getGroupID() {
-        return groupID;
+
+    public Ellipse2D getPedestrianShape() {
+        return pedestrianShape;
     }
 
-
-    public List<WayPoint> getGoalsList() {
-        return goalsList;
-    }
-
-    public String getPositionString(){
-        return "[" + this.position.x + ", " + this.position.y + "]";
+    public Point2D getPosition(){
+        return this.position;
     }
 
     public int getVelocity() {
@@ -189,25 +185,13 @@ public class Pedestrian extends Entity{
         return energy;
     }
 
-    public void setGender(int gender) {
-        this.gender = gender;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setVelocity(int velocity) {
-        this.velocity = velocity;
-    }
-
-    public void setEnergy(int energy) {
-        this.energy = energy;
-    }
-
     public void setGoalsList(List<WayPoint> goalsList) {
         this.goalsList = goalsList;
         goalsNumber = goalsList.size();
+    }
+    public void setPosition(Point2D position){
+        this.position.setLocation(position);
+        this.pedestrianShape = new Ellipse2D.Double(position.getX(), position.getY(), Constant.PEDESTRIAN_SIZE, Constant.PEDESTRIAN_SIZE);
     }
 
 }

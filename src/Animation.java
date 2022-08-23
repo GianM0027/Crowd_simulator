@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
 import java.util.List;
 
 /**
@@ -88,23 +89,28 @@ public class Animation extends JPanel implements ActionListener {
         g2D.setPaint(Color.BLACK);
         for (Obstacle obstacle : obstacles) {
             //entity
-            g2D.fillOval(obstacle.getPosition().x, obstacle.getPosition().y, Constant.OBSTACLE_SIZE, Constant.OBSTACLE_SIZE);
+            g2D.fill(obstacle.getObstacleShape());
+
+            /*   TEST BORDI RETTANGOLO
+            g2D.fillRect(obstacle.getBounds().getBoundsRectangle().x, obstacle.getBounds().getBoundsRectangle().y,
+                    obstacle.getBounds().getBoundsRectangle().width, obstacle.getBounds().getBoundsRectangle().height);
+
+            System.out.println("Ostacolo: " + obstacle.getPositionString());
+            System.out.println("Bounds: " + obstacle.getBounds().getUpLeft());*/
         }
 
         //draw way points
         g2D.setPaint(Color.red);
         for (WayPoint wayPoint : wayPoints) {
-            g2D.fillOval(wayPoint.getPosition().x, wayPoint.getPosition().y, Constant.WAYPOINT_SIZE, Constant.WAYPOINT_SIZE);
+            g2D.fill(wayPoint.getWayPointShape());
         }
 
         //draw groups of pedestrians
         for (Group group : groups) {
-
             g2D.setPaint(group.getColor());
 
             for (int j = 0; j < group.getSizeGroup(); j++) {
-                g2D.fillOval(group.getPedestrians().get(j).getPosition().x,
-                        group.getPedestrians().get(j).getPosition().y, Constant.PEDESTRIAN_SIZE, Constant.PEDESTRIAN_SIZE);
+                g2D.fill(group.getPedestrians().get(j).getPedestrianShape());
             }
         }
     }
@@ -114,12 +120,12 @@ public class Animation extends JPanel implements ActionListener {
     /******************************    Handle pedestrians' movement    *************************************/
     @Override
     public void actionPerformed(ActionEvent e) {
-        Point nextPosition;
+        Point2D nextPosition;
 
         for (Pedestrian pedestrian : crowd) {
             nextPosition = pedestrian.nextPosition(this);
-            nextPosition = pedestrian.pedestrianAvoidance(crowd, nextPosition);
-            nextPosition = pedestrian.obstacleAvoidance(obstacles, nextPosition);
+            //nextPosition = pedestrian.pedestrianAvoidance(crowd, nextPosition);
+            //nextPosition = pedestrian.obstacleAvoidance(obstacles, nextPosition);
 
             pedestrian.setPosition(nextPosition);
         }
