@@ -29,9 +29,9 @@ public class Animation extends JPanel implements ActionListener {
         this.crowd = crowd;
         this.obstacles = obstacles;
         this.wayPoints = wayPoints;
-        this.building = new Building();
 
         this.setPreferredSize(new Dimension(this.parentPanel.getWidth(), this.parentPanel.getHeight()));
+        this.building = new Building(this.parentPanel.getWidth(), this.parentPanel.getHeight());
 
         timer = new Timer(Constant.ANIMATION_DELAY, this);
         timer.start();
@@ -48,9 +48,8 @@ public class Animation extends JPanel implements ActionListener {
 
     private void drawBuilding(Graphics g){
         Graphics2D g2D = (Graphics2D) g;
-
-        //building points
-        g2D.setStroke(new BasicStroke(Constant.BUILDING_STROKE));
+        g2D.draw(building.getExternalStructure());
+/*
 
         Point entranceWallUpUp = new Point(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN);
         Point entranceWallUpDown = new Point(Constant.BUILDING_DISTANCE_LEFT, this.getHeight()/2 - Constant.BUILDING_DOOR_SIZE/2 - Constant.BUILDING_DISTANCE_UP_DOWN);
@@ -77,8 +76,7 @@ public class Animation extends JPanel implements ActionListener {
         g2D.drawLine(exitWallDownUp.x, exitWallDownUp.y, exitWallDownDown.x, exitWallDownDown.y);
         g2D.drawLine(entranceWallUpUp.x, entranceWallUpUp.y, exitWallUpUp.x, exitWallUpUp.y);
         g2D.drawLine(entranceWallDownDown.x, entranceWallDownDown.y, exitWallDownDown.x, exitWallDownDown.y);
-
-        g2D.setStroke(new BasicStroke(0));
+*/
     }
 
     private void drawEntities(Graphics g){

@@ -1,4 +1,6 @@
 import support.ConfirmationWindow;
+import support.RangeSlider;
+import support.constants.Constant;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +10,8 @@ import java.awt.*;
  * */
 public class SettingPanel extends JPanel {
 
-    private JTextField numberOfPeople, numberOfWayPoints, sizeOfGroups, numberOfObstacles;
+    private JTextField numberOfPeople, numberOfWayPoints, numberOfObstacles;
+    private RangeSlider groupsSize;
     private JButton playButton, pauseButton, stopButton, confirmButton;
 
 
@@ -36,8 +39,8 @@ public class SettingPanel extends JPanel {
         //setting start and pause buttons
         addButtons(topPanel);
 
-        //Adding label and text fields into the panel
-        addOptionLabelTextField(optionsPanel);
+        //Adding options and simulation's parameters in setting panel
+        addOptions(optionsPanel);
 
         //Adding button for stopping the simulation (last thing to add in this page)
         addConfirmButton(optionsPanel);
@@ -100,7 +103,7 @@ public class SettingPanel extends JPanel {
     /**
      * Add all the options for the simulation, every added field in this function has a label and a text field to fill
      * */
-    private void addOptionLabelTextField(JPanel panel){
+    private void addOptions(JPanel panel){
         //Gbd option for instructions and for every couple (label + spinner)
         GridBagConstraints gbdPanel = new GridBagConstraints();
         gbdPanel.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -119,13 +122,12 @@ public class SettingPanel extends JPanel {
         //Gbd option adjustment (label + spinner)
         gbdPanel.gridx = 0;
         gbdPanel.fill = GridBagConstraints.HORIZONTAL;
-        gbdPanel.insets = new Insets(5,5,5,5);
+        gbdPanel.insets = new Insets(10,10,10,10);
 
         //labels
-        JLabel numPeopleLabel = new JLabel("Number of people:");
+        JLabel numPeopleLabel = new JLabel("Size of the crowd:");
         JLabel numWayPointsLabel = new JLabel("Number of way points:");
         JLabel numObstaclesLabel = new JLabel("Number of obstacles:");
-        JLabel numGroupsLabel = new JLabel("Size of groups:");
 
         //spinners
         this.numberOfPeople = new JTextField();
@@ -134,8 +136,6 @@ public class SettingPanel extends JPanel {
         this.numberOfWayPoints.setPreferredSize(new Dimension(80, 25));
         this.numberOfObstacles = new JTextField();
         this.numberOfObstacles.setPreferredSize(new Dimension(80, 25));
-        this.sizeOfGroups = new JTextField();
-        this.sizeOfGroups.setPreferredSize(new Dimension(80, 25));
 
         //panels where to put every couple (label + spinner)
         JPanel line1 = new JPanel(new BorderLayout());
@@ -153,9 +153,22 @@ public class SettingPanel extends JPanel {
         line3.add(numberOfObstacles, BorderLayout.EAST);
         panel.add(line3, gbdPanel);
 
-        JPanel line4 = new JPanel(new BorderLayout());
-        line4.add(numGroupsLabel, BorderLayout.WEST);
-        line4.add(sizeOfGroups, BorderLayout.EAST);
+
+
+        //adding range slider for groups size
+        JLabel numGroupsLabel = new JLabel("Select a range for the size of the groups:");
+        this.groupsSize = new RangeSlider(Constant.MIN_GROUPS_SIZE, Constant.MAX_GROUPS_SIZE);
+        groupsSize.setFocusable(false);
+        groupsSize.setMinorTickSpacing(1);
+        groupsSize.setMajorTickSpacing(2);
+        groupsSize.setValue(Constant.MIN_GROUPS_SIZE);
+        groupsSize.setExtent(Constant.MAX_GROUPS_SIZE);
+        groupsSize.setPaintLabels(true);
+        groupsSize.setPaintTicks(true);
+
+        JPanel line4 = new JPanel(new BorderLayout(10,10));
+        line4.add(numGroupsLabel, BorderLayout.NORTH);
+        line4.add(groupsSize, BorderLayout.CENTER);
         panel.add(line4, gbdPanel);
     }
 
@@ -164,7 +177,7 @@ public class SettingPanel extends JPanel {
      * */
     private void addConfirmButton(JPanel panel){
         this.confirmButton = new JButton("Confirm");
-        this.confirmButton.addActionListener(e -> setParameters());
+        this.confirmButton.addActionListener(e -> setSimulationParameters());
         this.confirmButton.setFocusable(false);
 
         //gbd settings
@@ -178,7 +191,7 @@ public class SettingPanel extends JPanel {
         panel.add(this.confirmButton, gbd);
     }
 
-    private void setParameters(){
+    private void setSimulationParameters(){
         //controls before setting parameters, if any field is empty a warning message will be shown
         if(this.numberOfPeople.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'number of people' field");
@@ -201,19 +214,13 @@ public class SettingPanel extends JPanel {
             JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'number of obstacles' field");
             return;
         }
-        if(this.sizeOfGroups.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'size of groups' field");
-            return;
-        } else if(Integer.parseInt(this.sizeOfGroups.getText()) == 0){
-            JOptionPane.showMessageDialog(null, "Insert a value bigger than 0 in the 'size of groups' field");
-            return;
-        } else if(Integer.parseInt(this.sizeOfGroups.getText()) > Integer.parseInt(this.numberOfPeople.getText())){
-            JOptionPane.showMessageDialog(null, "The size of groups in the 'size of groups' field must be bigger than the value in the 'number of people' field");
+        if(this.groupsSize.getUpperValue() > Integer.parseInt(numberOfPeople.getText())) {
+            JOptionPane.showMessageDialog(null, "Max value of 'size of groups' must be lower than the crowd size");
             return;
         }
 
-        //if all the fields are filled, you set the parameters of the simulation even in the "Simulation" class
-        Simulation.getInstance().setParameters(Integer.parseInt(this.numberOfPeople.getText()), Integer.parseInt(this.sizeOfGroups.getText()),
+        //if all the fields are correctly filled up, you set the parameters of the simulation even in the "Simulation" class
+        Simulation.getInstance().setParameters(Integer.parseInt(this.numberOfPeople.getText()), groupsSize.getValue(), groupsSize.getUpperValue(),
                 Integer.parseInt(this.numberOfObstacles.getText()), Integer.parseInt(this.numberOfWayPoints.getText()));
     }
 
@@ -254,7 +261,8 @@ public class SettingPanel extends JPanel {
         if(new ConfirmationWindow("Do you really want to stop the simulation? It will restore all the settings").isConfirmed()) {
             this.numberOfPeople.setText("");
             this.numberOfObstacles.setText("");
-            this.sizeOfGroups.setText("");
+            this.groupsSize.setValue(Constant.MIN_GROUPS_SIZE);
+            this.groupsSize.setUpperValue(Constant.MAX_GROUPS_SIZE);
             this.numberOfWayPoints.setText("");
             disableStopPauseButtons();
             Simulation.getInstance().stopSimulation();

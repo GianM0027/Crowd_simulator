@@ -1,94 +1,36 @@
 package models;
 
-
 import support.constants.Constant;
 
-import java.awt.*;
+import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 
 public class Building {
-    private Point entranceDoor;
-    private Point exitDoor;
+    private Rectangle2D externalStructure;
+    private double width;
+    private double height;
+    private Rectangle2D entranceDoor;
+    private Rectangle2D exitDoor;
+    public Building(int panelWidth, int panelHeight){
+        this.width = (double)panelWidth - Constant.BUILDING_DISTANCE_LEFT - Constant.BUILDING_DISTANCE_RIGHT - 1;
+        this.height = (double)panelHeight - Constant.BUILDING_DISTANCE_UP_DOWN - 20;
 
-    private Point entranceUpUp;
-    private Point entranceUpDown;
-    private Point entranceDownUp;
-    private Point entranceDownDown;
 
-    private Point exitUpUp;
-    private Point exitUpDown;
-    private Point exitDownUp;
-    private Point exitDownDown;
+        externalStructure = new Rectangle2D.Double(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN, width, height);
 
-    public Building(){
-        entranceDoor = new Point();
-        exitDoor = new Point();
+        System.out.println("Panel width: " +panelWidth + "\tPanel height: " + panelHeight);
+        System.out.println("Building width: " + width + "\tPanel height: " + height);
     }
 
-    public void setEntranceUpUp(Point entranceUpUp) {
-        this.entranceUpUp = entranceUpUp;
+    public Rectangle2D getExternalStructure() {
+        return externalStructure;
     }
 
-    public void setEntranceUpDown(Point entranceUpDown) {
-        this.entranceUpDown = entranceUpDown;
-        this.entranceDoor.x = entranceUpDown.x;
-        this.entranceDoor.y = entranceUpDown.y + Constant.BUILDING_DOOR_SIZE/2;
+    public Rectangle2D getEntranceDoor() {
+        return entranceDoor;
     }
 
-    public void setEntranceDownUp(Point entranceDownUp) {
-        this.entranceDownUp = entranceDownUp;
-    }
-
-    public void setEntranceDownDown(Point entranceDownDown) {
-        this.entranceDownDown = entranceDownDown;
-    }
-
-    public void setExitUpUp(Point exitUpUp) {
-        this.exitUpUp = exitUpUp;
-    }
-
-    public void setExitUpDown(Point exitUpDown) {
-        this.exitUpDown = exitUpDown;
-        this.exitDoor.x = exitUpDown.x;
-        this.exitDoor.y = exitUpDown.y + Constant.BUILDING_DOOR_SIZE/2;
-    }
-
-    public void setExitDownUp(Point exitDownUp) {
-        this.exitDownUp = exitDownUp;
-    }
-
-    public void setExitDownDown(Point exitDownDown) {
-        this.exitDownDown = exitDownDown;
-    }
-
-    public Point getEntranceUpUp() {
-        return entranceUpUp;
-    }
-
-    public Point getEntranceUpDown() {
-        return entranceUpDown;
-    }
-
-    public Point getEntranceDownUp() {
-        return entranceDownUp;
-    }
-
-    public Point getEntranceDownDown() {
-        return entranceDownDown;
-    }
-
-    public Point getExitUpUp() {
-        return exitUpUp;
-    }
-
-    public Point getExitUpDown() {
-        return exitUpDown;
-    }
-
-    public Point getExitDownUp() {
-        return exitDownUp;
-    }
-
-    public Point getExitDownDown() {
-        return exitDownDown;
+    public Rectangle2D getExitDoor() {
+        return exitDoor;
     }
 }

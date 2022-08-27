@@ -2,7 +2,6 @@ package models;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 /**
  * Every entity that does not have to move around is a "FixedEntity" (obstacles and way points)

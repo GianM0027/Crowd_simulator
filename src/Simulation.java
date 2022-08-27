@@ -20,20 +20,22 @@ public class Simulation extends JPanel{
     private boolean isRunning;
 
     private ArrayList<Pedestrian> crowd;
-    private ArrayList<Group> groups;
+    private ArrayList<Group> Groups;
     private ArrayList<Obstacle> obstacles;
     private ArrayList<WayPoint> wayPoints;
     private ArrayList<WayPoint> crowdGoals;
 
     private int numberOfPeople;
     private int numberOfGroups;
-    private int sizeOfGroups;
+    private int minGroupSize;
+    private int maxGroupSize;
     private int numberOfObstacles;
     private int numberOfWayPoints;
 
     public Simulation(){
         this.isRunning = false;
-        this.sizeOfGroups = 0;
+        this.minGroupSize = Constant.MIN_GROUPS_SIZE;
+        this.maxGroupSize = Constant.MAX_GROUPS_SIZE;
         this.numberOfObstacles = 0;
         this.numberOfPeople = 0;
         this.numberOfWayPoints = 0;
@@ -69,7 +71,7 @@ public class Simulation extends JPanel{
         this.removeAll();
         this.revalidate();
         this.repaint();
-        animation = new Animation(this, this.crowd, this.obstacles, this.wayPoints, this.groups);
+        animation = new Animation(this, this.crowd, this.obstacles, this.wayPoints, this.Groups);
         this.add(animation);
         this.revalidate();
         this.repaint();
@@ -91,8 +93,8 @@ public class Simulation extends JPanel{
      *
      * */
     protected void stopSimulation(){
-        setParameters(0,0,0,0);
-        this.groups.clear();
+        setParameters(0,Constant.MIN_GROUPS_SIZE,Constant.MAX_GROUPS_SIZE,0, 0);
+        this.Groups.clear();
         this.wayPoints.clear();
         this.obstacles.clear();
         this.crowd.clear();
@@ -168,46 +170,54 @@ public class Simulation extends JPanel{
      * */
     private void createCrowd(){
         this.crowd = new ArrayList<>();
-        this.groups = new ArrayList<>();
+        this.Groups = new ArrayList<>();
 
         //create the crowd
         for(int i = 0; i < numberOfPeople; i++){
-            Point2D point = new Point2D.Double(Support.getRandomValue(Constant.PEDESTRIAN_SIZE + Constant.BOUNDS_DISTANCE,  Constant.BUILDING_DISTANCE_LEFT - Constant.PEDESTRIAN_SIZE - 2*Constant.BOUNDS_DISTANCE),
-                    Support.getRandomValue(Constant.PEDESTRIAN_SIZE + Constant.BOUNDS_DISTANCE, this.getHeight() - Constant.PEDESTRIAN_SIZE - Constant.BOUNDS_DISTANCE));
+            Point2D point = new Point2D.Double(Support.getRandomValue(Constant.PEDESTRIAN_SIZE + Constant.BOUNDS_DISTANCE,
+                    Constant.BUILDING_DISTANCE_LEFT - Constant.PEDESTRIAN_SIZE - 2*Constant.BOUNDS_DISTANCE),
+                    Support.getRandomValue(Constant.PEDESTRIAN_SIZE + Constant.BOUNDS_DISTANCE,
+                            this.getHeight() - Constant.PEDESTRIAN_SIZE - Constant.BOUNDS_DISTANCE));
 
             Pedestrian p = new Pedestrian(point, i);
             this.crowd.add(i, p);
         }
 
         //divide the crowd into groups
+        ArrayList<Pedestrian> people = new ArrayList<>(crowd);
         int groupIndex = 0;
-        this.numberOfGroups = (int)Math.floor((double) numberOfPeople/sizeOfGroups);
-        for(int i = 1; i <= numberOfGroups; i++){
-            List<WayPoint> goalsList = goalsList();
-            Collections.shuffle(goalsList);
+        int groupSize;
 
-            Group group = new Group(i, goalsList, crowd.subList(groupIndex, groupIndex + sizeOfGroups));
+        do {
+            groupSize = Support.getRandomValue(minGroupSize, maxGroupSize);
+            List<WayPoint> goalsList = new ArrayList<>(goalsList(groupSize));
+            ArrayList<Pedestrian> peopleInTheGroup = new ArrayList<>();
+
+            for (int i = 0; i < groupSize; i++) {
+                if (people.isEmpty())
+                    break;
+                peopleInTheGroup.add(people.get(0));
+                people.remove(0);
+            }
+
+            Group Group = new Group(groupIndex, goalsList, peopleInTheGroup);
+            groupIndex++;
+
             Color groupColor;
             do {
                 groupColor = new Color(new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat());
-                group.setColor(groupColor);
+                Group.setColor(groupColor);
             }while(groupColor == Color.GRAY || groupColor == Color.WHITE || groupColor == Color.BLACK || groupColor == Color.RED);
 
-            for(Pedestrian p : group.getPedestrians())
-                p.setGoalsList(new ArrayList<>(goalsList));
+            Groups.add(Group);
+        } while (!people.isEmpty());
 
+        numberOfGroups = Groups.size();
 
-            this.groups.add(i-1, group);
-            groupIndex += sizeOfGroups;
-        }
-        if(numberOfPeople%sizeOfGroups != 0){
-            this.numberOfGroups++;
-            this.groups.add(0, new Group(0, goalsList(), crowd.subList(groupIndex, crowd.size())));
-        }
 
         //create crowd goals list
         crowdGoals = new ArrayList<>();
-        for(Group o: groups){
+        for(Group o: Groups){
             for(WayPoint w: o.getGoalsList())
                 if(!crowdGoals.contains(w))
                     crowdGoals.add(w);
@@ -215,14 +225,51 @@ public class Simulation extends JPanel{
     }
 
     /**
-     * Assign a list of goals to each group
+     * Assign a list of goals to each group, the bigger is the group (with respect to the number of waypoints)
+     * the higher is the probability of having more goals
      * */
-    private List<WayPoint> goalsList(){
-        ArrayList<WayPoint> list = new ArrayList<>(this.wayPoints);
+    private List<WayPoint> goalsList(int groupSize){
+        ArrayList<WayPoint> goalsList = new ArrayList<>(this.wayPoints);
+        float groupsGoalsRatio = (float)groupSize/goalsList.size();
 
-        list.removeIf(w -> Support.getRandomValue(1, 10) <= 4); //40% of probability to remove a way point from the initial list
+        //If the group if pedestrian has size lower than 1/20 of the list of goals then 10% of probability to assign each goal
+        if(groupsGoalsRatio <= 0.55) {
+            goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 90);
+        }
 
-        return list;
+        //If the group if pedestrian has size lower than 1/10 of the list of goals then 30% of probability to assign each goal
+        else if(groupsGoalsRatio <= 0.1) {
+            goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 70);
+        }
+
+        //If the group if pedestrian has size lower than 1/5 of the list of goals then 40% of probability to assign each goal
+        else if(groupsGoalsRatio <= 0.2) {
+            goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 60);
+        }
+
+        //If the group if pedestrian has size lower than 1/3 of the list of goals then 50% of probability to assign each goal
+        else if(groupsGoalsRatio <= 0.33) {
+            goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 50);
+        }
+
+        //If the group if pedestrian has size lower than 1/2 of the list of goals then 55% of probability to assign each goal
+        else if(groupsGoalsRatio <= 0.5) {
+            goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 45);
+        }
+
+        //If the group if pedestrian has size higher than half list of goals then 60% of probability to assign each goal
+        else if(groupsGoalsRatio < 0.8) {
+            goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 40);
+        }
+
+        //If the group if pedestrian has size higher than the list of goals then 70% of probability to assign each goal
+        else if(groupsGoalsRatio >= 0.8) {
+            goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 30);
+        }
+
+        //System.out.println("Gruppo di grandezza " + groupSize + "\tObiettivi: " + goalsList.size());
+
+        return goalsList;
     }
 
 
@@ -231,8 +278,11 @@ public class Simulation extends JPanel{
         return numberOfPeople;
     }
 
-    public int getSizeOfGroups() {
-        return sizeOfGroups;
+    public int getMinSizeOfGroups() {
+        return minGroupSize;
+    }
+    public int getMaxSizeOfGroups() {
+        return maxGroupSize;
     }
 
     public int getNumberOfObstacles() {
@@ -263,15 +313,16 @@ public class Simulation extends JPanel{
         isRunning = running;
     }
 
-    public void setParameters(int numberOfPeople, int numberOfGroups, int numberOfObstacles, int numberOfWayPoints){
-        this.sizeOfGroups = numberOfGroups;
+    public void setParameters(int numberOfPeople, int minGroupSize, int maxGroupSize, int numberOfObstacles, int numberOfWayPoints){
+        this.minGroupSize = minGroupSize;
+        this.maxGroupSize = maxGroupSize;
         this.numberOfObstacles = numberOfObstacles;
         this.numberOfPeople = numberOfPeople;
         this.numberOfWayPoints = numberOfWayPoints;
     }
 
     public boolean missingParameters(){
-        if (this.sizeOfGroups == 0 || this.numberOfObstacles == 0 || this.numberOfPeople == 0 || this.numberOfWayPoints == 0)
+        if (this.numberOfObstacles == 0 || this.numberOfPeople == 0 || this.numberOfWayPoints == 0)
             return true;
         return false;
     }

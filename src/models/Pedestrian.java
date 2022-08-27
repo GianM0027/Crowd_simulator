@@ -58,10 +58,10 @@ public class Pedestrian extends Entity{
         double deltaY = this.position.getX() - goalPosition.getX();
         double angle = Math.atan2(deltaY, deltaX) + Math.PI;
 
-        deltaY = Math.sin(angle);
-        deltaX = Math.cos(angle);
+        deltaY = Math.sin(angle)/100;
+        deltaX = Math.cos(angle)/100;
 
-        nextPos = new Point2D.Double(nextPos.getX() + deltaX / Constant.ANIMATION_DELAY, nextPos.getY() + deltaY / Constant.ANIMATION_DELAY);
+        nextPos = new Point2D.Double(nextPos.getX() + deltaX, nextPos.getY() + deltaY);
 
         if(Support.distance(this.position, goalPosition) < this.bounds.getWidth() && !goalsList.isEmpty()){
             this.goalsList.remove(0);

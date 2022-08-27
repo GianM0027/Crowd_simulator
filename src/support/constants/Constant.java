@@ -1,6 +1,7 @@
 package support.constants;
 
 public class Constant {
+
     // entities constant
     public static final int PEDESTRIAN = -1;
     public static final int OBSTACLE = -2;
@@ -23,9 +24,11 @@ public class Constant {
     public static final int MAX_ENERGY_YOUNG = 50;
     public static final int MIN_ENERGY_OLD = 20;
     public static final int MAX_ENERGY_OLD = 40;
+    public static final int MIN_GROUPS_SIZE = 1;
+    public static final int MAX_GROUPS_SIZE = 15;
 
 
-    /** animation's constants */
+    // animation's constants
     public static final int BOUNDS_DISTANCE = PEDESTRIAN_SIZE /2;
     public static final int BUILDING_STROKE = 3;
     public static final int BUILDING_DOOR_SIZE = 40;
