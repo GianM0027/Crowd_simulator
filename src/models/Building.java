@@ -1,5 +1,6 @@
 package models;
 
+import support.Support;
 import support.constants.Constant;
 
 import java.awt.*;
@@ -49,15 +50,20 @@ public class Building {
         entrance = new Line2D.Double(entranceWallUpDown, exitWallDownUp);
         exit = new Line2D.Double(exitWallUpDown, exitWallDownUp);
 
-        //rooms of the building
+        //rooms of the building (up and down)
         rooms = new ArrayList<>();
-        rooms.add(new Room(this.entranceUpWall.getP1(), width/3, height/3));
-        rooms.add(new Room(this.rooms.get(0).getRightWall().getP1(), width/3, height/3));
-        rooms.add(new Room(this.rooms.get(1).getRightWall().getP1(), width/3, height/3));
 
-        rooms.add(new Room(this.entranceUpWall.getX1(), height - height/3, width/3, height/3));
-        rooms.add(new Room(this.rooms.get(3).getRightWall().getP1(), width/3, height/3));
-        rooms.add(new Room(this.rooms.get(4).getRightWall().getP1(), width/3, height/3));
+        int upperRoomsNum = Support.getRandomValue(3, 6);
+        Point2D roomPosition = new Point2D.Double(entranceUpWall.getP1().getX(), entranceUpWall.getP1().getY());
+        for(int i = 0; i < upperRoomsNum; i++){
+            rooms.add(new Room(roomPosition.getX() + ((width/upperRoomsNum)*i), roomPosition.getY(), width/upperRoomsNum, height/3));
+        }
+
+        int bottomRoomsNum = Support.getRandomValue(3, 6);
+        roomPosition = new Point2D.Double(entranceUpWall.getX1(), height - height/3);
+        for(int i = 0; i < bottomRoomsNum; i++){
+            rooms.add(new Room(roomPosition.getX() + ((width/bottomRoomsNum)*i), roomPosition.getY(), width/bottomRoomsNum, height/3));
+        }
     }
 
     public void drawExternalArea(Graphics2D g2D){

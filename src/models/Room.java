@@ -23,12 +23,12 @@ public class Room{
         //if the room is on the upper part of the building
         if(roomPosition.getY() <= Constant.BUILDING_DISTANCE_UP_DOWN*2){
             doorWallLeft = new Line2D.Double(roomPosition.getX(), roomPosition.getY() + height, roomPosition.getX() + width/2 - Constant.BUILDING_DOOR_SIZE/2d, roomPosition.getY() + height);
-            doorWallRight = new Line2D.Double(roomPosition.getX() + width, roomPosition.getY() + height, roomPosition.getX() + width/2 + Constant.BUILDING_DOOR_SIZE/2d, roomPosition.getY() + height);
+            doorWallRight = new Line2D.Double(roomPosition.getX() + width/2 + Constant.BUILDING_DOOR_SIZE/2d, roomPosition.getY() + height, roomPosition.getX() + width, roomPosition.getY() + height);
         }
         //else the room is in the bottom part of the building
         else{
             doorWallLeft = new Line2D.Double(roomPosition.getX(), roomPosition.getY(), roomPosition.getX() + width/2 - Constant.BUILDING_DOOR_SIZE/2d, roomPosition.getY());
-            doorWallRight = new Line2D.Double(roomPosition.getX() + width, roomPosition.getY(), roomPosition.getX() + width/2 + Constant.BUILDING_DOOR_SIZE/2d, roomPosition.getY());
+            doorWallRight = new Line2D.Double(roomPosition.getX() + width/2 + Constant.BUILDING_DOOR_SIZE/2d, roomPosition.getY(), roomPosition.getX() + width, roomPosition.getY());
         }
     }
 
