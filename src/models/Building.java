@@ -2,35 +2,106 @@ package models;
 
 import support.constants.Constant;
 
-import java.awt.geom.Area;
-import java.awt.geom.Rectangle2D;
+import java.awt.*;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Building {
-    private Rectangle2D externalStructure;
     private double width;
     private double height;
-    private Rectangle2D entranceDoor;
-    private Rectangle2D exitDoor;
+
+    private List<Room> rooms;
+    private Line2D entrance;
+    private Line2D exit;
+    private Line2D entranceUpWall;
+    private Line2D entranceBottomWall;
+    private Line2D exitUpWall;
+    private Line2D exitBottomWall;
+    private Line2D upWall;
+    private Line2D bottomWall;
+
     public Building(int panelWidth, int panelHeight){
-        this.width = (double)panelWidth - Constant.BUILDING_DISTANCE_LEFT - Constant.BUILDING_DISTANCE_RIGHT - 1;
-        this.height = (double)panelHeight - Constant.BUILDING_DISTANCE_UP_DOWN - 20;
+        //dimension of the external structure
+        width = panelWidth - Constant.BUILDING_DISTANCE_LEFT - Constant.BUILDING_DISTANCE_RIGHT;
+        height = panelHeight - Constant.BUILDING_DISTANCE_UP_DOWN - 1;
+
+        //points of the external structure
+        Point2D entranceWallUpUp = new Point2D.Double(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN);
+        Point2D entranceWallUpDown = new Point2D.Double(Constant.BUILDING_DISTANCE_LEFT, panelHeight/2 - Constant.BUILDING_DOOR_SIZE/2 - Constant.BUILDING_DISTANCE_UP_DOWN);
+        Point2D entranceWallDownUp = new Point2D.Double(Constant.BUILDING_DISTANCE_LEFT, panelHeight/2 + Constant.BUILDING_DOOR_SIZE/2);
+        Point2D entranceWallDownDown = new Point2D.Double(Constant.BUILDING_DISTANCE_LEFT, panelHeight - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
+        Point2D exitWallUpUp = new Point2D.Double(panelWidth - Constant.BUILDING_DISTANCE_RIGHT, Constant.BUILDING_DISTANCE_UP_DOWN);
+        Point2D exitWallUpDown = new Point2D.Double(panelWidth - Constant.BUILDING_DISTANCE_RIGHT, panelHeight/2 - Constant.BUILDING_DOOR_SIZE/2 - Constant.BUILDING_DISTANCE_UP_DOWN);
+        Point2D exitWallDownUp = new Point2D.Double(panelWidth - Constant.BUILDING_DISTANCE_RIGHT,panelHeight/2 + Constant.BUILDING_DOOR_SIZE/2);
+        Point2D exitWallDownDown = new Point2D.Double(panelWidth - Constant.BUILDING_DISTANCE_RIGHT, panelHeight - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
 
 
-        externalStructure = new Rectangle2D.Double(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN, width, height);
+        //external structure with entrance and exit
+        entranceUpWall = new Line2D.Double(entranceWallUpUp, entranceWallUpDown);
+        entranceBottomWall = new Line2D.Double(entranceWallDownUp, entranceWallDownDown);
+        exitUpWall = new Line2D.Double(exitWallUpUp, exitWallUpDown);
+        exitBottomWall = new Line2D.Double(exitWallDownUp, exitWallDownDown);
+        upWall = new Line2D.Double(entranceWallUpUp, exitWallUpUp);
+        bottomWall = new Line2D.Double(entranceWallDownDown, exitWallDownDown);
 
-        System.out.println("Panel width: " +panelWidth + "\tPanel height: " + panelHeight);
-        System.out.println("Building width: " + width + "\tPanel height: " + height);
+        entrance = new Line2D.Double(entranceWallUpDown, exitWallDownUp);
+        exit = new Line2D.Double(exitWallUpDown, exitWallDownUp);
+
+        //rooms of the building
+        rooms = new ArrayList<>();
+        rooms.add(new Room(this.entranceUpWall.getP1(), width/3, height/3));
+        rooms.add(new Room(this.rooms.get(0).getRightWall().getP1(), width/3, height/3));
+        rooms.add(new Room(this.rooms.get(1).getRightWall().getP1(), width/3, height/3));
+
+        rooms.add(new Room(this.entranceUpWall.getX1(), height - height/3, width/3, height/3));
+        rooms.add(new Room(this.rooms.get(3).getRightWall().getP1(), width/3, height/3));
+        rooms.add(new Room(this.rooms.get(4).getRightWall().getP1(), width/3, height/3));
     }
 
-    public Rectangle2D getExternalStructure() {
-        return externalStructure;
+    public void drawExternalArea(Graphics2D g2D){
+        g2D.draw(entranceUpWall);
+        g2D.draw(entranceBottomWall);
+        g2D.draw(exitUpWall);
+        g2D.draw(exitBottomWall);
+        g2D.draw(upWall);
+        g2D.draw(bottomWall);
     }
 
-    public Rectangle2D getEntranceDoor() {
-        return entranceDoor;
+    public Line2D getEntranceUpWall() {
+        return entranceUpWall;
     }
 
-    public Rectangle2D getExitDoor() {
-        return exitDoor;
+    public Line2D getEntranceBottomWall() {
+        return entranceBottomWall;
+    }
+
+    public Line2D getExitUpWall() {
+        return exitUpWall;
+    }
+
+    public Line2D getExitBottomWall() {
+        return exitBottomWall;
+    }
+
+    public Line2D getUpWall() {
+        return upWall;
+    }
+
+    public Line2D getBottomWall() {
+        return bottomWall;
+    }
+
+    public Line2D getEntrance() {
+        return entrance;
+    }
+
+    public Line2D getExit() {
+        return exit;
+    }
+
+    public List<Room> getRooms() {
+        return rooms;
     }
 }

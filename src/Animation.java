@@ -48,7 +48,12 @@ public class Animation extends JPanel implements ActionListener {
 
     private void drawBuilding(Graphics g){
         Graphics2D g2D = (Graphics2D) g;
-        g2D.draw(building.getExternalStructure());
+
+        g2D.setStroke(new BasicStroke(Constant.BUILDING_STROKE));
+        building.drawExternalArea(g2D);
+        for(int i = 0; i < building.getRooms().size(); i++)
+            building.getRooms().get(i).drawRoom(g2D);
+        g2D.setStroke(new BasicStroke(0));
 /*
 
         Point entranceWallUpUp = new Point(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN);
