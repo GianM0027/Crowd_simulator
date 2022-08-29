@@ -1,5 +1,6 @@
 package models;
 
+import support.EntityBound;
 import support.Support;
 import support.constants.Constant;
 
@@ -9,7 +10,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 public class Obstacle extends Entity {
-    private Rectangle2D bounds;
+    private EntityBound bounds;
     private Shape obstacleShape;
 
     public Obstacle(Point2D position){
@@ -20,14 +21,15 @@ public class Obstacle extends Entity {
             obstacleShape = new Ellipse2D.Double(position.getX(), position.getY(), Constant.OBSTACLE_SIZE, Constant.OBSTACLE_SIZE);
         else
             obstacleShape = new Rectangle2D.Double(position.getX(), position.getY(), Constant.OBSTACLE_SIZE, Constant.OBSTACLE_SIZE);
-        bounds = obstacleShape.getBounds2D();
+
+        bounds = new EntityBound(this);
     }
 
     public Point2D getPosition(){
         return this.position;
     }
 
-    public Rectangle2D getBounds() {
+    public EntityBound getBounds() {
         return bounds;
     }
 

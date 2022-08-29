@@ -1,5 +1,6 @@
 package models;
 
+import support.EntityBound;
 import support.constants.Constant;
 
 import java.awt.*;
@@ -8,7 +9,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 public class WayPoint extends Entity {
-    private Rectangle2D bounds;
+    private EntityBound bounds;
     private Ellipse2D wayPointShape;
 
     public WayPoint(Point2D position){
@@ -16,13 +17,14 @@ public class WayPoint extends Entity {
         entityType = Constant.WAY_POINT;
 
         wayPointShape = new Ellipse2D.Double(position.getX(), position.getY(), Constant.WAYPOINT_SIZE, Constant.WAYPOINT_SIZE);
+        bounds = new EntityBound(this);
     }
 
     public Point2D getPosition() {
         return this.position;
     }
 
-    public Rectangle2D getBounds() {
+    public EntityBound getBounds() {
         return bounds;
     }
 

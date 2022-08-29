@@ -1,5 +1,6 @@
 package models;
 
+import support.EntityBound;
 import support.Support;
 import support.constants.Constant;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * Every Pedestrian is a mobile entity with its own characteristics
  * */
 public class Pedestrian extends Entity{
-    private Rectangle2D bounds;
+    private EntityBound bounds;
     private Ellipse2D pedestrianShape;
     private int gender;
     private int age;
@@ -29,7 +30,7 @@ public class Pedestrian extends Entity{
         super(position);
         entityType = Constant.PEDESTRIAN;
         pedestrianShape = new Ellipse2D.Double(position.getX(), position.getY(), Constant.PEDESTRIAN_SIZE, Constant.PEDESTRIAN_SIZE);
-        bounds = pedestrianShape.getBounds2D();
+        bounds = new EntityBound(this);
 
         this.groupID = groupId;
         this.goalsNumber = 0;
@@ -61,7 +62,7 @@ public class Pedestrian extends Entity{
         deltaY = Math.sin(angle)/100;
         deltaX = Math.cos(angle)/100;
 
-        nextPos = new Point2D.Double(nextPos.getX() + deltaX, nextPos.getY() + deltaY);
+        nextPos = new Point2D.Double(nextPos.getX() + deltaX + 1, nextPos.getY() + deltaY + 1); //+1 non ci sta a fare nulla
 
         if(Support.distance(this.position, goalPosition) < this.bounds.getWidth() && !goalsList.isEmpty()){
             this.goalsList.remove(0);
@@ -155,6 +156,10 @@ public class Pedestrian extends Entity{
             return "Female";
     }
 
+    public EntityBound getBounds() {
+        return bounds;
+    }
+
     public String getAgeString() {
         if(this.getAge() == Constant.CHILD)
             return "Child";
@@ -192,6 +197,7 @@ public class Pedestrian extends Entity{
     public void setPosition(Point2D position){
         this.position.setLocation(position);
         this.pedestrianShape = new Ellipse2D.Double(position.getX(), position.getY(), Constant.PEDESTRIAN_SIZE, Constant.PEDESTRIAN_SIZE);
+        this.bounds = new EntityBound(this);
     }
 
 }

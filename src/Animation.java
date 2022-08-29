@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.List;
 
@@ -54,35 +55,8 @@ public class Animation extends JPanel implements ActionListener {
         for(int i = 0; i < building.getRooms().size(); i++)
             building.getRooms().get(i).drawRoom(g2D);
         g2D.setStroke(new BasicStroke(0));
-/*
-
-        Point entranceWallUpUp = new Point(Constant.BUILDING_DISTANCE_LEFT, Constant.BUILDING_DISTANCE_UP_DOWN);
-        Point entranceWallUpDown = new Point(Constant.BUILDING_DISTANCE_LEFT, this.getHeight()/2 - Constant.BUILDING_DOOR_SIZE/2 - Constant.BUILDING_DISTANCE_UP_DOWN);
-        Point entranceWallDownUp = new Point(Constant.BUILDING_DISTANCE_LEFT, this.getHeight()/2 + Constant.BUILDING_DOOR_SIZE/2);
-        Point entranceWallDownDown = new Point(Constant.BUILDING_DISTANCE_LEFT, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
-        Point exitWallUpUp = new Point(this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT, Constant.BUILDING_DISTANCE_UP_DOWN);
-        Point exitWallUpDown = new Point(this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT, this.getHeight()/2 - Constant.BUILDING_DOOR_SIZE/2 - Constant.BUILDING_DISTANCE_UP_DOWN);
-        Point exitWallDownUp = new Point(this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT,this.getHeight()/2 + Constant.BUILDING_DOOR_SIZE/2);
-        Point exitWallDownDown = new Point(this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT, this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
-
-        building.setEntranceUpUp(entranceWallUpUp);
-        building.setEntranceUpDown(entranceWallUpDown);
-        building.setEntranceDownUp(entranceWallDownUp);
-        building.setEntranceDownDown(entranceWallDownDown);
-        building.setExitUpUp(exitWallUpUp);
-        building.setExitUpDown(exitWallUpDown);
-        building.setExitDownUp(exitWallDownUp);
-        building.setExitDownDown(exitWallDownDown);
-
-        //draw builing
-        g2D.drawLine(entranceWallUpUp.x, entranceWallUpUp.y, entranceWallUpDown.x, entranceWallUpDown.y);
-        g2D.drawLine(entranceWallDownUp.x, entranceWallDownUp.y, entranceWallDownDown.x, entranceWallDownDown.y);
-        g2D.drawLine(exitWallUpUp.x, exitWallUpUp.y, exitWallUpDown.x, exitWallUpDown.y);
-        g2D.drawLine(exitWallDownUp.x, exitWallDownUp.y, exitWallDownDown.x, exitWallDownDown.y);
-        g2D.drawLine(entranceWallUpUp.x, entranceWallUpUp.y, exitWallUpUp.x, exitWallUpUp.y);
-        g2D.drawLine(entranceWallDownDown.x, entranceWallDownDown.y, exitWallDownDown.x, exitWallDownDown.y);
-*/
     }
+
 
     private void drawEntities(Graphics g){
         Graphics2D g2D = (Graphics2D) g;
@@ -91,15 +65,8 @@ public class Animation extends JPanel implements ActionListener {
         //draw obstacles
         g2D.setPaint(Color.BLACK);
         for (Obstacle obstacle : obstacles) {
-            //entity
             g2D.fill(obstacle.getObstacleShape());
 
-            /*   TEST BORDI RETTANGOLO
-            g2D.fillRect(obstacle.getBounds().getBoundsRectangle().x, obstacle.getBounds().getBoundsRectangle().y,
-                    obstacle.getBounds().getBoundsRectangle().width, obstacle.getBounds().getBoundsRectangle().height);
-
-            System.out.println("Ostacolo: " + obstacle.getPositionString());
-            System.out.println("Bounds: " + obstacle.getBounds().getUpLeft());*/
         }
 
         //draw way points
@@ -108,7 +75,7 @@ public class Animation extends JPanel implements ActionListener {
             g2D.fill(wayPoint.getWayPointShape());
         }
 
-        //draw groups of pedestrians
+        //for each group of pedestrians, draw its components
         for (Group group : groups) {
             g2D.setPaint(group.getColor());
 
