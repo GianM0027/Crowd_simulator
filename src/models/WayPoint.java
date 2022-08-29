@@ -3,10 +3,8 @@ package models;
 import support.EntityBound;
 import support.constants.Constant;
 
-import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 public class WayPoint extends Entity {
     private EntityBound bounds;
@@ -16,7 +14,7 @@ public class WayPoint extends Entity {
         super(position);
         entityType = Constant.WAY_POINT;
 
-        wayPointShape = new Ellipse2D.Double(position.getX(), position.getY(), Constant.WAYPOINT_SIZE, Constant.WAYPOINT_SIZE);
+        wayPointShape = new Ellipse2D.Double(position.getX(), position.getY(), Constant.WAYPOINT_WIDTH, Constant.WAYPOINT_HEIGHT);
         bounds = new EntityBound(this);
     }
 
@@ -24,7 +22,7 @@ public class WayPoint extends Entity {
         return this.position;
     }
 
-    public EntityBound getBounds() {
+    public EntityBound getEntityBounds() {
         return bounds;
     }
 

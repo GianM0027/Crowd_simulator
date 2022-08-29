@@ -35,35 +35,36 @@ public class EntityBound{
 
         //if the entity is a pedestrian use the "Constant.PEDESTRIAN_SIZE" to compute bounds
         if(entity.getEntityType() == Constant.PEDESTRIAN) {
-            this.center = new Point2D.Double(position.getX() + Constant.PEDESTRIAN_SIZE / 2d, position.getY() + Constant.PEDESTRIAN_SIZE / 2d);
+            position.setLocation(entity.getPosition().getX(), entity.getPosition().getY() - (Constant.PEDESTRIAN_WIDTH - Constant.PEDESTRIAN_HEIGHT));
+            this.center = new Point2D.Double(position.getX() + Constant.PEDESTRIAN_WIDTH / 2d, position.getY() + Constant.PEDESTRIAN_WIDTH / 2d);
 
             this.up = new Point2D.Double(this.center.getX(), position.getY() - Constant.BOUNDS_DISTANCE);
-            this.bottom = new Point2D.Double(this.center.getX(), position.getY() + Constant.PEDESTRIAN_SIZE + Constant.BOUNDS_DISTANCE);
+            this.bottom = new Point2D.Double(this.center.getX(), position.getY() + Constant.PEDESTRIAN_WIDTH + Constant.BOUNDS_DISTANCE);
 
             this.left = new Point2D.Double(position.getX() - Constant.BOUNDS_DISTANCE, this.center.getY());
-            this.right = new Point2D.Double(position.getX() + Constant.PEDESTRIAN_SIZE + Constant.BOUNDS_DISTANCE, this.center.getY());
+            this.right = new Point2D.Double(position.getX() + Constant.PEDESTRIAN_WIDTH + Constant.BOUNDS_DISTANCE, this.center.getY());
         }
 
         //if the entity is a Obstacle use the "Constant.OBSTACLE_SIZE" to compute bounds
         else if(entity.getEntityType() == Constant.OBSTACLE) {
-            this.center = new Point2D.Double(position.getX() + Constant.OBSTACLE_SIZE / 2d, position.getY() + Constant.OBSTACLE_SIZE / 2d);
+            this.center = new Point2D.Double(position.getX() + Constant.OBSTACLE_WIDTH / 2d, position.getY() + Constant.OBSTACLE_HEIGHT / 2d);
 
             this.up = new Point2D.Double(this.center.getX(), position.getY() - Constant.BOUNDS_DISTANCE);
-            this.bottom = new Point2D.Double(this.center.getX(), position.getY() + Constant.OBSTACLE_SIZE + Constant.BOUNDS_DISTANCE);
+            this.bottom = new Point2D.Double(this.center.getX(), position.getY() + Constant.OBSTACLE_HEIGHT + Constant.BOUNDS_DISTANCE);
 
             this.left = new Point2D.Double(position.getX() - Constant.BOUNDS_DISTANCE, this.center.getY());
-            this.right = new Point2D.Double(position.getX() + Constant.OBSTACLE_SIZE + Constant.BOUNDS_DISTANCE, this.center.getY());
+            this.right = new Point2D.Double(position.getX() + Constant.OBSTACLE_WIDTH + Constant.BOUNDS_DISTANCE, this.center.getY());
         }
 
         //if the entity is a WayPoint use the "Constant.WAYPOINT_SIZE" to compute bounds
         else {
-            this.center = new Point2D.Double(position.getX() + Constant.WAYPOINT_SIZE / 2d, position.getY() + Constant.WAYPOINT_SIZE / 2d);
+            this.center = new Point2D.Double(position.getX() + Constant.WAYPOINT_WIDTH / 2d, position.getY() + Constant.WAYPOINT_HEIGHT / 2d);
 
             this.up = new Point2D.Double(this.center.getX(), position.getY() - Constant.BOUNDS_DISTANCE);
-            this.bottom = new Point2D.Double(this.center.getX(), position.getY() + Constant.WAYPOINT_SIZE + Constant.BOUNDS_DISTANCE);
+            this.bottom = new Point2D.Double(this.center.getX(), position.getY() + Constant.WAYPOINT_HEIGHT + Constant.BOUNDS_DISTANCE);
 
             this.left = new Point2D.Double(position.getX() - Constant.BOUNDS_DISTANCE, this.center.getY());
-            this.right = new Point2D.Double(position.getX() + Constant.WAYPOINT_SIZE + Constant.BOUNDS_DISTANCE, this.center.getY());
+            this.right = new Point2D.Double(position.getX() + Constant.WAYPOINT_WIDTH + Constant.BOUNDS_DISTANCE, this.center.getY());
         }
 
         this.upLeft = new Point2D.Double(this.left.getX(), this.up.getY());
@@ -72,9 +73,9 @@ public class EntityBound{
         this.bottomRight = new Point2D.Double(this.right.getX(), this.bottom.getY());
 
         this.width = this.right.getX() - this.left.getX();
-        this.height = this.up.getY() - this.bottom.getY();
+        this.height = this.bottom.getY() - this.up.getY();
 
-        this.boundsRectangle = new Rectangle2D.Double(upLeft.getY(), upLeft.getY(), width, height);
+        this.boundsRectangle = new Rectangle2D.Double(upLeft.getX(), upLeft.getY(), width, height);
     }
 
     public Rectangle2D getBoundsRectangle() {

@@ -1,5 +1,6 @@
 package models;
 
+import support.EntityBound;
 import support.constants.Constant;
 
 import java.awt.*;
@@ -46,6 +47,13 @@ public class Room{
             doorWallLeft = new Line2D.Double(roomPositionX, roomPositionY, roomPositionX + width/2 - Constant.BUILDING_DOOR_SIZE/2d, roomPositionY);
             doorWallRight = new Line2D.Double(roomPositionX + width, roomPositionY, roomPositionX + width/2 + Constant.BUILDING_DOOR_SIZE/2d, roomPositionY);
         }
+    }
+
+    public boolean checkCollision(Entity entity){
+        EntityBound entityBounds = new EntityBound(entity);
+
+        return entityBounds.getBoundsRectangle().intersectsLine(leftWall) || entityBounds.getBoundsRectangle().intersectsLine(rightWall) ||
+                entityBounds.getBoundsRectangle().intersectsLine(doorWallLeft) || entityBounds.getBoundsRectangle().intersectsLine(doorWallRight);
     }
 
     public void drawRoom(Graphics2D g2D){

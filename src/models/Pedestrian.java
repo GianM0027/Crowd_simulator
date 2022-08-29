@@ -17,7 +17,7 @@ import java.util.List;
  * */
 public class Pedestrian extends Entity{
     private EntityBound bounds;
-    private Ellipse2D pedestrianShape;
+    private Rectangle2D pedestrianShape;
     private int gender;
     private int age;
     private int velocity;
@@ -29,7 +29,7 @@ public class Pedestrian extends Entity{
     public Pedestrian(Point2D position, int groupId){
         super(position);
         entityType = Constant.PEDESTRIAN;
-        pedestrianShape = new Ellipse2D.Double(position.getX(), position.getY(), Constant.PEDESTRIAN_SIZE, Constant.PEDESTRIAN_SIZE);
+        pedestrianShape = new Rectangle2D.Double(position.getX(), position.getY(), Constant.PEDESTRIAN_WIDTH, Constant.PEDESTRIAN_HEIGHT);
         bounds = new EntityBound(this);
 
         this.groupID = groupId;
@@ -156,7 +156,7 @@ public class Pedestrian extends Entity{
             return "Female";
     }
 
-    public EntityBound getBounds() {
+    public EntityBound getEntityBounds() {
         return bounds;
     }
 
@@ -174,7 +174,7 @@ public class Pedestrian extends Entity{
     }
 
 
-    public Ellipse2D getPedestrianShape() {
+    public Rectangle2D getPedestrianShape() {
         return pedestrianShape;
     }
 
@@ -196,7 +196,7 @@ public class Pedestrian extends Entity{
     }
     public void setPosition(Point2D position){
         this.position.setLocation(position);
-        this.pedestrianShape = new Ellipse2D.Double(position.getX(), position.getY(), Constant.PEDESTRIAN_SIZE, Constant.PEDESTRIAN_SIZE);
+        this.pedestrianShape = new Rectangle2D.Double(position.getX(), position.getY(), Constant.PEDESTRIAN_WIDTH, Constant.PEDESTRIAN_HEIGHT);
         this.bounds = new EntityBound(this);
     }
 

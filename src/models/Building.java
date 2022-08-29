@@ -1,5 +1,6 @@
 package models;
 
+import support.EntityBound;
 import support.Support;
 import support.constants.Constant;
 
@@ -47,6 +48,7 @@ public class Building {
         upWall = new Line2D.Double(entranceWallUpUp, exitWallUpUp);
         bottomWall = new Line2D.Double(entranceWallDownDown, exitWallDownDown);
 
+
         entrance = new Line2D.Double(entranceWallUpDown, exitWallDownUp);
         exit = new Line2D.Double(exitWallUpDown, exitWallDownUp);
 
@@ -66,6 +68,9 @@ public class Building {
         }
     }
 
+    /**
+     * Draw the external walls of the building (not the rooms)
+     * */
     public void drawExternalArea(Graphics2D g2D){
         g2D.draw(entranceUpWall);
         g2D.draw(entranceBottomWall);
@@ -73,6 +78,24 @@ public class Building {
         g2D.draw(exitBottomWall);
         g2D.draw(upWall);
         g2D.draw(bottomWall);
+    }
+
+    /**
+     * Return true if a pedestrian is closer to the building more than the minimum safety distance
+     * */
+    public boolean checkCollision(Entity entity){
+        EntityBound entityBounds = new EntityBound(entity);
+
+        if(entityBounds.getBoundsRectangle().intersectsLine(entranceUpWall) || entityBounds.getBoundsRectangle().intersectsLine(entranceBottomWall) ||
+                entityBounds.getBoundsRectangle().intersectsLine(exitUpWall) || entityBounds.getBoundsRectangle().intersectsLine(exitBottomWall) ||
+                entityBounds.getBoundsRectangle().intersectsLine(upWall) || entityBounds.getBoundsRectangle().intersectsLine(bottomWall))
+            return true;
+
+        for(Room room: this.rooms)
+            if(room.checkCollision(entity))
+                return true;
+
+        return false;
     }
 
     public Line2D getEntranceUpWall() {

@@ -6,10 +6,14 @@ public class Constant {
     public static final int PEDESTRIAN = -1;
     public static final int OBSTACLE = -2;
     public static final int WAY_POINT = -3;
-    public static final int PEDESTRIAN_SIZE = 6;
-    public static final int OBSTACLE_SIZE = 12;
-    public static final int WAYPOINT_SIZE = 3;
+    public static final int PEDESTRIAN_WIDTH = 6;
+    public static final int PEDESTRIAN_HEIGHT = 12;
+    public static final int OBSTACLE_WIDTH = 12;
+    public static final int OBSTACLE_HEIGHT = 12;
+    public static final int WAYPOINT_WIDTH = 4;
+    public static final int WAYPOINT_HEIGHT = 4;
 
+    
     //pedestrian constants
     public static final int MALE = 1;
     public static final int FEMALE = 2;
@@ -29,9 +33,9 @@ public class Constant {
 
 
     // animation's constants
-    public static final int BOUNDS_DISTANCE = PEDESTRIAN_SIZE /2;
+    public static final int BOUNDS_DISTANCE = PEDESTRIAN_WIDTH /2;
     public static final int BUILDING_STROKE = 3;
-    public static final int BUILDING_DOOR_SIZE = PEDESTRIAN_SIZE*5;
+    public static final int BUILDING_DOOR_SIZE = PEDESTRIAN_WIDTH *5;
     public static final int BUILDING_DISTANCE_UP_DOWN = 10; //not lower than 10
     public static final int BUILDING_DISTANCE_LEFT = 200;
     public static final int BUILDING_DISTANCE_RIGHT = 20;

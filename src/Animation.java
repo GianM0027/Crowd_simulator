@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 /**
@@ -66,7 +67,6 @@ public class Animation extends JPanel implements ActionListener {
         g2D.setPaint(Color.BLACK);
         for (Obstacle obstacle : obstacles) {
             g2D.fill(obstacle.getObstacleShape());
-
         }
 
         //draw way points
@@ -79,8 +79,8 @@ public class Animation extends JPanel implements ActionListener {
         for (Group group : groups) {
             g2D.setPaint(group.getColor());
 
-            for (int j = 0; j < group.getSizeGroup(); j++) {
-                g2D.fill(group.getPedestrians().get(j).getPedestrianShape());
+            for (Pedestrian pedestrian: group.getPedestrians()) {
+                g2D.fill(pedestrian.getPedestrianShape());
             }
         }
     }
@@ -94,6 +94,8 @@ public class Animation extends JPanel implements ActionListener {
 
         for (Pedestrian pedestrian : crowd) {
             nextPosition = pedestrian.nextPosition(this);
+
+
             //nextPosition = pedestrian.pedestrianAvoidance(crowd, nextPosition);
             //nextPosition = pedestrian.obstacleAvoidance(obstacles, nextPosition);
 

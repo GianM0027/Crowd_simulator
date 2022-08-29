@@ -18,9 +18,9 @@ public class Obstacle extends Entity {
         entityType = Constant.OBSTACLE;
 
         if(Support.getRandomValue(1,10) <= 5)
-            obstacleShape = new Ellipse2D.Double(position.getX(), position.getY(), Constant.OBSTACLE_SIZE, Constant.OBSTACLE_SIZE);
+            obstacleShape = new Ellipse2D.Double(position.getX(), position.getY(), Constant.OBSTACLE_WIDTH, Constant.OBSTACLE_HEIGHT);
         else
-            obstacleShape = new Rectangle2D.Double(position.getX(), position.getY(), Constant.OBSTACLE_SIZE, Constant.OBSTACLE_SIZE);
+            obstacleShape = new Rectangle2D.Double(position.getX(), position.getY(), Constant.OBSTACLE_WIDTH, Constant.OBSTACLE_HEIGHT);
 
         bounds = new EntityBound(this);
     }
@@ -29,7 +29,7 @@ public class Obstacle extends Entity {
         return this.position;
     }
 
-    public EntityBound getBounds() {
+    public EntityBound getEntityBounds() {
         return bounds;
     }
 

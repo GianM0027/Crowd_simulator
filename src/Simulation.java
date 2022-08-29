@@ -120,9 +120,9 @@ public class Simulation extends JPanel{
 
         for(int i = 0; i < this.numberOfObstacles; i++) {
             Point2D point = new Point2D.Double(Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_STROKE + Constant.BUILDING_DISTANCE_LEFT,
-                    this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT - Constant.OBSTACLE_SIZE - 2 * Constant.BOUNDS_DISTANCE - 1),
+                    this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT - Constant.OBSTACLE_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1),
                     Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_DISTANCE_UP_DOWN + Constant.BUILDING_STROKE,
-                            this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.OBSTACLE_SIZE - 2 * Constant.BOUNDS_DISTANCE - 1));
+                            this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.OBSTACLE_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1));
 
             Obstacle o = new Obstacle(point);
 /*
@@ -155,9 +155,9 @@ public class Simulation extends JPanel{
         for(int i = 0; i < this.numberOfWayPoints; i++){
 
             Point2D point = new Point2D.Double(Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_STROKE + Constant.BUILDING_DISTANCE_LEFT,
-                    this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT - Constant.WAYPOINT_SIZE - 2 * Constant.BOUNDS_DISTANCE - 1),
+                    this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT - Constant.WAYPOINT_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1),
                     Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_DISTANCE_UP_DOWN + Constant.BUILDING_STROKE,
-                            this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.WAYPOINT_SIZE - 2*Constant.BOUNDS_DISTANCE - 1));
+                            this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.WAYPOINT_WIDTH - 2*Constant.BOUNDS_DISTANCE - 1));
 
             WayPoint w = new WayPoint(point);
             this.wayPoints.add(i, w);
@@ -174,10 +174,10 @@ public class Simulation extends JPanel{
 
         //create the crowd
         for(int i = 0; i < numberOfPeople; i++){
-            Point2D point = new Point2D.Double(Support.getRandomValue(Constant.PEDESTRIAN_SIZE + Constant.BOUNDS_DISTANCE,
-                    Constant.BUILDING_DISTANCE_LEFT - Constant.PEDESTRIAN_SIZE - 2*Constant.BOUNDS_DISTANCE),
-                    Support.getRandomValue(Constant.PEDESTRIAN_SIZE + Constant.BOUNDS_DISTANCE,
-                            this.getHeight() - Constant.PEDESTRIAN_SIZE - Constant.BOUNDS_DISTANCE));
+            Point2D point = new Point2D.Double(Support.getRandomValue(Constant.PEDESTRIAN_WIDTH + Constant.BOUNDS_DISTANCE,
+                    Constant.BUILDING_DISTANCE_LEFT - Constant.PEDESTRIAN_WIDTH - 2*Constant.BOUNDS_DISTANCE),
+                    Support.getRandomValue(Constant.PEDESTRIAN_WIDTH + Constant.BOUNDS_DISTANCE,
+                            this.getHeight() - Constant.PEDESTRIAN_WIDTH - Constant.BOUNDS_DISTANCE));
 
             Pedestrian p = new Pedestrian(point, i);
             this.crowd.add(i, p);
