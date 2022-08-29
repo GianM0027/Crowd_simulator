@@ -6,7 +6,6 @@ import support.constants.Constant;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -25,6 +24,7 @@ public class Pedestrian extends Entity{
     private int groupID;
     private List<WayPoint> goalsList;
     private int goalsNumber;
+
 
     public Pedestrian(Point2D position, int groupId){
         super(position);

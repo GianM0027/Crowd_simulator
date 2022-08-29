@@ -5,9 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 /**
@@ -25,7 +23,7 @@ public class Animation extends JPanel implements ActionListener {
     //simulation parameters
     private Timer timer;
 
-    public Animation(JPanel panel, List<Pedestrian> crowd, List<Obstacle> obstacles, List<WayPoint> wayPoints, List<Group> groups){
+    public Animation(JPanel panel, List<Pedestrian> crowd, List<Obstacle> obstacles, List<WayPoint> wayPoints, List<Group> groups, Building building){
         this.parentPanel = panel;
         this.groups = groups;
         this.crowd = crowd;
@@ -33,7 +31,7 @@ public class Animation extends JPanel implements ActionListener {
         this.wayPoints = wayPoints;
 
         this.setPreferredSize(new Dimension(this.parentPanel.getWidth(), this.parentPanel.getHeight()));
-        this.building = new Building(this.parentPanel.getWidth(), this.parentPanel.getHeight());
+        this.building = building;
 
         timer = new Timer(Constant.ANIMATION_DELAY, this);
         timer.start();

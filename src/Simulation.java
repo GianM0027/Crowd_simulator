@@ -1,7 +1,4 @@
-import models.Group;
-import models.Obstacle;
-import models.Pedestrian;
-import models.WayPoint;
+import models.*;
 import support.Support;
 import support.constants.Constant;
 
@@ -23,6 +20,7 @@ public class Simulation extends JPanel{
     private ArrayList<Group> Groups;
     private ArrayList<Obstacle> obstacles;
     private ArrayList<WayPoint> wayPoints;
+    private Building building;
     private ArrayList<WayPoint> crowdGoals;
 
     private int numberOfPeople;
@@ -57,6 +55,7 @@ public class Simulation extends JPanel{
      *
      * */
     protected void startSimulation(){
+        this.building = new Building(this.getWidth(), this.getHeight());
         createObstacles();
         createWayPoints();
         createCrowd();
@@ -71,7 +70,7 @@ public class Simulation extends JPanel{
         this.removeAll();
         this.revalidate();
         this.repaint();
-        animation = new Animation(this, this.crowd, this.obstacles, this.wayPoints, this.Groups);
+        animation = new Animation(this, this.crowd, this.obstacles, this.wayPoints, this.Groups, this.building);
         this.add(animation);
         this.revalidate();
         this.repaint();
@@ -117,28 +116,17 @@ public class Simulation extends JPanel{
      * */
     private void createObstacles(){
         this.obstacles = new ArrayList<>();
+        Obstacle o;
 
         for(int i = 0; i < this.numberOfObstacles; i++) {
-            Point2D point = new Point2D.Double(Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_STROKE + Constant.BUILDING_DISTANCE_LEFT,
-                    this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT - Constant.OBSTACLE_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1),
-                    Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_DISTANCE_UP_DOWN + Constant.BUILDING_STROKE,
-                            this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.OBSTACLE_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1));
+            do {
+                Point2D point = new Point2D.Double(Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_STROKE + Constant.BUILDING_DISTANCE_LEFT,
+                        this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT - Constant.OBSTACLE_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1),
+                        Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_DISTANCE_UP_DOWN + Constant.BUILDING_STROKE,
+                                this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.OBSTACLE_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1));
 
-            Obstacle o = new Obstacle(point);
-/*
-            //no overlapping controls
-            if (obstacles.size() > 0){
-                for (Obstacle obstacle : obstacles) {
-                    while(Support.distance(o.getBounds().getCenter(), obstacle.getBounds().getCenter()) <= Constant.ENTITY_SAFETY_ZONE){
-                        point.x = Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_STROKE + Constant.BUILDING_DISTANCE_LEFT,
-                                this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT - Constant.ENTITY_SIZE - 2 * Constant.BOUNDS_DISTANCE - 1);
-                        point.y = Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_DISTANCE_UP_DOWN + Constant.BUILDING_STROKE,
-                                this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.ENTITY_SIZE - 2 * Constant.BOUNDS_DISTANCE - 1);
-
-                        o.setPosition(point);
-                    }
-                }
-            }*/
+                o = new Obstacle(point);
+            }while (building.checkCollision(o));
 
             this.obstacles.add(i, o);
         }
@@ -151,15 +139,18 @@ public class Simulation extends JPanel{
      * */
     private void createWayPoints(){
         this.wayPoints = new ArrayList<>();
+        WayPoint w;
 
         for(int i = 0; i < this.numberOfWayPoints; i++){
+            do {
+                Point2D point = new Point2D.Double(Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_STROKE + Constant.BUILDING_DISTANCE_LEFT,
+                        this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT - Constant.WAYPOINT_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1),
+                        Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_DISTANCE_UP_DOWN + Constant.BUILDING_STROKE,
+                                this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.WAYPOINT_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1));
 
-            Point2D point = new Point2D.Double(Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_STROKE + Constant.BUILDING_DISTANCE_LEFT,
-                    this.getWidth() - Constant.BUILDING_DISTANCE_RIGHT - Constant.WAYPOINT_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1),
-                    Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_DISTANCE_UP_DOWN + Constant.BUILDING_STROKE,
-                            this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.WAYPOINT_WIDTH - 2*Constant.BOUNDS_DISTANCE - 1));
-
-            WayPoint w = new WayPoint(point);
+                w = new WayPoint(point);
+            }while (building.checkCollision(w));
+            
             this.wayPoints.add(i, w);
         }
         Support.sortWayPoints(this.wayPoints);
