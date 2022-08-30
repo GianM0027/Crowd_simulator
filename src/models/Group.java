@@ -1,6 +1,7 @@
 package models;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,6 +24,9 @@ public class Group {
         this.pedestrians = pedestrians;
         this.goalsList = goalsList;
         this.isActive = false;
+
+        for(Pedestrian p: pedestrians)
+            p.setGoalsList(new ArrayList<>(goalsList));
     }
 
 

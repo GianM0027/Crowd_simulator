@@ -1,5 +1,7 @@
 package models;
 
+import support.EntityBound;
+
 import java.awt.*;
 import java.awt.geom.Point2D;
 
@@ -14,6 +16,7 @@ public abstract class Entity {
     public Entity(Point2D position) {
         this.position = position;
     }
+
 
     public int getEntityType() {
         return entityType;

@@ -5,7 +5,6 @@ import support.Support;
 import support.constants.Constant;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ import java.util.List;
  * Every Pedestrian is a mobile entity with its own characteristics
  * */
 public class Pedestrian extends Entity{
-    private EntityBound bounds;
     private Rectangle2D pedestrianShape;
     private int gender;
     private int age;
@@ -25,6 +23,10 @@ public class Pedestrian extends Entity{
     private List<WayPoint> goalsList;
     private int goalsNumber;
 
+    /** motion parameters */
+    private double rotation;
+    private EntityBound bounds;
+    //position is in the superclass
 
     public Pedestrian(Point2D position, int groupId){
         super(position);
@@ -42,7 +44,16 @@ public class Pedestrian extends Entity{
     }
 
     /**
-     * Compute next position and direction
+     * Collision with another entity
+     * */
+    public boolean checkCollision(Entity entity){
+        EntityBound entityBounds = new EntityBound(entity);
+
+        return entityBounds.getBoundsRectangle().intersects(this.getEntityBounds().getBoundsRectangle());
+    }
+
+    /**
+     * Compute next position towards a goal, it ignores obstacles and other pedestrians
      * */
     public Point2D nextPosition(JPanel panel){
         Point2D goalPosition;
@@ -51,18 +62,19 @@ public class Pedestrian extends Entity{
         if(goalsList != null && !goalsList.isEmpty())
             goalPosition = goalsList.get(0).getPosition();
         else
-            goalPosition = new Point(panel.getWidth() + 10, panel.getHeight()/2);
+            goalPosition = new Point2D.Double(panel.getWidth() + 10, panel.getHeight()/2d);
 
 
         //motion
         double deltaX = this.position.getX() - goalPosition.getX();
-        double deltaY = this.position.getX() - goalPosition.getX();
+        double deltaY = this.position.getY() - goalPosition.getY();
         double angle = Math.atan2(deltaY, deltaX) + Math.PI;
 
-        deltaY = Math.sin(angle)/100;
-        deltaX = Math.cos(angle)/100;
+        deltaY = Math.sin(angle);
+        deltaX = Math.cos(angle);
 
-        nextPos = new Point2D.Double(nextPos.getX() + deltaX + 1, nextPos.getY() + deltaY + 1); //+1 non ci sta a fare nulla
+        nextPos = new Point2D.Double(nextPos.getX() + deltaX, nextPos.getY() + deltaY);
+
 
         if(Support.distance(this.position, goalPosition) < this.bounds.getWidth() && !goalsList.isEmpty()){
             this.goalsList.remove(0);
@@ -75,58 +87,6 @@ public class Pedestrian extends Entity{
         return nextPos;
     }
 
-    public Point2D obstacleAvoidance(List<Obstacle> obstacles, Point2D newPosition){
-        Pedestrian p = new Pedestrian(newPosition, -1);
-        Rectangle2D futureEntityBounds = p.getPedestrianShape().getBounds2D();
-
-        for(int i = 0; i < obstacles.size(); i++){
-            if(futureEntityBounds.intersects(obstacles.get(i).getObstacleShape().getBounds())){
-                double deltaX = newPosition.getX() - obstacles.get(i).getPosition().getX();
-                double deltaY = newPosition.getY() - obstacles.get(i).getPosition().getY();
-                double angle = Math.atan2(deltaY, deltaX) + Math.toRadians(180);
-
-                if(Support.getRandomValue(1,10) <= 5)
-                    angle += 60;
-                else
-                    angle -= 60;
-
-                deltaY = Math.sin(angle) * 100;
-                deltaX = Math.cos(angle) * 100;
-
-                newPosition = new Point2D.Double(newPosition.getX() + deltaX / (Constant.ANIMATION_DELAY), newPosition.getY() + deltaY / (Constant.ANIMATION_DELAY));
-            }
-        }
-
-        return new Point2D.Double(newPosition.getX(), newPosition.getY());
-    }
-
-    /**
-     * Collision avoidance
-     * */
-    public Point2D pedestrianAvoidance(List<Pedestrian> crowd, Point2D newPosition){
-        int nPedestrians = crowd.size();
-
-        for(int i = 0; i < nPedestrians; i++){
-            if(Support.distance(newPosition, crowd.get(i).getPosition()) <= crowd.get(i).getPedestrianShape().getWidth()){
-                double deltaX = newPosition.getX() - crowd.get(i).getPosition().getX();
-                double deltaY = newPosition.getY() - crowd.get(i).getPosition().getY();
-                double angle = Math.atan2(deltaY, deltaX) + Math.toRadians(180);
-
-                if(Support.getRandomValue(1,10) <= 5)
-                    angle += 60;
-                else
-                    angle -= 60;
-
-                deltaY = Math.sin(angle) * 100;
-                deltaX = Math.cos(angle) * 100;
-
-                newPosition = new Point2D.Double(newPosition.getX() + deltaX / (Constant.ANIMATION_DELAY), newPosition.getY() + deltaY / (Constant.ANIMATION_DELAY));
-
-            }
-        }
-
-        return new Point2D.Double(newPosition.getX(), newPosition.getY());
-    }
 
     /**
      * Assigns a value of energy to a pedestrian according to their age (the function uses constants MIN_ENERGY_* and
@@ -194,6 +154,7 @@ public class Pedestrian extends Entity{
         this.goalsList = goalsList;
         goalsNumber = goalsList.size();
     }
+
     public void setPosition(Point2D position){
         this.position.setLocation(position);
         this.pedestrianShape = new Rectangle2D.Double(position.getX(), position.getY(), Constant.PEDESTRIAN_WIDTH, Constant.PEDESTRIAN_HEIGHT);

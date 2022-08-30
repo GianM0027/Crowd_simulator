@@ -92,8 +92,6 @@ public class Animation extends JPanel implements ActionListener {
 
         for (Pedestrian pedestrian : crowd) {
             nextPosition = pedestrian.nextPosition(this);
-
-
             //nextPosition = pedestrian.pedestrianAvoidance(crowd, nextPosition);
             //nextPosition = pedestrian.obstacleAvoidance(obstacles, nextPosition);
 

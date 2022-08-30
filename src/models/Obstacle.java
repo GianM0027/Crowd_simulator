@@ -25,6 +25,15 @@ public class Obstacle extends Entity {
         bounds = new EntityBound(this);
     }
 
+    /**
+     * Collision with another entity
+     * */
+    public boolean checkCollision(Entity entity){
+        EntityBound entityBounds = new EntityBound(entity);
+
+        return entityBounds.getBoundsRectangle().intersects(this.getEntityBounds().getBoundsRectangle());
+    }
+
     public Point2D getPosition(){
         return this.position;
     }

@@ -150,7 +150,7 @@ public class Simulation extends JPanel{
 
                 w = new WayPoint(point);
             }while (building.checkCollision(w));
-            
+
             this.wayPoints.add(i, w);
         }
         Support.sortWayPoints(this.wayPoints);
