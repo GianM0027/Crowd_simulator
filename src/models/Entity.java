@@ -1,7 +1,5 @@
 package models;
 
-import support.EntityBound;
-
 import java.awt.*;
 import java.awt.geom.Point2D;
 

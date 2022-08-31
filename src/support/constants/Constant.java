@@ -21,7 +21,7 @@ public class Constant {
     public static final int YOUNG = 4;
     public static final int OLD = 5;
     public static final int MIN_VELOCITY = 1;
-    public static final int MAX_VELOCITY = 10;
+    public static final int MAX_VELOCITY = 5;
     public static final int MIN_ENERGY_CHILD = 40;
     public static final int MAX_ENERGY_CHILD = 50;
     public static final int MIN_ENERGY_YOUNG = 30;

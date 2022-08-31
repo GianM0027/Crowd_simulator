@@ -192,7 +192,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             this.velocityFilter = new RangeSlider(Constant.MIN_VELOCITY, Constant.MAX_VELOCITY);
             velocityFilter.setFocusable(false);
             velocityFilter.setMinorTickSpacing(1);
-            velocityFilter.setMajorTickSpacing(3);
+            velocityFilter.setMajorTickSpacing(2);
             velocityFilter.setValue(Constant.MIN_VELOCITY);
             velocityFilter.setExtent(Constant.MAX_VELOCITY);
             velocityFilter.setPaintLabels(true);

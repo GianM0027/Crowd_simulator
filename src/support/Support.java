@@ -17,6 +17,13 @@ public abstract class Support {
         return Math.sqrt(((p2.getY() - p1.getY())*(p2.getY() - p1.getY())) + ((p2.getX() - p1.getX())*(p2.getX() - p1.getX())));
     }
 
+    //distance between two entities (according to their bounds)
+    public static double distance(Entity e1, Entity e2){
+
+        //implement a way to find the minimum distance between two entities with different shapes
+        return 0;
+    }
+
 
     /**********************************   SORTING FUNCTIONS   **********************************/
     public static void sortObstacles(ArrayList<Obstacle> list){

@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -91,11 +92,7 @@ public class Animation extends JPanel implements ActionListener {
         Point2D nextPosition;
 
         for (Pedestrian pedestrian : crowd) {
-            nextPosition = pedestrian.nextPosition(this);
-            //nextPosition = pedestrian.pedestrianAvoidance(crowd, nextPosition);
-            //nextPosition = pedestrian.obstacleAvoidance(obstacles, nextPosition);
-
-            pedestrian.setPosition(nextPosition);
+            pedestrian.nextPosition(this, new ArrayList<>(crowd));
         }
 
         repaint();
