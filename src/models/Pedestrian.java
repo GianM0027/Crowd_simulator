@@ -20,16 +20,19 @@ public class Pedestrian extends Entity{
     private int gender;
     private int age;
     private int energy;
+
+    private Group group;
     private int groupID;
     private List<WayPoint> goalsList;
     private int goalsNumber;
+    private List<Obstacle> obstacles;
 
 
     /** motion parameters */
     private PVector position;
     private PVector velocity;
     private PVector accelerationVect;
-    float r;
+    float radiusVisibility;
     float maxforce;    // Maximum steering force
     float maxspeed;    // Maximum speed
     private EntityBound bounds;
@@ -52,7 +55,7 @@ public class Pedestrian extends Entity{
         bounds = new EntityBound(this);
         accelerationVect = new PVector(0, 0);
         velocity = new PVector(1, 1);
-        r = 2.0f;
+        radiusVisibility = (float) Math.PI*2; //default 2.0 (each pedestrian can see the others all around them)
         maxspeed = assignMaxSpeed();
         maxforce = 0.03f;
     }
@@ -119,13 +122,13 @@ public class Pedestrian extends Entity{
     // We accumulate a new acceleration each time based on three rules
     private void flock(ArrayList<Pedestrian> crowd) {
         PVector sep = separate(crowd);   // Separation
-        PVector ali = align(crowd);      // Alignment
-        PVector coh = cohesion(crowd);   // Cohesion
+        PVector ali = align(new ArrayList<>(group.getPedestrians()));      // Alignment
+        PVector coh = cohesion(new ArrayList<>(group.getPedestrians()));   // Cohesion
 
         // Arbitrarily weight these forces
-        sep.mult(1.5f);
-        ali.mult(1.0f);
-        coh.mult(1.0f);
+        sep.mult(1.0f); //default 1.5
+        ali.mult(1.0f); //default 1
+        coh.mult(1.0f); //default 1
 
         // Add the force vectors to acceleration
         applyForce(sep);
@@ -163,7 +166,7 @@ public class Pedestrian extends Entity{
 
 
     // Separation
-    // Method checks for nearby boids and steers away
+    // Method checks for nearby pedestrians and steers away
     PVector separate (ArrayList<Pedestrian> pedestrians) {
         float desiredseparation = 25.0f;
         PVector steer = new PVector(0, 0, 0);
@@ -200,7 +203,7 @@ public class Pedestrian extends Entity{
 
 
     // Alignment
-    // For every nearby boid in the system, calculate the average velocity
+    // For every nearby pedestrian in the group, calculate the average velocity
     PVector align (ArrayList<Pedestrian> pedestrians) {
         float neighbordist = 50;
         PVector sum = new PVector(0, 0);
@@ -214,9 +217,6 @@ public class Pedestrian extends Entity{
         }
         if (count > 0) {
             sum.div((float)count);
-            // First two lines of code below could be condensed with new PVector setMag() method
-            // Not using this method until Processing.js catches up
-            // sum.setMag(maxspeed);
 
             // Implement Reynolds: Steering = Desired - Velocity
             sum.normalize();
@@ -251,28 +251,6 @@ public class Pedestrian extends Entity{
             return new PVector(0, 0);
         }
     }
-/*
-    // Cohesion
-    // For the average position (i.e. center) of all nearby boids, calculate steering vector towards that position
-    PVector cohesion (ArrayList<Pedestrian> pedestrians) {
-        float neighbordist = 50;
-        PVector sum = new PVector(0, 0);   // Start with empty vector to accumulate all positions
-        int count = 0;
-        for (Pedestrian other : pedestrians) {
-            float d = PVector.dist(position, other.position);
-            if ((d > 0) && (d < neighbordist)) {
-                sum.add(other.position); // Add position
-                count++;
-            }
-        }
-        if (count > 0) {
-            sum.div(count);
-            return seek(sum);  // Steer towards the position
-        }
-        else {
-            return new PVector(0, 0);
-        }
-    }*/
 
 
 
@@ -352,6 +330,14 @@ public class Pedestrian extends Entity{
     public void setGoalsList(List<WayPoint> goalsList) {
         this.goalsList = goalsList;
         goalsNumber = goalsList.size();
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public void setObstacles(List<Obstacle> obstacles) {
+        this.obstacles = obstacles;
     }
 
     public void updateBounds(){

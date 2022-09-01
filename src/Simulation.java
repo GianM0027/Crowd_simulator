@@ -191,16 +191,23 @@ public class Simulation extends JPanel{
                 people.remove(0);
             }
 
-            Group Group = new Group(groupIndex, goalsList, peopleInTheGroup);
+            Group group = new Group(groupIndex, goalsList, peopleInTheGroup);
             groupIndex++;
 
             Color groupColor;
             do {
                 groupColor = new Color(new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat());
-                Group.setColor(groupColor);
+                group.setColor(groupColor);
             }while(groupColor == Color.GRAY || groupColor == Color.WHITE || groupColor == Color.BLACK || groupColor == Color.RED);
 
-            Groups.add(Group);
+            Groups.add(group);
+
+            //each member of each group knows the members of their group
+            for (Pedestrian p : group.getPedestrians()) {
+                p.setGroup(group);
+                p.setObstacles(obstacles);
+            }
+
         } while (!people.isEmpty());
 
         numberOfGroups = Groups.size();
