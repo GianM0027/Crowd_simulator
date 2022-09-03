@@ -15,8 +15,6 @@ public class Group {
     private List<WayPoint> goalsList;
     private int groupID;
     private Color color;
-
-    //simulation parameters
     private boolean isMoving;
 
 
@@ -37,9 +35,6 @@ public class Group {
         return sizeGroup;
     }
 
-    public boolean isMoving() {
-        return isMoving;
-    }
 
     public List<Pedestrian> getPedestrians() {
         return pedestrians;
@@ -63,6 +58,10 @@ public class Group {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public boolean isMoving() {
+        return isMoving;
     }
 
     public void setMoving(boolean moving) {

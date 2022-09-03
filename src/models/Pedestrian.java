@@ -6,6 +6,8 @@ import support.constants.Constant;
 
 import processing.core.PVector;
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ import java.util.List;
 /**
  * Every Pedestrian is a mobile entity with its own characteristics
  * */
-public class Pedestrian extends Entity{
+public class Pedestrian extends Entity implements ActionListener {
     private Rectangle2D pedestrianShape;
     private int gender;
     private int age;
@@ -26,6 +28,7 @@ public class Pedestrian extends Entity{
     private WayPoint currentGoal;
     private int goalsNumber;
     private List<Obstacle> obstacles;
+    private JPanel panel;
 
 
     /** motion parameters */
@@ -36,11 +39,12 @@ public class Pedestrian extends Entity{
     private PVector accelerationVect;
     float maxforce;    // Maximum steering force
     float maxspeed;    // Maximum speed
-    private EntityBound bounds;
+    private EntityBound entityBounds;
 
 
-    public Pedestrian(Point2D position, int groupId){
+    public Pedestrian(Point2D position, JPanel panel, int groupId){
         super(position);
+        this.panel = panel;
         entityType = Constant.PEDESTRIAN;
         pedestrianShape = new Rectangle2D.Double(position.getX(), position.getY(), Constant.PEDESTRIAN_WIDTH, Constant.PEDESTRIAN_HEIGHT);
 
@@ -53,8 +57,8 @@ public class Pedestrian extends Entity{
 
         //motion parameters
         this.position = new PVector((float)position.getX(), (float)position.getY());
-        bounds = new EntityBound(this);
-        this.centerPosition = new PVector((float)bounds.getCenter().getX(), (float)bounds.getCenter().getY());
+        entityBounds = new EntityBound(this);
+        this.centerPosition = new PVector((float)entityBounds.getCenter().getX(), (float)entityBounds.getCenter().getY());
         accelerationVect = new PVector(0, 0);
         velocity = new PVector(0, 0);
         maxspeed = assignMaxSpeed();
@@ -91,14 +95,11 @@ public class Pedestrian extends Entity{
         updateBounds();
 
         if(this.checkCollision(currentGoal) && !goalsList.isEmpty()){
-            this.goalsList.remove(0);
-            if(!goalsList.isEmpty()) {
-                if (this.group.isMoving())
-                    currentGoal = goalsList.get(0);
+            if(group.isMoving()) {
+                group.setMoving(false);
+                waypointTimer = new Timer(Support.getRandomValue(Constant.MIN_TIME_FOR_WAYPOINT, Constant.MAX_TIME_FOR_WAYPOINT), this);
+                waypointTimer.start();
             }
-            else
-                if (this.group.isMoving())
-                    currentGoal = new WayPoint(new Point2D.Double(panel.getWidth() + 10, panel.getHeight()/2d));
         }
     }
 
@@ -163,7 +164,7 @@ public class Pedestrian extends Entity{
     // Separation
     // Method checks for nearby pedestrians and steers away
     PVector separate (ArrayList<Pedestrian> pedestrians) {
-        float desiredseparation = (float)this.bounds.getWidth();
+        float desiredseparation = (float)this.entityBounds.getWidth();
         PVector steer = new PVector(0, 0);
         int count = 0;
 
@@ -258,7 +259,7 @@ public class Pedestrian extends Entity{
 
     private PVector avoidObstacle(){
         PVector steer = new PVector(0,0);
-        float obstacleDist = (float)(this.bounds.getWidth() + obstacles.get(0).getEntityBounds().getWidth());
+        float obstacleDist = (float)(this.entityBounds.getWidth() + obstacles.get(0).getEntityBounds().getWidth());
 
         for(Obstacle obstacle : obstacles){
             PVector obstaclePosition = new PVector((float) obstacle.getEntityBounds().getCenter().getX(), (float) obstacle.getEntityBounds().getCenter().getY());
@@ -274,6 +275,24 @@ public class Pedestrian extends Entity{
         return steer;
     }
 
+
+    // When a group is done with a waypoint can switch to another
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(!goalsList.isEmpty())
+            this.goalsList.remove(0);
+
+        if(!goalsList.isEmpty()) {
+            for(Pedestrian p : group.getPedestrians())
+                p.setCurrentGoal(goalsList.get(0));
+        }
+        else {
+            for(Pedestrian p : group.getPedestrians())
+                p.setCurrentGoal(new WayPoint(new Point2D.Double(panel.getWidth() + 10, panel.getHeight() / 2d)));
+        }
+
+        group.setMoving(true);
+    }
 
 
 
@@ -316,7 +335,7 @@ public class Pedestrian extends Entity{
     }
 
     public EntityBound getEntityBounds() {
-        return bounds;
+        return entityBounds;
     }
 
     public String getAgeString() {
@@ -359,6 +378,10 @@ public class Pedestrian extends Entity{
             currentGoal = goalsList.get(0);
     }
 
+    public void setCurrentGoal(WayPoint currentGoal) {
+        this.currentGoal = currentGoal;
+    }
+
     public void setGroup(Group group) {
         this.group = group;
     }
@@ -367,10 +390,9 @@ public class Pedestrian extends Entity{
         this.obstacles = obstacles;
     }
 
-    public void updateBounds(){
+    public void updateBounds() {
         this.pedestrianShape = new Rectangle2D.Double(this.position.x, this.position.y, Constant.PEDESTRIAN_WIDTH, Constant.PEDESTRIAN_HEIGHT);
-        this.bounds = new EntityBound(this);
-        this.centerPosition = new PVector((float)bounds.getCenter().getX(), (float) bounds.getCenter().getY());
+        this.entityBounds = new EntityBound(this);
+        this.centerPosition = new PVector((float) entityBounds.getCenter().getX(), (float) entityBounds.getCenter().getY());
     }
-
 }

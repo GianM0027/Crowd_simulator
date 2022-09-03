@@ -33,8 +33,10 @@ public class Constant {
 
 
     // animation's constants
+    public static final int MIN_TIME_FOR_WAYPOINT = 10000;
+    public static final int MAX_TIME_FOR_WAYPOINT = 15000;
     public static final int BOUNDS_DISTANCE = PEDESTRIAN_WIDTH /2;
-    public static final int BUILDING_STROKE = 3;
+    public static final int BUILDING_STROKE = 4;
     public static final int BUILDING_DOOR_SIZE = PEDESTRIAN_WIDTH *5;
     public static final int BUILDING_DISTANCE_UP_DOWN = 10; //not lower than 10
     public static final int BUILDING_DISTANCE_LEFT = 200;

@@ -81,7 +81,7 @@ public class Building {
     }
 
     /**
-     * Return true if a pedestrian is closer to the building more than the minimum safety distance
+     * Return true if an entity is closer to the building more than the "bounds distance"
      * */
     public boolean checkCollision(Entity entity){
         EntityBound entityBounds = new EntityBound(entity);
@@ -93,6 +93,19 @@ public class Building {
 
         for(Room room: this.rooms)
             if(room.checkCollision(entity))
+                return true;
+
+        return false;
+    }
+
+    /**
+     * Return true if a pedestrian is closer to the building more than the minimum safety distance
+     * */
+    public boolean checkCollisionOnDoorFreeSpace(Entity entity){
+        EntityBound entityBounds = new EntityBound(entity);
+
+        for(Room room: this.rooms)
+            if(room.getDoorSpace().intersects(entityBounds.getBoundsRectangle()))
                 return true;
 
         return false;

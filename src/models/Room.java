@@ -11,27 +11,12 @@ import java.awt.geom.Rectangle2D;
 public class Room{
 
     private Line2D door;
+    private Rectangle2D doorSpace;
 
     private Line2D leftWall;
     private Line2D rightWall;
     private Line2D doorWallLeft;
     private Line2D doorWallRight;
-
-    public Room(Point2D roomPosition, double width, double height){
-        leftWall = new Line2D.Double(roomPosition.getX(), roomPosition.getY(), roomPosition.getX(), roomPosition.getY() + height);
-        rightWall = new Line2D.Double(roomPosition.getX() + width, roomPosition.getY(), roomPosition.getX() + width, roomPosition.getY() + height);
-
-        //if the room is on the upper part of the building
-        if(roomPosition.getY() <= Constant.BUILDING_DISTANCE_UP_DOWN*2){
-            doorWallLeft = new Line2D.Double(roomPosition.getX(), roomPosition.getY() + height, roomPosition.getX() + width/2 - Constant.BUILDING_DOOR_SIZE/2d, roomPosition.getY() + height);
-            doorWallRight = new Line2D.Double(roomPosition.getX() + width/2 + Constant.BUILDING_DOOR_SIZE/2d, roomPosition.getY() + height, roomPosition.getX() + width, roomPosition.getY() + height);
-        }
-        //else the room is in the bottom part of the building
-        else{
-            doorWallLeft = new Line2D.Double(roomPosition.getX(), roomPosition.getY(), roomPosition.getX() + width/2 - Constant.BUILDING_DOOR_SIZE/2d, roomPosition.getY());
-            doorWallRight = new Line2D.Double(roomPosition.getX() + width/2 + Constant.BUILDING_DOOR_SIZE/2d, roomPosition.getY(), roomPosition.getX() + width, roomPosition.getY());
-        }
-    }
 
     public Room(double roomPositionX, double roomPositionY, double width, double height){
         leftWall = new Line2D.Double(roomPositionX, roomPositionY, roomPositionX, roomPositionY + height);
@@ -47,6 +32,9 @@ public class Room{
             doorWallLeft = new Line2D.Double(roomPositionX, roomPositionY, roomPositionX + width/2 - Constant.BUILDING_DOOR_SIZE/2d, roomPositionY);
             doorWallRight = new Line2D.Double(roomPositionX + width, roomPositionY, roomPositionX + width/2 + Constant.BUILDING_DOOR_SIZE/2d, roomPositionY);
         }
+
+        door = new Line2D.Double(doorWallLeft.getX2(), doorWallLeft.getY2(), doorWallRight.getX2(), doorWallRight.getY2());
+        doorSpace = new Rectangle2D.Double(door.getX1(), door.getY1() - 20, door.getBounds2D().getWidth(), 40);
     }
 
     public boolean checkCollision(Entity entity){
@@ -65,6 +53,10 @@ public class Room{
 
     public Line2D getDoor() {
         return door;
+    }
+
+    public Rectangle2D getDoorSpace() {
+        return doorSpace;
     }
 
     public Line2D getLeftWall() {

@@ -21,8 +21,6 @@ public class Simulation extends JPanel{
     private ArrayList<Obstacle> obstacles;
     private ArrayList<WayPoint> wayPoints;
     private Building building;
-    private ArrayList<WayPoint> crowdGoals;
-
     private int numberOfPeople;
     private int numberOfGroups;
     private int minGroupSize;
@@ -77,7 +75,7 @@ public class Simulation extends JPanel{
     }
 
     /**
-     *
+     * Pause the timer that update pedestrian's data
      * */
     protected void pauseSimulation(){
         this.animation.pause();
@@ -89,7 +87,7 @@ public class Simulation extends JPanel{
 
 
     /**
-     *
+     * reset parameters of the simulation
      * */
     protected void stopSimulation(){
         setParameters(0,Constant.MIN_GROUPS_SIZE,Constant.MAX_GROUPS_SIZE,0, 0);
@@ -118,6 +116,7 @@ public class Simulation extends JPanel{
         this.obstacles = new ArrayList<>();
         Obstacle o;
 
+        //Until the obstacle is generated in a forbidden position it is repositioned
         for(int i = 0; i < this.numberOfObstacles; i++) {
             do {
                 Point2D point = new Point2D.Double(Support.getRandomValue(Constant.BOUNDS_DISTANCE + Constant.BUILDING_STROKE + Constant.BUILDING_DISTANCE_LEFT,
@@ -126,7 +125,7 @@ public class Simulation extends JPanel{
                                 this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.OBSTACLE_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1));
 
                 o = new Obstacle(point);
-            }while (building.checkCollision(o));
+            }while (building.checkCollision(o) || building.checkCollisionOnDoorFreeSpace(o));
 
             this.obstacles.add(i, o);
         }
@@ -149,7 +148,7 @@ public class Simulation extends JPanel{
                                 this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.WAYPOINT_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1));
 
                 w = new WayPoint(point);
-            }while (building.checkCollision(w));
+            }while (building.checkCollision(w) || building.checkCollisionOnDoorFreeSpace(w));
 
             this.wayPoints.add(i, w);
         }
@@ -170,7 +169,7 @@ public class Simulation extends JPanel{
                     Support.getRandomValue(Constant.PEDESTRIAN_WIDTH + Constant.BOUNDS_DISTANCE,
                             this.getHeight() - Constant.PEDESTRIAN_WIDTH - Constant.BOUNDS_DISTANCE));
 
-            Pedestrian p = new Pedestrian(point, i);
+            Pedestrian p = new Pedestrian(point, this, i);
             this.crowd.add(i, p);
         }
 
@@ -212,14 +211,6 @@ public class Simulation extends JPanel{
 
         numberOfGroups = Groups.size();
 
-
-        //create crowd goals list
-        crowdGoals = new ArrayList<>();
-        for(Group o: Groups){
-            for(WayPoint w: o.getGoalsList())
-                if(!crowdGoals.contains(w))
-                    crowdGoals.add(w);
-        }
     }
 
     /**
@@ -230,42 +221,42 @@ public class Simulation extends JPanel{
         ArrayList<WayPoint> goalsList = new ArrayList<>(this.wayPoints);
         float groupsGoalsRatio = (float)groupSize/goalsList.size();
 
-        //If the group if pedestrian has size lower than 1/20 of the list of goals then 10% of probability to assign each goal
+        //If the group if pedestrian has size lower than 1/20 of the list of goals then 30% of probability to assign each goal
         if(groupsGoalsRatio <= 0.55) {
-            goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 90);
-        }
-
-        //If the group if pedestrian has size lower than 1/10 of the list of goals then 30% of probability to assign each goal
-        else if(groupsGoalsRatio <= 0.1) {
             goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 70);
         }
 
-        //If the group if pedestrian has size lower than 1/5 of the list of goals then 40% of probability to assign each goal
-        else if(groupsGoalsRatio <= 0.2) {
+        //If the group if pedestrian has size lower than 1/10 of the list of goals then 40% of probability to assign each goal
+        else if(groupsGoalsRatio <= 0.1) {
             goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 60);
         }
 
-        //If the group if pedestrian has size lower than 1/3 of the list of goals then 50% of probability to assign each goal
-        else if(groupsGoalsRatio <= 0.33) {
+        //If the group if pedestrian has size lower than 1/5 of the list of goals then 50% of probability to assign each goal
+        else if(groupsGoalsRatio <= 0.2) {
             goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 50);
         }
 
-        //If the group if pedestrian has size lower than 1/2 of the list of goals then 55% of probability to assign each goal
-        else if(groupsGoalsRatio <= 0.5) {
-            goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 45);
-        }
-
-        //If the group if pedestrian has size higher than half list of goals then 60% of probability to assign each goal
-        else if(groupsGoalsRatio < 0.8) {
+        //If the group if pedestrian has size lower than 1/3 of the list of goals then 60% of probability to assign each goal
+        else if(groupsGoalsRatio <= 0.33) {
             goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 40);
         }
 
-        //If the group if pedestrian has size higher than the list of goals then 70% of probability to assign each goal
-        else if(groupsGoalsRatio >= 0.8) {
+        //If the group if pedestrian has size lower than 1/2 of the list of goals then 70% of probability to assign each goal
+        else if(groupsGoalsRatio <= 0.5) {
             goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 30);
         }
 
-        //System.out.println("Gruppo di grandezza " + groupSize + "\tObiettivi: " + goalsList.size());
+        //If the group if pedestrian has size higher than half list of goals then 80% of probability to assign each goal
+        else if(groupsGoalsRatio < 0.8) {
+            goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 20);
+        }
+
+        //If the group if pedestrian has size higher than the list of goals then 90% of probability to assign each goal
+        else if(groupsGoalsRatio >= 0.8) {
+            goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 10);
+        }
+
+        System.out.println("Gruppo di grandezza " + groupSize + "\tObiettivi: " + goalsList.size());
 
         return goalsList;
     }
