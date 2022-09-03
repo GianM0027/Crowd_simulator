@@ -1,9 +1,9 @@
 package models;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import support.constants.Constant;
 
+import java.awt.*;
+import java.util.List;
 
 
 /**
@@ -15,7 +15,9 @@ public class Group {
     private List<WayPoint> goalsList;
     private int groupID;
     private Color color;
-    private boolean isActive;
+
+    //simulation parameters
+    private boolean isMoving;
 
 
     public Group(int groupID, List<WayPoint> goalsList, List<Pedestrian> pedestrians){
@@ -23,16 +25,20 @@ public class Group {
         this.groupID = groupID;
         this.pedestrians = pedestrians;
         this.goalsList = goalsList;
-        this.isActive = false;
+        this.isMoving = true;
 
         for(Pedestrian p: pedestrians)
-            p.setGoalsList(new ArrayList<>(goalsList));
+            p.setGoalsList(goalsList);
     }
 
 
 
     public int getSizeGroup() {
         return sizeGroup;
+    }
+
+    public boolean isMoving() {
+        return isMoving;
     }
 
     public List<Pedestrian> getPedestrians() {
@@ -59,4 +65,7 @@ public class Group {
         this.color = color;
     }
 
+    public void setMoving(boolean moving) {
+        isMoving = moving;
+    }
 }

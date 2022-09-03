@@ -20,19 +20,20 @@ public class Pedestrian extends Entity{
     private int gender;
     private int age;
     private int energy;
-
     private Group group;
     private int groupID;
     private List<WayPoint> goalsList;
+    private WayPoint currentGoal;
     private int goalsNumber;
     private List<Obstacle> obstacles;
 
 
     /** motion parameters */
+    private Timer waypointTimer;
     private PVector position;
+    private PVector centerPosition;
     private PVector velocity;
     private PVector accelerationVect;
-    float radiusVisibility;
     float maxforce;    // Maximum steering force
     float maxspeed;    // Maximum speed
     private EntityBound bounds;
@@ -53,11 +54,11 @@ public class Pedestrian extends Entity{
         //motion parameters
         this.position = new PVector((float)position.getX(), (float)position.getY());
         bounds = new EntityBound(this);
+        this.centerPosition = new PVector((float)bounds.getCenter().getX(), (float)bounds.getCenter().getY());
         accelerationVect = new PVector(0, 0);
-        velocity = new PVector(1, 1);
-        radiusVisibility = (float) Math.PI*2; //default 2.0 (each pedestrian can see the others all around them)
+        velocity = new PVector(0, 0);
         maxspeed = assignMaxSpeed();
-        maxforce = 0.03f;
+        maxforce = 0.15f; //default 0.03f
     }
 
 
@@ -80,36 +81,24 @@ public class Pedestrian extends Entity{
      * Compute next position towards a goal, it ignores obstacles and other pedestrians
      * */
     public void nextPosition(JPanel panel, ArrayList<Pedestrian> crowd){
-        WayPoint nextGoal;
 
-        if(goalsList != null && !goalsList.isEmpty())
-            nextGoal = goalsList.get(0);
-        else
-            nextGoal = new WayPoint(new Point2D.Double(panel.getWidth() + 10, panel.getHeight()/2d));
+        if(currentGoal == null)
+            currentGoal = new WayPoint(new Point2D.Double(panel.getWidth() + 10, panel.getHeight()/2d));
 
         //motion
         flock(crowd);
         update();
         updateBounds();
 
-        /*
-        * double deltaX = this.position.getX() - goalPosition.getX();
-        double deltaY = this.position.getY() - goalPosition.getY();
-        double angle = Math.atan2(deltaY, deltaX) + Math.PI;
-
-        deltaY = Math.sin(angle);
-        deltaX = Math.cos(angle);
-
-        nextPos = new Point2D.Double(nextPos.getX() + deltaX, nextPos.getY() + deltaY);
-        * */
-
-
-        if(this.checkCollision(nextGoal) && !goalsList.isEmpty()){
+        if(this.checkCollision(currentGoal) && !goalsList.isEmpty()){
             this.goalsList.remove(0);
-        }
-
-        if(position.x > panel.getWidth()){
-            this.setGoalsList(new ArrayList<>());
+            if(!goalsList.isEmpty()) {
+                if (this.group.isMoving())
+                    currentGoal = goalsList.get(0);
+            }
+            else
+                if (this.group.isMoving())
+                    currentGoal = new WayPoint(new Point2D.Double(panel.getWidth() + 10, panel.getHeight()/2d));
         }
     }
 
@@ -119,21 +108,27 @@ public class Pedestrian extends Entity{
     }
 
 
-    // We accumulate a new acceleration each time based on three rules
+    // We accumulate a new acceleration each time based on some rules, each with its weight
     private void flock(ArrayList<Pedestrian> crowd) {
         PVector sep = separate(crowd);   // Separation
-        PVector ali = align(new ArrayList<>(group.getPedestrians()));      // Alignment
+        //PVector ali = align(new ArrayList<>(group.getPedestrians()));      // Alignment
         PVector coh = cohesion(new ArrayList<>(group.getPedestrians()));   // Cohesion
+        PVector dir = direction();
+        PVector avoid = avoidObstacle();
 
         // Arbitrarily weight these forces
-        sep.mult(1.0f); //default 1.5
-        ali.mult(1.0f); //default 1
-        coh.mult(1.0f); //default 1
+        sep.mult(3.0f); //default 1.5
+        //ali.mult(1.0f); //default 1
+        coh.mult(1.5f); //default 1
+        dir.mult(1.5f); //default 1
+        avoid.mult(3.5f);
 
         // Add the force vectors to acceleration
         applyForce(sep);
-        applyForce(ali);
+        //applyForce(ali);
         applyForce(coh);
+        applyForce(dir);
+        applyForce(avoid);
     }
 
     // Method to update position
@@ -168,12 +163,14 @@ public class Pedestrian extends Entity{
     // Separation
     // Method checks for nearby pedestrians and steers away
     PVector separate (ArrayList<Pedestrian> pedestrians) {
-        float desiredseparation = 25.0f;
-        PVector steer = new PVector(0, 0, 0);
+        float desiredseparation = (float)this.bounds.getWidth();
+        PVector steer = new PVector(0, 0);
         int count = 0;
-        // For every boid in the system, check if it's too close
+
+        // For every pedestrian in the system, check if it's too close
         for (Pedestrian other : pedestrians) {
             float d = PVector.dist(position, other.position);
+
             // If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
             if ((d > 0) && (d < desiredseparation)) {
                 // Calculate vector pointing away from neighbor
@@ -233,9 +230,10 @@ public class Pedestrian extends Entity{
     // Cohesion
     // For the average position (i.e. center) of all nearby boids, calculate steering vector towards that position
     PVector cohesion (ArrayList<Pedestrian> pedestrians) {
-        float neighbordist = 50;
-        PVector sum = new PVector(0, 0);   // Start with empty vector to accumulate all positions
+        float neighbordist = 500; //default = 50
+        PVector sum = new PVector(0,0);   // Start with empty vector to accumulate all positions
         int count = 0;
+
         for (Pedestrian other : pedestrians) {
             float d = PVector.dist(position, other.position);
             if ((d > 0) && (d < neighbordist)) {
@@ -250,6 +248,30 @@ public class Pedestrian extends Entity{
         else {
             return new PVector(0, 0);
         }
+    }
+
+
+    // Return a vector toward the current pedestrian's goal
+    private PVector direction() {
+        return seek(new PVector((float)currentGoal.getPosition().getX(), (float)currentGoal.getPosition().getY()));
+    }
+
+    private PVector avoidObstacle(){
+        PVector steer = new PVector(0,0);
+        float obstacleDist = (float)(this.bounds.getWidth() + obstacles.get(0).getEntityBounds().getWidth());
+
+        for(Obstacle obstacle : obstacles){
+            PVector obstaclePosition = new PVector((float) obstacle.getEntityBounds().getCenter().getX(), (float) obstacle.getEntityBounds().getCenter().getY());
+
+            if(this.centerPosition.dist(obstaclePosition) < obstacleDist){
+                PVector diff = PVector.sub(this.position, obstaclePosition);
+                diff.normalize();
+                diff.div(this.centerPosition.dist(obstaclePosition));        // Weight by distance
+                steer.add(diff);
+            }
+        }
+
+        return steer;
     }
 
 
@@ -270,12 +292,12 @@ public class Pedestrian extends Entity{
         };
     }
 
-    private int assignMaxSpeed(){
-        return switch (this.age) {
-            case Constant.CHILD, Constant.YOUNG -> Support.getRandomValue(Constant.MIN_VELOCITY, Constant.MAX_VELOCITY);
-            case Constant.OLD -> Support.getRandomValue(Constant.MIN_VELOCITY, Constant.MAX_VELOCITY - Constant.MAX_VELOCITY/3);
-            default -> 0;
-        };
+    //MIN SPEED = 1, MAX SPEED = 5
+    private float assignMaxSpeed(){
+        float velocity = 1;
+        for(int i = 1; i <= Constant.MAX_VELOCITY; i++)
+            velocity = velocity + (0.1f * i);
+        return velocity;
     }
 
     public int getGender() {
@@ -310,6 +332,9 @@ public class Pedestrian extends Entity{
         return goalsNumber;
     }
 
+    public WayPoint getCurrentGoal() {
+        return currentGoal;
+    }
 
     public Rectangle2D getPedestrianShape() {
         return pedestrianShape;
@@ -330,6 +355,8 @@ public class Pedestrian extends Entity{
     public void setGoalsList(List<WayPoint> goalsList) {
         this.goalsList = goalsList;
         goalsNumber = goalsList.size();
+        if(!goalsList.isEmpty())
+            currentGoal = goalsList.get(0);
     }
 
     public void setGroup(Group group) {
@@ -343,6 +370,7 @@ public class Pedestrian extends Entity{
     public void updateBounds(){
         this.pedestrianShape = new Rectangle2D.Double(this.position.x, this.position.y, Constant.PEDESTRIAN_WIDTH, Constant.PEDESTRIAN_HEIGHT);
         this.bounds = new EntityBound(this);
+        this.centerPosition = new PVector((float)bounds.getCenter().getX(), (float) bounds.getCenter().getY());
     }
 
 }

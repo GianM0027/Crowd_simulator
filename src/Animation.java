@@ -5,7 +5,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +79,7 @@ public class Animation extends JPanel implements ActionListener {
 
             for (Pedestrian pedestrian: group.getPedestrians()) {
                 g2D.fill(pedestrian.getPedestrianShape());
+                g2D.fill(pedestrian.getCurrentGoal().getWayPointShape());
             }
         }
     }
@@ -89,7 +89,6 @@ public class Animation extends JPanel implements ActionListener {
     /******************************    Handle pedestrians' movement    *************************************/
     @Override
     public void actionPerformed(ActionEvent e) {
-        Point2D nextPosition;
 
         for (Pedestrian pedestrian : crowd) {
             pedestrian.nextPosition(this, new ArrayList<>(crowd));
