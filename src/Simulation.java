@@ -256,7 +256,7 @@ public class Simulation extends JPanel{
             goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 10);
         }
 
-        System.out.println("Gruppo di grandezza " + groupSize + "\tObiettivi: " + goalsList.size());
+        //System.out.println("Gruppo di grandezza " + groupSize + "\tObiettivi: " + goalsList.size());
 
         return goalsList;
     }

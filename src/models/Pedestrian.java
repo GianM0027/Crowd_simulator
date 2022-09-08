@@ -62,7 +62,7 @@ public class Pedestrian extends Entity implements ActionListener {
         accelerationVect = new PVector(0, 0);
         velocity = new PVector(0, 0);
         maxspeed = assignMaxSpeed();
-        maxforce = 0.15f; //default 0.03f
+        maxforce = 0.2f; //default 0.03f
     }
 
 
@@ -111,7 +111,7 @@ public class Pedestrian extends Entity implements ActionListener {
 
     // We accumulate a new acceleration each time based on some rules, each with its weight
     private void flock(ArrayList<Pedestrian> crowd) {
-        PVector sep = separate(crowd);   // Separation
+        PVector sep = separate(crowd);   // Separation between each pedestrian
         //PVector ali = align(new ArrayList<>(group.getPedestrians()));      // Alignment
         PVector coh = cohesion(new ArrayList<>(group.getPedestrians()));   // Cohesion
         PVector dir = direction();
@@ -122,7 +122,7 @@ public class Pedestrian extends Entity implements ActionListener {
         //ali.mult(1.0f); //default 1
         coh.mult(1.5f); //default 1
         dir.mult(1.5f); //default 1
-        avoid.mult(3.5f);
+        avoid.mult(5f);
 
         // Add the force vectors to acceleration
         applyForce(sep);
@@ -259,7 +259,7 @@ public class Pedestrian extends Entity implements ActionListener {
 
     private PVector avoidObstacle(){
         PVector steer = new PVector(0,0);
-        float obstacleDist = (float)(this.entityBounds.getWidth() + obstacles.get(0).getEntityBounds().getWidth());
+        float obstacleDist = (float)(this.entityBounds.getWidth() + obstacles.get(0).getEntityBounds().getWidth()/2);
 
         for(Obstacle obstacle : obstacles){
             PVector obstaclePosition = new PVector((float) obstacle.getEntityBounds().getCenter().getX(), (float) obstacle.getEntityBounds().getCenter().getY());

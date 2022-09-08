@@ -67,6 +67,7 @@ public class Animation extends JPanel implements ActionListener {
         for (Obstacle obstacle : obstacles) {
             g2D.fill(obstacle.getObstacleShape());
 
+            /* print bounds
             g2D.fill(new Ellipse2D.Double(obstacle.getEntityBounds().getUpLeft().getX(), obstacle.getEntityBounds().getUpLeft().getY(), 2, 2));
             g2D.fill(new Ellipse2D.Double(obstacle.getEntityBounds().getUpRight().getX(), obstacle.getEntityBounds().getUpRight().getY(), 2, 2));
             g2D.fill(new Ellipse2D.Double(obstacle.getEntityBounds().getUp().getX(), obstacle.getEntityBounds().getUp().getY(), 2, 2));
@@ -75,6 +76,7 @@ public class Animation extends JPanel implements ActionListener {
             g2D.fill(new Ellipse2D.Double(obstacle.getEntityBounds().getBottomLeft().getX(), obstacle.getEntityBounds().getBottomLeft().getY(), 2, 2));
             g2D.fill(new Ellipse2D.Double(obstacle.getEntityBounds().getBottomRight().getX(), obstacle.getEntityBounds().getBottomRight().getY(), 2, 2));
             g2D.fill(new Ellipse2D.Double(obstacle.getEntityBounds().getBottom().getX(), obstacle.getEntityBounds().getBottom().getY(), 2, 2));
+        */
         }
 
         //draw way points
@@ -82,6 +84,7 @@ public class Animation extends JPanel implements ActionListener {
         for (WayPoint wayPoint : wayPoints) {
             g2D.fill(wayPoint.getWayPointShape());
 
+            /* print bounds
             g2D.fill(new Ellipse2D.Double(wayPoint.getEntityBounds().getUpLeft().getX(), wayPoint.getEntityBounds().getUpLeft().getY(), 2, 2));
             g2D.fill(new Ellipse2D.Double(wayPoint.getEntityBounds().getUpRight().getX(), wayPoint.getEntityBounds().getUpRight().getY(), 2, 2));
             g2D.fill(new Ellipse2D.Double(wayPoint.getEntityBounds().getUp().getX(), wayPoint.getEntityBounds().getUp().getY(), 2, 2));
@@ -90,6 +93,7 @@ public class Animation extends JPanel implements ActionListener {
             g2D.fill(new Ellipse2D.Double(wayPoint.getEntityBounds().getBottomLeft().getX(), wayPoint.getEntityBounds().getBottomLeft().getY(), 2, 2));
             g2D.fill(new Ellipse2D.Double(wayPoint.getEntityBounds().getBottomRight().getX(), wayPoint.getEntityBounds().getBottomRight().getY(), 2, 2));
             g2D.fill(new Ellipse2D.Double(wayPoint.getEntityBounds().getBottom().getX(), wayPoint.getEntityBounds().getBottom().getY(), 2, 2));
+        */
         }
 
         //for each group of pedestrians, draw its components
@@ -104,6 +108,7 @@ public class Animation extends JPanel implements ActionListener {
                 g2D.setStroke(new BasicStroke(0));
                 g2D.setPaint(group.getColor());
 
+                /* print bounds
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getUpLeft().getX(), pedestrian.getEntityBounds().getUpLeft().getY(), 2, 2));
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getUpRight().getX(), pedestrian.getEntityBounds().getUpRight().getY(), 2, 2));
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getUp().getX(), pedestrian.getEntityBounds().getUp().getY(), 2, 2));
@@ -112,6 +117,7 @@ public class Animation extends JPanel implements ActionListener {
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getBottomLeft().getX(), pedestrian.getEntityBounds().getBottomLeft().getY(), 2, 2));
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getBottomRight().getX(), pedestrian.getEntityBounds().getBottomRight().getY(), 2, 2));
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getBottom().getX(), pedestrian.getEntityBounds().getBottom().getY(), 2, 2));
+            */
             }
         }
     }
@@ -125,6 +131,7 @@ public class Animation extends JPanel implements ActionListener {
         for (Pedestrian pedestrian : crowd) {
             pedestrian.nextPosition(this, new ArrayList<>(crowd));
         }
+
 
         repaint();
     }
