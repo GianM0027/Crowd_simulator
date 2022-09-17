@@ -192,7 +192,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             this.velocityFilter = new RangeSlider(Constant.MIN_VELOCITY, Constant.MAX_VELOCITY);
             velocityFilter.setFocusable(false);
             velocityFilter.setMinorTickSpacing(1);
-            velocityFilter.setMajorTickSpacing(2);
+            velocityFilter.setMajorTickSpacing(1);
             velocityFilter.setValue(Constant.MIN_VELOCITY);
             velocityFilter.setExtent(Constant.MAX_VELOCITY);
             velocityFilter.setPaintLabels(true);
@@ -248,7 +248,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
                 for(int i = 1; i <= crowd.size(); i++) {
                     listModel.add(i-1, "Pedestrian " + i + ": " + crowd.get(i-1).getPositionString() +
                             "   -   " + crowd.get(i-1).getGenderString() + "   -   " + crowd.get(i-1).getAgeString() +
-                            "   -   " + "Velocity: " + crowd.get(i-1).getVelocity() + "   -   " + "Energy: " + crowd.get(i-1).getEnergy());
+                            "   -   " + "Velocity: " + String.format("%.2f", crowd.get(i-1).getVelocity()) + "   -   " + "Energy: " + crowd.get(i-1).getEnergy());
                 }
 
                 this.activePedestrians.removeAll();

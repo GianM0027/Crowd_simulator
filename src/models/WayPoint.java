@@ -12,7 +12,7 @@ public class WayPoint extends Entity {
 
     public WayPoint(Point2D position){
         super(position);
-        entityType = Constant.WAY_POINT;
+        entityType = Constant.GENERIC_WAYPOINT;
 
         wayPointShape = new Ellipse2D.Double(position.getX(), position.getY(), Constant.WAYPOINT_WIDTH, Constant.WAYPOINT_HEIGHT);
         bounds = new EntityBound(this);

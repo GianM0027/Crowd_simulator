@@ -126,7 +126,7 @@ public class SettingPanel extends JPanel {
 
         //labels
         JLabel numPeopleLabel = new JLabel("Size of the crowd:");
-        JLabel numWayPointsLabel = new JLabel("Number of way points:");
+        JLabel numWayPointsLabel = new JLabel("Number of goal points:");
         JLabel numObstaclesLabel = new JLabel("Number of obstacles:");
 
         //spinners

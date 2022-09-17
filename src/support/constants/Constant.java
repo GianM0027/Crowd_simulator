@@ -5,7 +5,6 @@ public class Constant {
     // entities constant
     public static final int PEDESTRIAN = -1;
     public static final int OBSTACLE = -2;
-    public static final int WAY_POINT = -3;
     public static final int PEDESTRIAN_WIDTH = 6;
     public static final int PEDESTRIAN_HEIGHT = 12;
     public static final int OBSTACLE_WIDTH = 12;
@@ -13,6 +12,10 @@ public class Constant {
     public static final int WAYPOINT_WIDTH = 4;
     public static final int WAYPOINT_HEIGHT = 4;
 
+
+    //Waypoints constants
+    public static final int GENERIC_WAYPOINT = -3;
+    public static final int DOOR = -4;
     
     //pedestrian constants
     public static final int MALE = 1;
@@ -20,8 +23,8 @@ public class Constant {
     public static final int CHILD = 3;
     public static final int YOUNG = 4;
     public static final int OLD = 5;
-    public static final int MIN_VELOCITY = 1;
-    public static final int MAX_VELOCITY = 5;
+    public static final int MIN_VELOCITY = 0;
+    public static final int MAX_VELOCITY = 3;
     public static final int MIN_ENERGY_CHILD = 40;
     public static final int MAX_ENERGY_CHILD = 50;
     public static final int MIN_ENERGY_YOUNG = 30;

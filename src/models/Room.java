@@ -10,6 +10,8 @@ import java.awt.geom.Rectangle2D;
 
 public class Room{
 
+    private Rectangle2D roomRectangle;
+
     private Line2D door;
     private Rectangle2D doorSpace;
 
@@ -35,6 +37,8 @@ public class Room{
 
         door = new Line2D.Double(doorWallLeft.getX2(), doorWallLeft.getY2(), doorWallRight.getX2(), doorWallRight.getY2());
         doorSpace = new Rectangle2D.Double(door.getX1(), door.getY1() - 20, door.getBounds2D().getWidth(), 40);
+
+        roomRectangle = new Rectangle2D.Double(roomPositionX, roomPositionY, width, height);
     }
 
     public boolean checkCollision(Entity entity){
@@ -73,5 +77,9 @@ public class Room{
 
     public Line2D getDoorWallRight() {
         return doorWallRight;
+    }
+
+    public Rectangle2D getRoomRectangle() {
+        return roomRectangle;
     }
 }

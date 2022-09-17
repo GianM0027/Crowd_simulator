@@ -256,11 +256,17 @@ public class Simulation extends JPanel{
             goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 10);
         }
 
-        //System.out.println("Gruppo di grandezza " + groupSize + "\tObiettivi: " + goalsList.size());
+        //adding the knowledge about waypoints' positions (which door brings to each waypoint)
+        addMiddlePoints(goalsList);
 
         return goalsList;
     }
 
+    //Adding doors through which to pass to reach each waypoint
+    private void addMiddlePoints(List<WayPoint> goalsList){
+        //adding building's entrance
+        goalsList.add(0, new WayPoint(new Point2D.Double(building.getEntrance().getBounds2D().getCenterX(), building.getEntrance().getBounds2D().getCenterY())));
+    }
 
     /***************************************    ACCESSORS    *****************************************/
     public int getNumberOfPeople() {

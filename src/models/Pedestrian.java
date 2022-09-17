@@ -311,11 +311,18 @@ public class Pedestrian extends Entity implements ActionListener {
         };
     }
 
-    //MIN SPEED = 1, MAX SPEED = 5
+    //velocity between 0.7 and 2.5
     private float assignMaxSpeed(){
         float velocity = 1;
-        for(int i = 1; i <= Constant.MAX_VELOCITY; i++)
-            velocity = velocity + (0.1f * i);
+        int counter = Support.getRandomValue(1, 5);
+        for(int i = 1; i <= counter; i++) {
+            if(Support.getRandomValue(1, 10) < 8)
+                velocity = velocity + (0.1f * i);
+            else
+                velocity = velocity - (0.1f * i);
+        }
+        if(velocity < 0.7)
+            velocity = 0.7f;
         return velocity;
     }
 
@@ -363,8 +370,8 @@ public class Pedestrian extends Entity implements ActionListener {
         return new Point2D.Double(this.position.x, this.position.y);
     }
 
-    public int getVelocity() {
-        return (int)maxspeed;
+    public float getVelocity() {
+        return maxspeed;
     }
 
     public int getEnergy() {
