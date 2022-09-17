@@ -97,7 +97,11 @@ public class Pedestrian extends Entity implements ActionListener {
         if(this.checkCollision(currentGoal) && !goalsList.isEmpty()){
             if(group.isMoving()) {
                 group.setMoving(false);
-                waypointTimer = new Timer(Support.getRandomValue(Constant.MIN_TIME_FOR_WAYPOINT, Constant.MAX_TIME_FOR_WAYPOINT), this);
+
+                if(currentGoal.getEntityType() == Constant.GENERIC_WAYPOINT)
+                    waypointTimer = new Timer(Support.getRandomValue(Constant.MIN_TIME_FOR_WAYPOINT, Constant.MAX_TIME_FOR_WAYPOINT), this);
+                else
+                    waypointTimer = new Timer(0, this);
                 waypointTimer.start();
             }
         }

@@ -15,8 +15,8 @@ public class Building {
     private double height;
 
     private List<Room> rooms;
-    private Line2D entrance;
-    private Line2D exit;
+    private Door entrance;
+    private Door exit;
     private Line2D entranceUpWall;
     private Line2D entranceBottomWall;
     private Line2D exitUpWall;
@@ -49,8 +49,8 @@ public class Building {
         bottomWall = new Line2D.Double(entranceWallDownDown, exitWallDownDown);
 
 
-        entrance = new Line2D.Double(entranceWallUpDown, exitWallDownUp);
-        exit = new Line2D.Double(exitWallUpDown, exitWallDownUp);
+        entrance = new Door(entranceWallUpDown, exitWallDownUp);
+        exit = new Door(exitWallUpDown, exitWallDownUp);
 
         //rooms of the building (up and down)
         rooms = new ArrayList<>();
@@ -135,11 +135,11 @@ public class Building {
         return bottomWall;
     }
 
-    public Line2D getEntrance() {
+    public Door getEntrance() {
         return entrance;
     }
 
-    public Line2D getExit() {
+    public Door getExit() {
         return exit;
     }
 

@@ -257,7 +257,7 @@ public class Simulation extends JPanel{
         }
 
         //adding the knowledge about waypoints' positions (which door brings to each waypoint)
-        addMiddlePoints(goalsList);
+        //addMiddlePoints(goalsList);
 
         return goalsList;
     }
@@ -265,7 +265,10 @@ public class Simulation extends JPanel{
     //Adding doors through which to pass to reach each waypoint
     private void addMiddlePoints(List<WayPoint> goalsList){
         //adding building's entrance
-        goalsList.add(0, new WayPoint(new Point2D.Double(building.getEntrance().getBounds2D().getCenterX(), building.getEntrance().getBounds2D().getCenterY())));
+        goalsList.add(0, building.getEntrance());
+
+        //adding the door between every waypoints
+
     }
 
     /***************************************    ACCESSORS    *****************************************/
