@@ -8,6 +8,7 @@ import java.awt.geom.Point2D;
 
 public class WayPoint extends Entity {
     private EntityBound bounds;
+    private int waypointID;
     private Ellipse2D wayPointShape;
 
     public WayPoint(Point2D position){
@@ -37,5 +38,13 @@ public class WayPoint extends Entity {
 
     public Ellipse2D getWayPointShape() {
         return wayPointShape;
+    }
+
+    public int getWaypointID() {
+        return waypointID;
+    }
+
+    public void setWaypointID(int waypointID) {
+        this.waypointID = waypointID;
     }
 }

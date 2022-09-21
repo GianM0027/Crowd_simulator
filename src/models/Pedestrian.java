@@ -12,6 +12,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -358,6 +359,10 @@ public class Pedestrian extends Entity implements ActionListener {
             return "Old";
     }
 
+    public int getGroupID() {
+        return groupID;
+    }
+
     public int getGoalsNumber() {
         return goalsNumber;
     }
@@ -389,6 +394,14 @@ public class Pedestrian extends Entity implements ActionListener {
             currentGoal = goalsList.get(0);
     }
 
+    public List<WayPoint> getGoalsList() {
+        return goalsList;
+    }
+
+    public void setGroupID(int groupID) {
+        this.groupID = groupID;
+    }
+
     public void setCurrentGoal(WayPoint currentGoal) {
         this.currentGoal = currentGoal;
     }
@@ -405,5 +418,18 @@ public class Pedestrian extends Entity implements ActionListener {
         this.pedestrianShape = new Rectangle2D.Double(this.position.x, this.position.y, Constant.PEDESTRIAN_WIDTH, Constant.PEDESTRIAN_HEIGHT);
         this.entityBounds = new EntityBound(this);
         this.centerPosition = new PVector((float) entityBounds.getCenter().getX(), (float) entityBounds.getCenter().getY());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pedestrian that = (Pedestrian) o;
+        return gender == that.gender && age == that.age && energy == that.energy && groupID == that.groupID;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(gender, age, energy, groupID);
     }
 }

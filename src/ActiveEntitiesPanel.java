@@ -1,3 +1,4 @@
+import models.Group;
 import models.Obstacle;
 import models.Pedestrian;
 import models.WayPoint;
@@ -155,7 +156,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             GridBagConstraints gbdOrderByLabel = new GridBagConstraints(0,0,1,1,0,0,GridBagConstraints.LINE_START,
                     GridBagConstraints.HORIZONTAL,new Insets(5,10,5,10),0,0);
             JLabel orderByLabel = new JLabel("Order by:");
-            String[] optionsOrderBy = {"Default", "Gender", "Age", "Velocity", "Energy"};
+            String[] optionsOrderBy = {"Group", "Gender", "Age", "Velocity", "Energy"};
             this.orderBy = new JComboBox<>(optionsOrderBy);
             orderBy.addActionListener(e -> updateFilteredCrowd());
             researchFilters.add(orderByLabel, gbdOrderByLabel);
@@ -243,20 +244,78 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             }
             //else if the simulation is started, you retrieve the list of pedestrians and show it
             else {
-                DefaultListModel listModel = new DefaultListModel();
 
-                for(int i = 1; i <= crowd.size(); i++) {
-                    listModel.add(i-1, "Pedestrian " + i + ": " + crowd.get(i-1).getPositionString() +
-                            "   -   " + crowd.get(i-1).getGenderString() + "   -   " + crowd.get(i-1).getAgeString() +
-                            "   -   " + "Velocity: " + String.format("%.2f", crowd.get(i-1).getVelocity()) + "   -   " + "Energy: " + crowd.get(i-1).getEnergy());
+                //Grouped by group
+                if(this.orderBy.getSelectedItem().toString().equals("Group")){
+                    JScrollPane scrollGroupsPane = new JScrollPane();
+                    JPanel allGroupsPanel = new JPanel(new GridBagLayout());
+                    GridBagConstraints gbd = new GridBagConstraints(0,0,1,1,1,0,GridBagConstraints.FIRST_LINE_START,
+                            GridBagConstraints.HORIZONTAL,new Insets(0,0,10,0),0,0);
+
+                    //retrieve groups from the filtered crowd and show them
+                    List<Group> groups = new ArrayList<>(Simulation.getInstance().getGroups());
+                    for(Group group : groups){
+                        ArrayList<Pedestrian> pedestrians = new ArrayList<>(group.getPedestrians());
+                        pedestrians.retainAll(crowd);
+
+                        JPanel groupPanel = new JPanel(new BorderLayout());
+                        JPanel labelPanel = new JPanel(new BorderLayout());
+                        JButton colorGroup = new JButton();
+                        colorGroup.setPreferredSize(new Dimension(5,5));
+                        JLabel groupLabel = new JLabel("Group number " + group.getGroupID() + "   -   " + "Goal points: " + group.getGoalPointstoString());
+                        groupLabel.setBackground(Color.GREEN);
+
+                        DefaultListModel listModel = new DefaultListModel();
+                        for (int j = 1; j <= pedestrians.size(); j++) {
+                            listModel.add(j - 1, "Pedestrian " + j + ": " + pedestrians.get(j - 1).getPositionString() +
+                                    "   -   " + pedestrians.get(j - 1).getGenderString() +
+                                    "   -   " + pedestrians.get(j - 1).getAgeString() +
+                                    "   -   " + "Velocity: " + String.format("%.2f", pedestrians.get(j - 1).getVelocity()) +
+                                    "   -   " + "Energy: " + pedestrians.get(j - 1).getEnergy() +
+                                    "   -   " + "Group ID: " + pedestrians.get(j - 1).getGroupID());
+                        }
+                        JList pedestriansList = new JList(listModel);
+
+                        this.activePedestrians.removeAll();
+
+                        groupPanel.add(labelPanel, BorderLayout.NORTH);
+                        labelPanel.setBackground(Color.LIGHT_GRAY);
+                        labelPanel.add(groupLabel);
+                        groupPanel.add(pedestriansList, BorderLayout.CENTER);
+
+                        allGroupsPanel.add(groupPanel, gbd);
+                        gbd.gridy++;
+                    }
+
+
+                    JViewport view = new JViewport();
+                    view.add(allGroupsPanel);
+                    scrollGroupsPane.setViewport(view);
+                    scrollGroupsPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                    scrollGroupsPane.setPreferredSize(new Dimension(this.activePedestrians.getWidth() - 8, this.activePedestrians.getHeight() - 8));
+
+                    this.activePedestrians.add(scrollGroupsPane);
                 }
 
-                this.activePedestrians.removeAll();
-                JList pedestiansList = new JList(listModel);
+                //grouped by feature
+                else {
+                    DefaultListModel listModel = new DefaultListModel();
 
-                JScrollPane scrollPane = new JScrollPane(pedestiansList);
-                scrollPane.setPreferredSize(new Dimension(this.activePedestrians.getWidth()-8,this.activePedestrians.getHeight()-8));
-                this.activePedestrians.add(scrollPane);
+                    for (int i = 1; i <= crowd.size(); i++) {
+                        listModel.add(i - 1, "Pedestrian " + i + ": " + crowd.get(i - 1).getPositionString() +
+                                "   -   " + crowd.get(i - 1).getGenderString() +
+                                "   -   " + crowd.get(i - 1).getAgeString() +
+                                "   -   " + "Velocity: " + String.format("%.2f", crowd.get(i - 1).getVelocity()) +
+                                "   -   " + "Energy: " + crowd.get(i - 1).getEnergy());
+                    }
+
+                    //this.activePedestrians.removeAll();
+                    JList pedestiansList = new JList(listModel);
+
+                    JScrollPane scrollPane = new JScrollPane(pedestiansList);
+                    scrollPane.setPreferredSize(new Dimension(this.activePedestrians.getWidth() - 8, this.activePedestrians.getHeight() - 8));
+                    this.activePedestrians.add(scrollPane);
+                }
             }
             this.activePedestrians.revalidate();
             this.activePedestrians.repaint();
@@ -307,6 +366,13 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             }
 
             setPedestriansTab(filteredCrowd);
+        }
+
+        /**
+         * draw the topbar for each group when pedestrians are grouped by groupID
+         * */
+        private void topGroupPanel(JPanel panel, int groupID){
+
         }
 
 

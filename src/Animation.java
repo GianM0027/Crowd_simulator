@@ -52,8 +52,12 @@ public class Animation extends JPanel implements ActionListener {
 
         g2D.setStroke(new BasicStroke(Constant.BUILDING_STROKE));
         building.drawExternalArea(g2D);
-        for(int i = 0; i < building.getRooms().size(); i++)
+        for(int i = 0; i < building.getRooms().size(); i++) {
             building.getRooms().get(i).drawRoom(g2D);
+            g2D.fill(building.getRooms().get(i).getDoor().getDoorShape());
+        }
+        g2D.fill(building.getEntrance().getDoorShape());
+        //g2D.fill(building.getExit().getDoorShape());
         g2D.setStroke(new BasicStroke(0));
     }
 
@@ -83,6 +87,7 @@ public class Animation extends JPanel implements ActionListener {
         g2D.setPaint(Color.red);
         for (WayPoint wayPoint : wayPoints) {
             g2D.fill(wayPoint.getWayPointShape());
+            g2D.drawString(Integer.toString(wayPoint.getWaypointID()), (int)wayPoint.getPosition().getX(), (int)wayPoint.getPosition().getY());
 
             /* print bounds
             g2D.fill(new Ellipse2D.Double(wayPoint.getEntityBounds().getUpLeft().getX(), wayPoint.getEntityBounds().getUpLeft().getY(), 2, 2));

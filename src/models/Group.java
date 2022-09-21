@@ -25,8 +25,10 @@ public class Group {
         this.goalsList = goalsList;
         this.isMoving = true;
 
-        for(Pedestrian p: pedestrians)
+        for(Pedestrian p: pedestrians) {
             p.setGoalsList(goalsList);
+            p.setGroupID(groupID);
+        }
     }
 
 
@@ -46,6 +48,17 @@ public class Group {
 
     public int getGroupID() {
         return groupID;
+    }
+    public String getGoalPointstoString(){
+        String result = "{";
+
+        for(int i = 0; i < goalsList.size(); i++) {
+            result += (goalsList.get(i).getWaypointID());
+            if(i != goalsList.size()-1)
+                result += ", ";
+        }
+
+        return result + "}";
     }
 
     public Color getColor() {

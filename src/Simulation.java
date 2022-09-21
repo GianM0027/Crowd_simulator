@@ -17,7 +17,7 @@ public class Simulation extends JPanel{
     private boolean isRunning;
 
     private ArrayList<Pedestrian> crowd;
-    private ArrayList<Group> Groups;
+    private ArrayList<Group> groups;
     private ArrayList<Obstacle> obstacles;
     private ArrayList<WayPoint> wayPoints;
     private Building building;
@@ -68,7 +68,7 @@ public class Simulation extends JPanel{
         this.removeAll();
         this.revalidate();
         this.repaint();
-        animation = new Animation(this, this.crowd, this.obstacles, this.wayPoints, this.Groups, this.building);
+        animation = new Animation(this, this.crowd, this.obstacles, this.wayPoints, this.groups, this.building);
         this.add(animation);
         this.revalidate();
         this.repaint();
@@ -91,7 +91,7 @@ public class Simulation extends JPanel{
      * */
     protected void stopSimulation(){
         setParameters(0,Constant.MIN_GROUPS_SIZE,Constant.MAX_GROUPS_SIZE,0, 0);
-        this.Groups.clear();
+        this.groups.clear();
         this.wayPoints.clear();
         this.obstacles.clear();
         this.crowd.clear();
@@ -139,6 +139,7 @@ public class Simulation extends JPanel{
     private void createWayPoints(){
         this.wayPoints = new ArrayList<>();
         WayPoint w;
+        int id = 0;
 
         for(int i = 0; i < this.numberOfWayPoints; i++){
             do {
@@ -148,6 +149,7 @@ public class Simulation extends JPanel{
                                 this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.WAYPOINT_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1));
 
                 w = new WayPoint(point);
+                w.setWaypointID(id++);
             }while (building.checkCollision(w) || building.checkCollisionOnDoorFreeSpace(w));
 
             this.wayPoints.add(i, w);
@@ -160,7 +162,7 @@ public class Simulation extends JPanel{
      * */
     private void createCrowd(){
         this.crowd = new ArrayList<>();
-        this.Groups = new ArrayList<>();
+        this.groups = new ArrayList<>();
 
         //create the crowd
         for(int i = 0; i < numberOfPeople; i++){
@@ -199,7 +201,7 @@ public class Simulation extends JPanel{
                 group.setColor(groupColor);
             }while(groupColor == Color.GRAY || groupColor == Color.WHITE || groupColor == Color.BLACK || groupColor == Color.RED);
 
-            Groups.add(group);
+            groups.add(group);
 
             //each member of each group knows the members of their group
             for (Pedestrian p : group.getPedestrians()) {
@@ -209,7 +211,7 @@ public class Simulation extends JPanel{
 
         } while (!people.isEmpty());
 
-        numberOfGroups = Groups.size();
+        numberOfGroups = groups.size();
 
     }
 
@@ -291,6 +293,10 @@ public class Simulation extends JPanel{
         return numberOfWayPoints;
     }
 
+    public ArrayList<Group> getGroups() {
+        return groups;
+    }
+
     public List<Pedestrian> getCrowd() {
         return crowd;
     }
@@ -298,6 +304,11 @@ public class Simulation extends JPanel{
     public ArrayList<Obstacle> getObstacles() {
         return obstacles;
     }
+
+    public int getNumberOfGroups() {
+        return numberOfGroups;
+    }
+
 
     public ArrayList<WayPoint> getWayPoints() {
         return wayPoints;

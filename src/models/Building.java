@@ -49,7 +49,7 @@ public class Building {
         bottomWall = new Line2D.Double(entranceWallDownDown, exitWallDownDown);
 
 
-        entrance = new Door(entranceWallUpDown, exitWallDownUp);
+        entrance = new Door(entranceWallUpDown, entranceWallDownUp);
         exit = new Door(exitWallUpDown, exitWallDownUp);
 
         //rooms of the building (up and down)
@@ -105,7 +105,7 @@ public class Building {
         EntityBound entityBounds = new EntityBound(entity);
 
         for(Room room: this.rooms)
-            if(room.getDoorSpace().intersects(entityBounds.getBoundsRectangle()))
+            if(room.getDoor().getEntityBounds().getBoundsRectangle().intersects(entityBounds.getBoundsRectangle()))
                 return true;
 
         return false;

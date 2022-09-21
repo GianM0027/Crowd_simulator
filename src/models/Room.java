@@ -12,8 +12,7 @@ public class Room{
 
     private Rectangle2D roomRectangle;
 
-    private Line2D door;
-    private Rectangle2D doorSpace;
+    private Door door;
 
     private Line2D leftWall;
     private Line2D rightWall;
@@ -35,8 +34,7 @@ public class Room{
             doorWallRight = new Line2D.Double(roomPositionX + width, roomPositionY, roomPositionX + width/2 + Constant.BUILDING_DOOR_SIZE/2d, roomPositionY);
         }
 
-        door = new Line2D.Double(doorWallLeft.getX2(), doorWallLeft.getY2(), doorWallRight.getX2(), doorWallRight.getY2());
-        doorSpace = new Rectangle2D.Double(door.getX1(), door.getY1() - 20, door.getBounds2D().getWidth(), 40);
+        door = new Door(doorWallLeft.getP2(), doorWallRight.getP2());
 
         roomRectangle = new Rectangle2D.Double(roomPositionX, roomPositionY, width, height);
     }
@@ -55,13 +53,10 @@ public class Room{
         g2D.draw(doorWallRight);
     }
 
-    public Line2D getDoor() {
+    public Door getDoor() {
         return door;
     }
 
-    public Rectangle2D getDoorSpace() {
-        return doorSpace;
-    }
 
     public Line2D getLeftWall() {
         return leftWall;
