@@ -2,6 +2,7 @@ package models;
 
 import support.constants.Constant;
 
+import javax.swing.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -16,14 +17,18 @@ public class Door extends WayPoint{
 
         entityType = Constant.DOOR;
         doorLine = new Line2D.Double(startPosition, endPosition);
-        doorShape = doorLine.getBounds2D();
+
+        if(startPosition.getX() != endPosition.getX())
+            doorShape = new Rectangle2D.Double(startPosition.getX(), startPosition.getY(), Constant.BUILDING_DOOR_SIZE, Constant.BUILDING_STROKE);
+        else
+            doorShape = new Rectangle2D.Double(startPosition.getX(), startPosition.getY(), Constant.BUILDING_STROKE, Constant.BUILDING_DOOR_SIZE + 10);
     }
 
     public Rectangle2D getDoorShape() {
         return doorShape;
     }
 
-    public Point2D middlePoint(){
+    public Point2D doorsMiddlePoint(){
         return new Point2D.Double(doorShape.getCenterX(), doorShape.getCenterY());
     }
 }
