@@ -171,7 +171,7 @@ public class Simulation extends JPanel{
                     Support.getRandomValue(Constant.PEDESTRIAN_WIDTH + Constant.BOUNDS_DISTANCE,
                             this.getHeight() - Constant.PEDESTRIAN_WIDTH - Constant.BOUNDS_DISTANCE));
 
-            Pedestrian p = new Pedestrian(point, this, i);
+            Pedestrian p = new Pedestrian(point, i, building);
             this.crowd.add(i, p);
         }
 
@@ -258,19 +258,11 @@ public class Simulation extends JPanel{
             goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 10);
         }
 
-        //adding the knowledge about waypoints' positions (which door brings to each waypoint)
-        //addMiddlePoints(goalsList);
+        //adding the entrance door and exit door as waypoints
+        goalsList.add(0, building.getEntrance());
+        goalsList.add(building.getExit());
 
         return goalsList;
-    }
-
-    //Adding doors through which to pass to reach each waypoint
-    private void addMiddlePoints(List<WayPoint> goalsList){
-        //adding building's entrance
-        goalsList.add(0, building.getEntrance());
-
-        //adding the door between every waypoints
-
     }
 
     /***************************************    ACCESSORS    *****************************************/

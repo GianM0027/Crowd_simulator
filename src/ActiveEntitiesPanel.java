@@ -5,21 +5,23 @@ import models.WayPoint;
 import support.*;
 import support.constants.Constant;
 
+import javax.accessibility.AccessibleRelation;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A tabbed pane that shows all the currently active entities
  * */
-public class ActiveEntitiesPanel extends JTabbedPane{
+public class ActiveEntitiesPanel extends JTabbedPane {
     private static ActiveEntitiesPanel instance;
     private JPanel obstaclesTab;
     private JPanel wayPointsTab;
     private JPanel researchFilters;
     private JPanel activePedestrians;
-
 
     private JComboBox orderBy;
     private JComboBox ageFilter;
@@ -30,6 +32,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
 
     public ActiveEntitiesPanel(){
         this.setBorder(BorderFactory.createEtchedBorder());
+
         setInternalLayout();
     }
 
@@ -265,16 +268,15 @@ public class ActiveEntitiesPanel extends JTabbedPane{
                         JLabel groupLabel = new JLabel("Group number " + group.getGroupID() + "   -   " + "Goal points: " + group.getGoalPointstoString());
                         groupLabel.setBackground(Color.GREEN);
 
-                        DefaultListModel listModel = new DefaultListModel();
+                        DefaultListModel pedestrianListModel = new DefaultListModel();
                         for (int j = 1; j <= pedestrians.size(); j++) {
-                            listModel.add(j - 1, "Pedestrian " + j + ": " + pedestrians.get(j - 1).getPositionString() +
-                                    "   -   " + pedestrians.get(j - 1).getGenderString() +
+                            pedestrianListModel.add(j - 1, "Pedestrian " + j + ": " + pedestrians.get(j - 1).getGenderString() +
                                     "   -   " + pedestrians.get(j - 1).getAgeString() +
                                     "   -   " + "Velocity: " + String.format("%.2f", pedestrians.get(j - 1).getVelocity()) +
                                     "   -   " + "Energy: " + pedestrians.get(j - 1).getEnergy() +
                                     "   -   " + "Group ID: " + pedestrians.get(j - 1).getGroupID());
                         }
-                        JList pedestriansList = new JList(listModel);
+                        JList pedestriansList = new JList(pedestrianListModel);
 
                         this.activePedestrians.removeAll();
 
@@ -299,18 +301,17 @@ public class ActiveEntitiesPanel extends JTabbedPane{
 
                 //grouped by feature
                 else {
-                    DefaultListModel listModel = new DefaultListModel();
+                    DefaultListModel pedestrianListModel = new DefaultListModel();
 
                     for (int i = 1; i <= crowd.size(); i++) {
-                        listModel.add(i - 1, "Pedestrian " + i + ": " + crowd.get(i - 1).getPositionString() +
-                                "   -   " + crowd.get(i - 1).getGenderString() +
+                        pedestrianListModel.add(i - 1, "Pedestrian " + i + ": " + crowd.get(i - 1).getGenderString() +
                                 "   -   " + crowd.get(i - 1).getAgeString() +
                                 "   -   " + "Velocity: " + String.format("%.2f", crowd.get(i - 1).getVelocity()) +
                                 "   -   " + "Energy: " + crowd.get(i - 1).getEnergy());
                     }
 
                     //this.activePedestrians.removeAll();
-                    JList pedestiansList = new JList(listModel);
+                    JList pedestiansList = new JList(pedestrianListModel);
 
                     JScrollPane scrollPane = new JScrollPane(pedestiansList);
                     scrollPane.setPreferredSize(new Dimension(this.activePedestrians.getWidth() - 8, this.activePedestrians.getHeight() - 8));
@@ -318,7 +319,7 @@ public class ActiveEntitiesPanel extends JTabbedPane{
                 }
             }
             this.activePedestrians.revalidate();
-            this.activePedestrians.repaint();
+            //this.activePedestrians.repaint();
         }
 
         /**
@@ -368,13 +369,6 @@ public class ActiveEntitiesPanel extends JTabbedPane{
             setPedestriansTab(filteredCrowd);
         }
 
-        /**
-         * draw the topbar for each group when pedestrians are grouped by groupID
-         * */
-        private void topGroupPanel(JPanel panel, int groupID){
-
-        }
-
 
     /***************************************    SUPPORT FUNCTIONS    *****************************************/
 
@@ -393,4 +387,5 @@ public class ActiveEntitiesPanel extends JTabbedPane{
         velocityFilter.setEnabled(true);
         energyFilter.setEnabled(true);
     }
+
 }

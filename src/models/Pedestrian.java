@@ -29,7 +29,7 @@ public class Pedestrian extends Entity implements ActionListener {
     private WayPoint currentGoal;
     private int goalsNumber;
     private List<Obstacle> obstacles;
-    private JPanel panel;
+    private Building building;
 
 
     /** motion parameters */
@@ -43,11 +43,11 @@ public class Pedestrian extends Entity implements ActionListener {
     private EntityBound entityBounds;
 
 
-    public Pedestrian(Point2D position, JPanel panel, int groupId){
+    public Pedestrian(Point2D position, int groupId, Building building){
         super(position);
-        this.panel = panel;
         entityType = Constant.PEDESTRIAN;
         pedestrianShape = new Rectangle2D.Double(position.getX(), position.getY(), Constant.PEDESTRIAN_WIDTH, Constant.PEDESTRIAN_HEIGHT);
+        this.building = building;
 
         this.groupID = groupId;
         this.goalsNumber = 0;
@@ -96,13 +96,15 @@ public class Pedestrian extends Entity implements ActionListener {
         updateBounds();
 
         if(this.checkCollision(currentGoal) && !goalsList.isEmpty()){
+
+            System.out.println(this.group.getGoalPointstoString());
             if(group.isMoving()) {
                 group.setMoving(false);
 
                 if(currentGoal.getEntityType() == Constant.GENERIC_WAYPOINT)
                     waypointTimer = new Timer(Support.getRandomValue(Constant.MIN_TIME_FOR_WAYPOINT, Constant.MAX_TIME_FOR_WAYPOINT), this);
                 else
-                    waypointTimer = new Timer(0, this);
+                    waypointTimer = new Timer(100, this);
                 waypointTimer.start();
             }
         }
@@ -288,15 +290,19 @@ public class Pedestrian extends Entity implements ActionListener {
             this.goalsList.remove(0);
 
         if(!goalsList.isEmpty()) {
-            for(Pedestrian p : group.getPedestrians())
+            for(Pedestrian p : group.getPedestrians()) {
                 p.setCurrentGoal(goalsList.get(0));
+            }
         }
+        /*
         else {
             for(Pedestrian p : group.getPedestrians())
-                p.setCurrentGoal(new WayPoint(new Point2D.Double(panel.getWidth() + 10, panel.getHeight() / 2d)));
-        }
+                p.setCurrentGoal(new WayPoint(new Point2D.Double(panel.getWidth() + 100, panel.getHeight() / 2d)));
+        }*/
 
+        System.out.println(this.group.getGoalPointstoString());
         group.setMoving(true);
+        waypointTimer.stop();
     }
 
 
@@ -369,6 +375,9 @@ public class Pedestrian extends Entity implements ActionListener {
 
     public WayPoint getCurrentGoal() {
         return currentGoal;
+    }
+    public String getPositionString(){
+        return "[" + (int)this.position.x + ", " + (int)this.position.y + "]";
     }
 
     public Rectangle2D getPedestrianShape() {

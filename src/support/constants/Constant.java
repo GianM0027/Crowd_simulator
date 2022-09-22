@@ -9,8 +9,8 @@ public class Constant {
     public static final int PEDESTRIAN_HEIGHT = 12;
     public static final int OBSTACLE_WIDTH = 12;
     public static final int OBSTACLE_HEIGHT = 12;
-    public static final int WAYPOINT_WIDTH = 4;
-    public static final int WAYPOINT_HEIGHT = 4;
+    public static final int WAYPOINT_WIDTH = 6;
+    public static final int WAYPOINT_HEIGHT = 6;
 
 
     //Waypoints constants
@@ -44,6 +44,6 @@ public class Constant {
     public static final int BUILDING_DISTANCE_UP_DOWN = 10; //not lower than 10
     public static final int BUILDING_DISTANCE_LEFT = 200;
     public static final int BUILDING_DISTANCE_RIGHT = 20;
-    public static final int ANIMATION_DELAY = 40;
+    public static final int ANIMATION_DELAY = 30; //default 40
 
 }

@@ -22,6 +22,8 @@ public class Door extends WayPoint{
             doorShape = new Rectangle2D.Double(startPosition.getX(), startPosition.getY(), Constant.BUILDING_DOOR_SIZE, Constant.BUILDING_STROKE);
         else
             doorShape = new Rectangle2D.Double(startPosition.getX(), startPosition.getY(), Constant.BUILDING_STROKE, Constant.BUILDING_DOOR_SIZE + 10);
+
+        position.setLocation(doorsMiddlePoint());
     }
 
     public Rectangle2D getDoorShape() {
