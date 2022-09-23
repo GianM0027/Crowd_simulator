@@ -97,7 +97,7 @@ public class Pedestrian extends Entity implements ActionListener {
 
         if(this.checkCollision(currentGoal) && !goalsList.isEmpty()){
 
-            System.out.println(this.group.getGoalPointstoString());
+            //System.out.println(this.group.getGoalPointstoString());
             if(group.isMoving()) {
                 group.setMoving(false);
 
@@ -119,21 +119,18 @@ public class Pedestrian extends Entity implements ActionListener {
     // We accumulate a new acceleration each time based on some rules, each with its weight
     private void flock(ArrayList<Pedestrian> crowd) {
         PVector sep = separate(crowd);   // Separation between each pedestrian
-        //PVector ali = align(new ArrayList<>(group.getPedestrians()));      // Alignment
         PVector coh = cohesion(new ArrayList<>(group.getPedestrians()));   // Cohesion
         PVector dir = direction();
         PVector avoid = avoidObstacle();
 
         // Arbitrarily weight these forces
         sep.mult(3.0f); //default 1.5
-        //ali.mult(1.0f); //default 1
         coh.mult(1.5f); //default 1
         dir.mult(1.5f); //default 1
         avoid.mult(5f);
 
         // Add the force vectors to acceleration
         applyForce(sep);
-        //applyForce(ali);
         applyForce(coh);
         applyForce(dir);
         applyForce(avoid);
@@ -207,34 +204,6 @@ public class Pedestrian extends Entity implements ActionListener {
     }
 
 
-    // Alignment
-    // For every nearby pedestrian in the group, calculate the average velocity
-    PVector align (ArrayList<Pedestrian> pedestrians) {
-        float neighbordist = 50;
-        PVector sum = new PVector(0, 0);
-        int count = 0;
-        for (Pedestrian other : pedestrians) {
-            float d = PVector.dist(position, other.position);
-            if ((d > 0) && (d < neighbordist)) {
-                sum.add(other.velocity);
-                count++;
-            }
-        }
-        if (count > 0) {
-            sum.div((float)count);
-
-            // Implement Reynolds: Steering = Desired - Velocity
-            sum.normalize();
-            sum.mult(maxspeed);
-            PVector steer = PVector.sub(sum, velocity);
-            steer.limit(maxforce);
-            return steer;
-        }
-        else {
-            return new PVector(0, 0);
-        }
-    }
-
     // Cohesion
     // For the average position (i.e. center) of all nearby boids, calculate steering vector towards that position
     PVector cohesion (ArrayList<Pedestrian> pedestrians) {
@@ -300,7 +269,6 @@ public class Pedestrian extends Entity implements ActionListener {
                 p.setCurrentGoal(new WayPoint(new Point2D.Double(panel.getWidth() + 100, panel.getHeight() / 2d)));
         }*/
 
-        System.out.println(this.group.getGoalPointstoString());
         group.setMoving(true);
         waypointTimer.stop();
     }

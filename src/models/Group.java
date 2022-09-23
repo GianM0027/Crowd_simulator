@@ -53,12 +53,13 @@ public class Group {
         String result = "{";
 
         for(int i = 0; i < goalsList.size(); i++) {
-            result += (goalsList.get(i).getWaypointID());
-            if(i != goalsList.size()-1)
+            if(goalsList.get(i).getWaypointID() != -1) {
+                result += (goalsList.get(i).getWaypointID());
                 result += ", ";
+            }
         }
 
-        return result + "}";
+        return result.subSequence(0,result.length()-2) + "}";
     }
 
     public Color getColor() {

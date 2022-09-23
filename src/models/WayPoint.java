@@ -15,6 +15,7 @@ public class WayPoint extends Entity {
         super(position);
         entityType = Constant.GENERIC_WAYPOINT;
 
+        waypointID = -1;
         wayPointShape = new Ellipse2D.Double(position.getX(), position.getY(), Constant.WAYPOINT_WIDTH, Constant.WAYPOINT_HEIGHT);
         bounds = new EntityBound(this);
     }

@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Objects;
 
 public class Room{
 
@@ -76,5 +77,18 @@ public class Room{
 
     public Rectangle2D getRoomRectangle() {
         return roomRectangle;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return Objects.equals(roomRectangle, room.roomRectangle) && Objects.equals(door, room.door) && Objects.equals(leftWall, room.leftWall) && Objects.equals(rightWall, room.rightWall) && Objects.equals(doorWallLeft, room.doorWallLeft) && Objects.equals(doorWallRight, room.doorWallRight);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(roomRectangle, door, leftWall, rightWall, doorWallLeft, doorWallRight);
     }
 }

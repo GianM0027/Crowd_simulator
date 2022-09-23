@@ -9,8 +9,8 @@ import java.awt.geom.Rectangle2D;
 
 public class Door extends WayPoint{
 
-    Line2D doorLine;
-    Rectangle2D doorShape;
+    private Line2D doorLine;
+    private Rectangle2D doorShape;
 
     public Door(Point2D startPosition, Point2D endPosition) {
         super(startPosition);

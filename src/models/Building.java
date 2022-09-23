@@ -7,6 +7,7 @@ import support.constants.Constant;
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class Building {
     private double height;
 
     private List<Room> rooms;
+    private Rectangle2D hall;
     private Door entrance;
     private Door exit;
     private Line2D entranceUpWall;
@@ -66,6 +68,10 @@ public class Building {
         for(int i = 0; i < bottomRoomsNum; i++){
             rooms.add(new Room(roomPosition.getX() + ((width/bottomRoomsNum)*i), roomPosition.getY(), width/bottomRoomsNum, height/3));
         }
+
+        //hall of the building
+        hall = new Rectangle2D.Double(Constant.BUILDING_DISTANCE_LEFT - 10, Constant.BUILDING_DISTANCE_UP_DOWN + rooms.get(0).getRoomRectangle().getHeight(),
+                width + 20, height - height/3*2);
     }
 
     /**
@@ -145,5 +151,9 @@ public class Building {
 
     public List<Room> getRooms() {
         return rooms;
+    }
+
+    public Rectangle2D getHall() {
+        return hall;
     }
 }
