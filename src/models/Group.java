@@ -3,6 +3,7 @@ package models;
 import support.constants.Constant;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,24 +27,15 @@ public class Group {
         this.isMoving = true;
 
         for(Pedestrian p: pedestrians) {
-            p.setGoalsList(goalsList);
+            p.setGoalsList(new ArrayList<>(goalsList));
             p.setGroupID(groupID);
         }
-    }
 
-
-
-    public int getSizeGroup() {
-        return sizeGroup;
     }
 
 
     public List<Pedestrian> getPedestrians() {
         return pedestrians;
-    }
-
-    public List<WayPoint> getGoalsList() {
-        return goalsList;
     }
 
     public int getGroupID() {
@@ -64,10 +56,6 @@ public class Group {
 
     public Color getColor() {
         return color;
-    }
-
-    public void setGoalsList(List<WayPoint> goalsList) {
-        this.goalsList = goalsList;
     }
 
     public void setColor(Color color) {

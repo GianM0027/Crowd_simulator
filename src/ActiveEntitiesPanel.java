@@ -319,7 +319,7 @@ public class ActiveEntitiesPanel extends JTabbedPane {
                 }
             }
             this.activePedestrians.revalidate();
-            //this.activePedestrians.repaint();
+            this.activePedestrians.repaint();
         }
 
         /**

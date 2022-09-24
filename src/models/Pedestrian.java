@@ -86,6 +86,8 @@ public class Pedestrian extends Entity implements ActionListener {
      * Compute next position towards a goal, it ignores obstacles and other pedestrians
      * */
     public void nextPosition(JPanel panel, ArrayList<Pedestrian> crowd){
+        System.out.println("Pedestrian " + this.getVelocity() + "\t Goals: " + this.getGoalPointstoString());
+        System.out.println("Current Goal: " + currentGoal.getWaypointID() + "\n");
 
         if(currentGoal == null)
             currentGoal = new WayPoint(new Point2D.Double(panel.getWidth() + 10, panel.getHeight()/2d));
@@ -95,16 +97,14 @@ public class Pedestrian extends Entity implements ActionListener {
         update();
         updateBounds();
 
-        if(this.checkCollision(currentGoal) && !goalsList.isEmpty()){
-
-            //System.out.println(this.group.getGoalPointstoString());
+        if(this.centerPosition.dist(currentGoal.getVectorPosition()) < Constant.GOAL_DISTANCE && !goalsList.isEmpty()){
             if(group.isMoving()) {
                 group.setMoving(false);
 
                 if(currentGoal.getEntityType() == Constant.GENERIC_WAYPOINT)
                     waypointTimer = new Timer(Support.getRandomValue(Constant.MIN_TIME_FOR_WAYPOINT, Constant.MAX_TIME_FOR_WAYPOINT), this);
                 else
-                    waypointTimer = new Timer(100, this);
+                    waypointTimer = new Timer(0, this);
                 waypointTimer.start();
             }
         }
@@ -119,15 +119,15 @@ public class Pedestrian extends Entity implements ActionListener {
     // We accumulate a new acceleration each time based on some rules, each with its weight
     private void flock(ArrayList<Pedestrian> crowd) {
         PVector sep = separate(crowd);   // Separation between each pedestrian
-        PVector coh = cohesion(new ArrayList<>(group.getPedestrians()));   // Cohesion
-        PVector dir = direction();
-        PVector avoid = avoidObstacle();
+        PVector coh = cohesion(new ArrayList<>(group.getPedestrians()));   // Cohesion of the group
+        PVector dir = direction(); //direction towards the current goal
+        PVector avoid = avoidObstacle(); //collision avoidance
 
         // Arbitrarily weight these forces
-        sep.mult(3.0f); //default 1.5
-        coh.mult(1.5f); //default 1
-        dir.mult(1.5f); //default 1
-        avoid.mult(5f);
+        sep.mult(2.0f); //default 1.5
+        coh.mult(1.0f); //default 1.5
+        dir.mult(1.0f); //default 1
+        avoid.mult(4f);
 
         // Add the force vectors to acceleration
         applyForce(sep);
@@ -152,7 +152,7 @@ public class Pedestrian extends Entity implements ActionListener {
     // A method that calculates and applies a steering force towards a target
     // STEER = DESIRED MINUS VELOCITY
     private PVector seek(PVector target) {
-        PVector desired = PVector.sub(target, position);  // A vector pointing from the position to the target
+        PVector desired = PVector.sub(target, centerPosition);  // A vector pointing from the position to the target
 
         // Scale to maximum speed
         desired.normalize();
@@ -255,14 +255,24 @@ public class Pedestrian extends Entity implements ActionListener {
     // When a group is done with a waypoint can switch to another
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(!goalsList.isEmpty())
-            this.goalsList.remove(0);
-
-        if(!goalsList.isEmpty()) {
-            for(Pedestrian p : group.getPedestrians()) {
-                p.setCurrentGoal(goalsList.get(0));
+        if(currentGoal.getEntityType() == Constant.DOOR) {
+            if (!this.goalsList.isEmpty()) {
+                this.goalsList.remove(0);
+                this.setCurrentGoal(this.goalsList.get(0));
             }
         }
+        else {
+            //if (!this.goalsList.isEmpty())
+                //this.goalsList.remove(0);
+
+            if (!this.goalsList.isEmpty()) {
+                for (Pedestrian p : group.getPedestrians()) {
+                    p.goalsList.remove(currentGoal);
+                    p.setCurrentGoal(this.goalsList.get(0));
+                }
+            }
+        }
+
         /*
         else {
             for(Pedestrian p : group.getPedestrians())
@@ -272,6 +282,8 @@ public class Pedestrian extends Entity implements ActionListener {
         group.setMoving(true);
         waypointTimer.stop();
     }
+
+
 
 
 
@@ -337,13 +349,6 @@ public class Pedestrian extends Entity implements ActionListener {
         return groupID;
     }
 
-    public int getGoalsNumber() {
-        return goalsNumber;
-    }
-
-    public WayPoint getCurrentGoal() {
-        return currentGoal;
-    }
     public String getPositionString(){
         return "[" + (int)this.position.x + ", " + (int)this.position.y + "]";
     }
@@ -365,7 +370,7 @@ public class Pedestrian extends Entity implements ActionListener {
     }
 
     public void setGoalsList(List<WayPoint> goalsList) {
-        this.goalsList = goalsList;
+        this.goalsList = new ArrayList<>(goalsList);
         goalsNumber = goalsList.size();
         if(!goalsList.isEmpty())
             currentGoal = goalsList.get(0);
@@ -373,6 +378,21 @@ public class Pedestrian extends Entity implements ActionListener {
 
     public List<WayPoint> getGoalsList() {
         return goalsList;
+    }
+
+    public String getGoalPointstoString(){
+        String result = "{";
+
+        for(int i = 0; i < goalsList.size(); i++) {
+            result += (goalsList.get(i).getWaypointID());
+            result += ", ";/*
+            if(goalsList.get(i).getWaypointID() != -1) {
+                result += (goalsList.get(i).getWaypointID());
+                result += ", ";
+            }*/
+        }
+
+        return result.subSequence(0,result.length()-2) + "}";
     }
 
     public void setGroupID(int groupID) {

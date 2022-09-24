@@ -1,10 +1,12 @@
 package models;
 
+import processing.core.PVector;
 import support.EntityBound;
 import support.constants.Constant;
 
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.util.Vector;
 
 public class WayPoint extends Entity {
     private EntityBound bounds;
@@ -43,6 +45,10 @@ public class WayPoint extends Entity {
 
     public int getWaypointID() {
         return waypointID;
+    }
+
+    public PVector getVectorPosition(){
+        return new PVector((float)this.position.getX(), (float)this.position.getY());
     }
 
     public void setWaypointID(int waypointID) {

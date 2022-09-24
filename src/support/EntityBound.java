@@ -2,6 +2,7 @@ package support;
 
 
 import models.Entity;
+import processing.core.PVector;
 import support.constants.Constant;
 
 import java.awt.geom.Point2D;
@@ -124,5 +125,9 @@ public class EntityBound{
 
     public double getHeight() {
         return height;
+    }
+
+    public PVector getCentralVectorPosition(){
+        return new PVector((float)this.center.getX(), (float)this.center.getY());
     }
 }

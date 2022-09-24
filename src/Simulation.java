@@ -302,6 +302,8 @@ public class Simulation extends JPanel{
                                 i+=2;
                             }
                         }
+
+                        //else the actual goal is in the same room as the previous one
                     }
                 }
             }
