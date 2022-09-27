@@ -1,7 +1,9 @@
 package models;
 
+import support.Support;
 import support.constants.Constant;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +12,8 @@ import java.util.List;
 /**
  * A group of pedestrians
  * */
-public class Group {
-    private int sizeGroup;
+public class Group{
+    private boolean startWalking;
     private List<Pedestrian> pedestrians;
     private List<WayPoint> goalsList;
     private int groupID;
@@ -20,7 +22,7 @@ public class Group {
 
 
     public Group(int groupID, List<WayPoint> goalsList, List<Pedestrian> pedestrians){
-        this.sizeGroup = pedestrians.size();
+        this.startWalking = false;
         this.groupID = groupID;
         this.pedestrians = pedestrians;
         this.goalsList = goalsList;
@@ -31,6 +33,7 @@ public class Group {
             p.setGroupID(groupID);
         }
 
+        new Timer(groupID*5000, e -> setStartWalking(true)).start();
     }
 
 
@@ -68,5 +71,17 @@ public class Group {
 
     public void setMoving(boolean moving) {
         isMoving = moving;
+    }
+
+    public boolean hasStartedWalking() {
+        return startWalking;
+    }
+
+    public void setStartWalking(boolean startWalking) {
+        this.startWalking = startWalking;
+    }
+
+    public String getGroupSimbol(){
+        return "\u2B1B";
     }
 }

@@ -5,7 +5,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,8 +51,9 @@ public class Animation extends JPanel implements ActionListener {
 
         g2D.setStroke(new BasicStroke(Constant.BUILDING_STROKE));
         building.drawExternalArea(g2D);
-        for(int i = 0; i < building.getRooms().size(); i++)
+        for(int i = 0; i < building.getRooms().size(); i++) {
             building.getRooms().get(i).drawRoom(g2D);
+        }
 
         g2D.setStroke(new BasicStroke(0));
     }
@@ -131,7 +131,8 @@ public class Animation extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         for (Pedestrian pedestrian : crowd) {
-            pedestrian.nextPosition(this, new ArrayList<>(crowd));
+            if(pedestrian.getGroup().hasStartedWalking())
+                pedestrian.nextPosition(this, new ArrayList<>(crowd));
         }
 
 

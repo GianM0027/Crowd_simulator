@@ -29,12 +29,14 @@ public class Constant {
     public static final int MAX_ENERGY_OLD = 40;
     public static final int MIN_GROUPS_SIZE = 1;
     public static final int MAX_GROUPS_SIZE = 15;
+    public static final int GO_TO_REST = 10;
+    public static final int MAX_SEE_AHEAD = 15;
 
 
 
     // animation's constants
-    public static final int MIN_TIME_FOR_WAYPOINT = 1000; //10000
-    public static final int MAX_TIME_FOR_WAYPOINT = 1500; //15000
+    public static final int MIN_TIME_FOR_WAYPOINT = 3000; //10000
+    public static final int MAX_TIME_FOR_WAYPOINT = 7000; //15000
     public static final int BOUNDS_DISTANCE = PEDESTRIAN_WIDTH /2;
     public static final int BUILDING_STROKE = 4;
     public static final int BUILDING_DOOR_SIZE = PEDESTRIAN_WIDTH *5;
@@ -46,6 +48,6 @@ public class Constant {
     //Waypoints constants
     public static final int GENERIC_WAYPOINT = -3;
     public static final int DOOR = -4;
-    public static final int GOAL_DISTANCE = BUILDING_DOOR_SIZE/2;
+    public static final int GOAL_DISTANCE = BUILDING_DOOR_SIZE/3;
 
 }

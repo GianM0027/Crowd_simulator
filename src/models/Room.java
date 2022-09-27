@@ -78,6 +78,9 @@ public class Room{
     public Rectangle2D getRoomRectangle() {
         return roomRectangle;
     }
+    public Rectangle2D getDoorFreeSpace() {
+        return new Rectangle2D.Double(door.getPosition().getX() - 20, door.getPosition().getY() - 20, Constant.BUILDING_DOOR_SIZE + 20, 40);
+    }
 
     @Override
     public boolean equals(Object o) {

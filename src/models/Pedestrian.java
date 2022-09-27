@@ -23,6 +23,7 @@ public class Pedestrian extends Entity implements ActionListener {
     private int gender;
     private int age;
     private int energy;
+    private int maxEnergy;
     private Group group;
     private int groupID;
     private List<WayPoint> goalsList;
@@ -30,6 +31,7 @@ public class Pedestrian extends Entity implements ActionListener {
     private int goalsNumber;
     private List<Obstacle> obstacles;
     private Building building;
+    private boolean isRestTime;
 
 
     /** motion parameters */
@@ -55,6 +57,8 @@ public class Pedestrian extends Entity implements ActionListener {
         this.gender = Support.getRandomValue(Constant.MALE, Constant.FEMALE); //random among MALE and FEMALE
         this.age = Support.getRandomValue(Constant.CHILD, Constant.OLD); //random among CHILD, YOUNG and OLD
         this.energy = assignEnergy();
+        this.maxEnergy = energy;
+        this.isRestTime = false;
 
         //motion parameters
         this.position = new PVector((float)position.getX(), (float)position.getY());
@@ -63,7 +67,10 @@ public class Pedestrian extends Entity implements ActionListener {
         accelerationVect = new PVector(0, 0);
         velocity = new PVector(0, 0);
         maxspeed = assignMaxSpeed();
-        maxforce = 0.2f; //default 0.03f
+        maxforce = 0.1f; //default 0.03f
+
+        //timer that decreases and increases energy
+        new Timer(1000, e -> handleEnergy()).start();
     }
 
 
@@ -99,10 +106,10 @@ public class Pedestrian extends Entity implements ActionListener {
 
         if(this.centerPosition.dist(currentGoal.getVectorPosition()) < Constant.GOAL_DISTANCE && !goalsList.isEmpty()){
             if(group.isMoving()) {
-                group.setMoving(false);
-
-                if(currentGoal.getEntityType() == Constant.GENERIC_WAYPOINT)
+                if(currentGoal.getEntityType() == Constant.GENERIC_WAYPOINT) {
+                    group.setMoving(false);
                     waypointTimer = new Timer(Support.getRandomValue(Constant.MIN_TIME_FOR_WAYPOINT, Constant.MAX_TIME_FOR_WAYPOINT), this);
+                }
                 else
                     waypointTimer = new Timer(0, this);
                 waypointTimer.start();
@@ -121,12 +128,12 @@ public class Pedestrian extends Entity implements ActionListener {
         PVector sep = separate(crowd);   // Separation between each pedestrian
         PVector coh = cohesion(new ArrayList<>(group.getPedestrians()));   // Cohesion of the group
         PVector dir = direction(); //direction towards the current goal
-        PVector avoid = avoidObstacle(); //collision avoidance
+        PVector avoid = avoidObstacle(); //collision avoidance with obstacles
 
         // Arbitrarily weight these forces
-        sep.mult(2.0f); //default 1.5
-        coh.mult(1.0f); //default 1.5
-        dir.mult(1.0f); //default 1
+        sep.mult(2.5f); //default 1.5
+        coh.mult(1.4f); //default 1.5
+        dir.mult(1.6f); //default 1
         avoid.mult(4f);
 
         // Add the force vectors to acceleration
@@ -144,6 +151,9 @@ public class Pedestrian extends Entity implements ActionListener {
         // Limit speed
         velocity.limit(maxspeed);
         position.add(velocity);
+
+        //walls avoidance
+        avoidWall();
 
         // Reset accelertion to 0 each cycle
         accelerationVect.mult(0);
@@ -207,13 +217,13 @@ public class Pedestrian extends Entity implements ActionListener {
     // Cohesion
     // For the average position (i.e. center) of all nearby boids, calculate steering vector towards that position
     PVector cohesion (ArrayList<Pedestrian> pedestrians) {
-        float neighbordist = 500; //default = 50
+        float minAvgNeighborDist = 300; //default = 50 -> what is the avg minimum distance that determine where is the core of the group
         PVector sum = new PVector(0,0);   // Start with empty vector to accumulate all positions
         int count = 0;
 
         for (Pedestrian other : pedestrians) {
-            float d = PVector.dist(position, other.position);
-            if ((d > 0) && (d < neighbordist)) {
+            float d = PVector.dist(centerPosition, other.centerPosition);
+            if ((d > 0) && (d < minAvgNeighborDist)) {
                 sum.add(other.position); // Add position
                 count++;
             }
@@ -238,17 +248,28 @@ public class Pedestrian extends Entity implements ActionListener {
         float obstacleDist = (float)(this.entityBounds.getWidth() + obstacles.get(0).getEntityBounds().getWidth()/2);
 
         for(Obstacle obstacle : obstacles){
-            PVector obstaclePosition = new PVector((float) obstacle.getEntityBounds().getCenter().getX(), (float) obstacle.getEntityBounds().getCenter().getY());
+            PVector obstacleCenter = new PVector((float) obstacle.getEntityBounds().getCenter().getX(), (float) obstacle.getEntityBounds().getCenter().getY());
 
-            if(this.centerPosition.dist(obstaclePosition) < obstacleDist){
-                PVector diff = PVector.sub(this.position, obstaclePosition);
+            if(this.centerPosition.dist(obstacleCenter) < obstacleDist){
+                PVector diff = PVector.sub(this.position, obstacleCenter);
                 diff.normalize();
-                diff.div(this.centerPosition.dist(obstaclePosition));        // Weight by distance
+                diff.div(this.centerPosition.dist(obstacleCenter));        // Weight by distance
                 steer.add(diff);
             }
         }
 
         return steer;
+    }
+
+    private void avoidWall(){
+        if(building.checkCollision(this)) {
+            PVector steer = seek(currentGoal.getVectorPosition());
+            steer.sub(position);
+            steer.limit(maxforce);
+            steer.normalize();
+            position.sub(velocity);
+            position.add(steer);
+        }
     }
 
 
@@ -288,6 +309,17 @@ public class Pedestrian extends Entity implements ActionListener {
 
 
     /***********************************      PEDESTRIAN'S CHARACTERISTICS      *********************************/
+
+    private void handleEnergy(){
+        if(isRestTime && energy < maxEnergy)
+            energy += 1;
+        if(!isRestTime)
+            energy -= 0.2;
+        /*
+        if(energy < Constant.GO_TO_REST)
+            //ricerca waypoint to rest
+        */
+    }
 
     /**
      * Assigns a value of energy to a pedestrian according to their age (the function uses constants MIN_ENERGY_* and
@@ -378,6 +410,10 @@ public class Pedestrian extends Entity implements ActionListener {
 
     public List<WayPoint> getGoalsList() {
         return goalsList;
+    }
+
+    public Group getGroup() {
+        return group;
     }
 
     public String getGoalPointstoString(){

@@ -78,6 +78,8 @@ public class ActiveEntitiesPanel extends JTabbedPane {
         setWayPointsTab();
         setFiltersTab();
         setPedestriansTab(Simulation.getInstance().getCrowd());
+
+        new Timer(200, e -> updateFilteredCrowd()).start();
     }
 
     /**
@@ -265,8 +267,10 @@ public class ActiveEntitiesPanel extends JTabbedPane {
                         JPanel labelPanel = new JPanel(new BorderLayout());
                         JButton colorGroup = new JButton();
                         colorGroup.setPreferredSize(new Dimension(5,5));
-                        JLabel groupLabel = new JLabel("Group number " + group.getGroupID() + "   -   " + "Goal points: " + group.getGoalPointstoString());
-                        groupLabel.setBackground(Color.GREEN);
+                        String hex = String.format("#%02x%02x%02x", group.getColor().getRed(), group.getColor().getGreen(), group.getColor().getBlue());
+                        JLabel groupLabel = new JLabel("<html><nobr>Group " + group.getGroupID() +
+                                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color: <font color='" + hex + "'>\u2B1B</font>" +
+                                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Goal points: " + group.getGoalPointstoString() + "</nobr></html>");
 
                         DefaultListModel pedestrianListModel = new DefaultListModel();
                         for (int j = 1; j <= pedestrians.size(); j++) {
@@ -371,6 +375,10 @@ public class ActiveEntitiesPanel extends JTabbedPane {
 
 
     /***************************************    SUPPORT FUNCTIONS    *****************************************/
+    //Update panel without loose information on the position of the JscrollPane
+    private void updatePanel(){
+        
+    }
 
     public void disableFilters(){
         orderBy.setEnabled(false);

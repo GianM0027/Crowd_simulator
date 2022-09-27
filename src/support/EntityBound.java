@@ -5,6 +5,7 @@ import models.Entity;
 import processing.core.PVector;
 import support.constants.Constant;
 
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -77,6 +78,10 @@ public class EntityBound{
         this.height = this.bottom.getY() - this.up.getY();
 
         this.boundsRectangle = new Rectangle2D.Double(upLeft.getX(), upLeft.getY(), width, height);
+    }
+
+    public boolean intersectsLine(Line2D line){
+        return this.getBoundsRectangle().intersectsLine(line);
     }
 
     public Rectangle2D getBoundsRectangle() {

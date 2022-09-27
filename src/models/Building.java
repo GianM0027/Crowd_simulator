@@ -1,5 +1,6 @@
 package models;
 
+import processing.core.PVector;
 import support.EntityBound;
 import support.Support;
 import support.constants.Constant;
@@ -105,14 +106,35 @@ public class Building {
     }
 
     /**
+     * Return true if an entity is closer to the building more than the "bounds distance"
+     * */
+    public boolean checkFutureCollision(Pedestrian pedestrian){
+        Pedestrian temp = new Pedestrian(pedestrian.getPosition(), -1, this);
+
+        if(temp.getEntityBounds().intersectsLine(entranceUpWall) || temp.getEntityBounds().intersectsLine(entranceBottomWall) ||
+                temp.getEntityBounds().intersectsLine(exitUpWall) || temp.getEntityBounds().intersectsLine(exitBottomWall) ||
+                temp.getEntityBounds().intersectsLine(upWall) || temp.getEntityBounds().intersectsLine(bottomWall))
+            return true;
+
+        for(Room room: this.rooms)
+            if(room.checkCollision(pedestrian))
+                return true;
+
+        return false;
+    }
+
+    /**
      * Return true if a pedestrian is closer to the building more than the minimum safety distance
      * */
     public boolean checkCollisionOnDoorFreeSpace(Entity entity){
         EntityBound entityBounds = new EntityBound(entity);
 
         for(Room room: this.rooms)
-            if(room.getDoor().getEntityBounds().getBoundsRectangle().intersects(entityBounds.getBoundsRectangle()))
+            if(room.getDoorFreeSpace().intersects(entityBounds.getBoundsRectangle()))
                 return true;
+
+        if(new Rectangle2D.Double(this.entrance.getPosition().getX(), this.entrance.getPosition().getY() - 10, this.width, Constant.BUILDING_DOOR_SIZE + 20).intersects(entityBounds.getBoundsRectangle()))
+            return true;
 
         return false;
     }
