@@ -8,6 +8,7 @@ import processing.core.PVector;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -22,8 +23,8 @@ public class Pedestrian extends Entity implements ActionListener {
     private Rectangle2D pedestrianShape;
     private int gender;
     private int age;
-    private int energy;
-    private int maxEnergy;
+    private float energy;
+    private float maxEnergy;
     private Group group;
     private int groupID;
     private List<WayPoint> goalsList;
@@ -32,6 +33,7 @@ public class Pedestrian extends Entity implements ActionListener {
     private List<Obstacle> obstacles;
     private Building building;
     private boolean isRestTime;
+    private boolean hasCollided;
 
 
     /** motion parameters */
@@ -43,6 +45,7 @@ public class Pedestrian extends Entity implements ActionListener {
     float maxforce;    // Maximum steering force
     float maxspeed;    // Maximum speed
     private EntityBound entityBounds;
+    private Timer energyWasteTimer;
 
 
     public Pedestrian(Point2D position, int groupId, Building building){
@@ -59,6 +62,7 @@ public class Pedestrian extends Entity implements ActionListener {
         this.energy = assignEnergy();
         this.maxEnergy = energy;
         this.isRestTime = false;
+        this.hasCollided = false;
 
         //motion parameters
         this.position = new PVector((float)position.getX(), (float)position.getY());
@@ -70,7 +74,8 @@ public class Pedestrian extends Entity implements ActionListener {
         maxforce = 0.1f; //default 0.03f
 
         //timer that decreases and increases energy
-        new Timer(1000, e -> handleEnergy()).start();
+        energyWasteTimer = new Timer(1000, e -> handleEnergy());
+        energyWasteTimer.start();
     }
 
 
@@ -93,8 +98,8 @@ public class Pedestrian extends Entity implements ActionListener {
      * Compute next position towards a goal, it ignores obstacles and other pedestrians
      * */
     public void nextPosition(JPanel panel, ArrayList<Pedestrian> crowd){
-        System.out.println("Pedestrian " + this.getVelocity() + "\t Goals: " + this.getGoalPointstoString());
-        System.out.println("Current Goal: " + currentGoal.getWaypointID() + "\n");
+        //System.out.println("Pedestrian " + this.getVelocity() + "\t Goals: " + this.getGoalPointstoString());
+        //System.out.println("Current Goal: " + currentGoal.getWaypointID() + "\n");
 
         if(currentGoal == null)
             currentGoal = new WayPoint(new Point2D.Double(panel.getWidth() + 10, panel.getHeight()/2d));
@@ -131,16 +136,36 @@ public class Pedestrian extends Entity implements ActionListener {
         PVector avoid = avoidObstacle(); //collision avoidance with obstacles
 
         // Arbitrarily weight these forces
-        sep.mult(2.5f); //default 1.5
-        coh.mult(1.4f); //default 1.5
-        dir.mult(1.6f); //default 1
-        avoid.mult(4f);
+        weightForces(sep, coh, dir, avoid);
 
         // Add the force vectors to acceleration
         applyForce(sep);
         applyForce(coh);
         applyForce(dir);
         applyForce(avoid);
+    }
+
+    private void weightForces(PVector separation, PVector cohesion, PVector direction, PVector avoidObstacle){
+        //default values
+        float sepMultiplicator = 2.7f;
+        float cohMultiplicator = 1.5f;
+        float dirMultiplicator = 1.5f;
+        float avoidMultiplicator = 1.5f;
+
+        if(this.position.x < Constant.BUILDING_DISTANCE_LEFT - 10) {
+            cohMultiplicator = 2;
+            sepMultiplicator = 3;
+            dirMultiplicator = 2;
+        }
+
+        if(this.hasCollided)
+            direction.mult(2);
+
+
+        separation.mult(sepMultiplicator);
+        cohesion.mult(cohMultiplicator);
+        direction.mult(dirMultiplicator);
+        avoidObstacle.mult(avoidMultiplicator);
     }
 
     // Method to update position
@@ -150,10 +175,12 @@ public class Pedestrian extends Entity implements ActionListener {
 
         // Limit speed
         velocity.limit(maxspeed);
-        position.add(velocity);
 
         //walls avoidance
         avoidWall();
+
+        //add vector velocity to position
+        position.add(velocity);
 
         // Reset accelertion to 0 each cycle
         accelerationVect.mult(0);
@@ -262,14 +289,39 @@ public class Pedestrian extends Entity implements ActionListener {
     }
 
     private void avoidWall(){
-        if(building.checkCollision(this)) {
-            PVector steer = seek(currentGoal.getVectorPosition());
-            steer.sub(position);
-            steer.limit(maxforce);
-            steer.normalize();
-            position.sub(velocity);
-            position.add(steer);
+        Line2D wall = building.checkCollision(this);
+
+        if(wall != null) {
+            //if the wall is vertical and it is in the middle between the pedestrian and the goal
+            if(wall.getX1() == wall.getX2() && wallBeforeGoal(wall, 0)) {
+                hasCollided = true;
+                velocity = new PVector(0, velocity.y);
+            }
+
+            //horizontal wall
+            if(wall.getY1() == wall.getY2() && wallBeforeGoal(wall, 1)) {
+                hasCollided = true;
+                velocity = new PVector(velocity.x, 0);
+            }
         }
+    }
+
+    private boolean wallBeforeGoal(Line2D wall, int orientation){
+        //wall is vertical
+        if(orientation == 0){
+            if(wall.getX1() > this.getEntityBounds().getCenter().getX() && currentGoal.getPosition().getX() > wall.getX1())
+                return true;
+        }
+
+        //wall is horizontal
+        else{
+            if(this.getEntityBounds().getCenter().getY() < wall.getY1() && wall.getY1() < currentGoal.getPosition().getY())
+                return true;
+            if(this.getEntityBounds().getCenter().getY() > wall.getY1() && wall.getY1() > currentGoal.getPosition().getY())
+                return true;
+        }
+
+        return false;
     }
 
 
@@ -313,8 +365,13 @@ public class Pedestrian extends Entity implements ActionListener {
     private void handleEnergy(){
         if(isRestTime && energy < maxEnergy)
             energy += 1;
-        if(!isRestTime)
-            energy -= 0.2;
+        if(!isRestTime){
+            switch (this.age) {
+                case (Constant.CHILD) -> energy -= 0.15;
+                case (Constant.YOUNG) -> energy -= 0.1;
+                case (Constant.OLD) -> energy -= 0.2;
+            }
+        }
         /*
         if(energy < Constant.GO_TO_REST)
             //ricerca waypoint to rest
@@ -397,7 +454,7 @@ public class Pedestrian extends Entity implements ActionListener {
         return maxspeed;
     }
 
-    public int getEnergy() {
+    public float getEnergy() {
         return energy;
     }
 
@@ -445,6 +502,14 @@ public class Pedestrian extends Entity implements ActionListener {
 
     public void setObstacles(List<Obstacle> obstacles) {
         this.obstacles = obstacles;
+    }
+
+    public void stopWasteEnergyTimer(){
+        energyWasteTimer.stop();
+    }
+
+    public void startWasteEnergyTimer(){
+        energyWasteTimer.start();
     }
 
     public void updateBounds() {

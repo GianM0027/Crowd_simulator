@@ -4,6 +4,7 @@ import support.constants.Constant;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
@@ -100,6 +101,10 @@ public class Simulation extends JPanel{
         ActiveEntitiesPanel.getInstance().setFiltersTab();
         ActiveEntitiesPanel.getInstance().disableFilters();
         ActiveEntitiesPanel.getInstance().setPedestriansTab(this.crowd);
+        ActiveEntitiesPanel.getInstance().getRefresh().stop();
+
+        for(Pedestrian pedestrian : crowd)
+            pedestrian.stopWasteEnergyTimer();
 
         this.setIsRunning(false);
         this.removeAll();
@@ -125,7 +130,7 @@ public class Simulation extends JPanel{
                                 this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.OBSTACLE_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1));
 
                 o = new Obstacle(point);
-            }while (building.checkCollision(o) || building.checkCollisionOnDoorFreeSpace(o));
+            }while (building.checkCollision(o) != null || building.checkCollisionOnDoorFreeSpace(o));
 
             this.obstacles.add(i, o);
         }
@@ -150,7 +155,7 @@ public class Simulation extends JPanel{
 
                 w = new WayPoint(point);
                 w.setWaypointID(id++);
-            }while (building.checkCollision(w) || building.checkCollisionOnDoorFreeSpace(w));
+            }while (building.checkCollision(w) != null || building.checkCollisionOnDoorFreeSpace(w));
 
             this.wayPoints.add(i, w);
         }

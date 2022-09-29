@@ -40,12 +40,23 @@ public class Room{
         roomRectangle = new Rectangle2D.Double(roomPositionX, roomPositionY, width, height);
     }
 
-    public boolean checkCollision(Entity entity){
-        EntityBound entityBounds = new EntityBound(entity);
+    public Line2D checkCollision(Entity entity){
+        Rectangle2D entityBoundsRec = new EntityBound(entity).getBoundsRectangle();
 
-        return entityBounds.getBoundsRectangle().intersectsLine(leftWall) || entityBounds.getBoundsRectangle().intersectsLine(rightWall) ||
-                entityBounds.getBoundsRectangle().intersectsLine(doorWallLeft) || entityBounds.getBoundsRectangle().intersectsLine(doorWallRight);
+        if(!entityBoundsRec.intersects(door.getDoorShape())) {
+            if (entityBoundsRec.intersectsLine(leftWall))
+                return leftWall;
+            if (entityBoundsRec.intersectsLine(rightWall))
+                return rightWall;
+            if (entityBoundsRec.intersectsLine(doorWallLeft))
+                return doorWallLeft;
+            if (entityBoundsRec.intersectsLine(doorWallRight))
+                return doorWallRight;
+        }
+
+        return null;
     }
+
 
     public void drawRoom(Graphics2D g2D){
         g2D.draw(leftWall);

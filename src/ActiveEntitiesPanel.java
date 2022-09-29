@@ -5,11 +5,8 @@ import models.WayPoint;
 import support.*;
 import support.constants.Constant;
 
-import javax.accessibility.AccessibleRelation;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +19,8 @@ public class ActiveEntitiesPanel extends JTabbedPane {
     private JPanel wayPointsTab;
     private JPanel researchFilters;
     private JPanel activePedestrians;
+    private JScrollPane scrollGroupsPane; //scrollPane in pedestrian tab
+    private Timer refresh;
 
     private JComboBox orderBy;
     private JComboBox ageFilter;
@@ -79,7 +78,8 @@ public class ActiveEntitiesPanel extends JTabbedPane {
         setFiltersTab();
         setPedestriansTab(Simulation.getInstance().getCrowd());
 
-        new Timer(200, e -> updateFilteredCrowd()).start();
+        refresh = new Timer(100, e -> updatePedestriansPanel());
+        //refresh.start();
     }
 
     /**
@@ -252,7 +252,7 @@ public class ActiveEntitiesPanel extends JTabbedPane {
 
                 //Grouped by group
                 if(this.orderBy.getSelectedItem().toString().equals("Group")){
-                    JScrollPane scrollGroupsPane = new JScrollPane();
+                    scrollGroupsPane = new JScrollPane();
                     JPanel allGroupsPanel = new JPanel(new GridBagLayout());
                     GridBagConstraints gbd = new GridBagConstraints(0,0,1,1,1,0,GridBagConstraints.FIRST_LINE_START,
                             GridBagConstraints.HORIZONTAL,new Insets(0,0,10,0),0,0);
@@ -277,7 +277,7 @@ public class ActiveEntitiesPanel extends JTabbedPane {
                             pedestrianListModel.add(j - 1, "Pedestrian " + j + ": " + pedestrians.get(j - 1).getGenderString() +
                                     "   -   " + pedestrians.get(j - 1).getAgeString() +
                                     "   -   " + "Velocity: " + String.format("%.2f", pedestrians.get(j - 1).getVelocity()) +
-                                    "   -   " + "Energy: " + pedestrians.get(j - 1).getEnergy() +
+                                    "   -   " + "Energy: " + String.format("%.1f", pedestrians.get(j - 1).getEnergy()) +
                                     "   -   " + "Group ID: " + pedestrians.get(j - 1).getGroupID());
                         }
                         JList pedestriansList = new JList(pedestrianListModel);
@@ -293,11 +293,8 @@ public class ActiveEntitiesPanel extends JTabbedPane {
                         gbd.gridy++;
                     }
 
-
-                    JViewport view = new JViewport();
-                    view.add(allGroupsPanel);
-                    scrollGroupsPane.setViewport(view);
-                    scrollGroupsPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                    scrollGroupsPane.setViewportView(allGroupsPanel);
+                    scrollGroupsPane.getVerticalScrollBar().setUnitIncrement(8);
                     scrollGroupsPane.setPreferredSize(new Dimension(this.activePedestrians.getWidth() - 8, this.activePedestrians.getHeight() - 8));
 
                     this.activePedestrians.add(scrollGroupsPane);
@@ -311,15 +308,15 @@ public class ActiveEntitiesPanel extends JTabbedPane {
                         pedestrianListModel.add(i - 1, "Pedestrian " + i + ": " + crowd.get(i - 1).getGenderString() +
                                 "   -   " + crowd.get(i - 1).getAgeString() +
                                 "   -   " + "Velocity: " + String.format("%.2f", crowd.get(i - 1).getVelocity()) +
-                                "   -   " + "Energy: " + crowd.get(i - 1).getEnergy());
+                                "   -   " + "Energy: " + String.format("%.1f", crowd.get(i - 1).getEnergy()));
                     }
 
                     //this.activePedestrians.removeAll();
                     JList pedestiansList = new JList(pedestrianListModel);
 
-                    JScrollPane scrollPane = new JScrollPane(pedestiansList);
-                    scrollPane.setPreferredSize(new Dimension(this.activePedestrians.getWidth() - 8, this.activePedestrians.getHeight() - 8));
-                    this.activePedestrians.add(scrollPane);
+                    scrollGroupsPane = new JScrollPane(pedestiansList);
+                    scrollGroupsPane.setPreferredSize(new Dimension(this.activePedestrians.getWidth() - 8, this.activePedestrians.getHeight() - 8));
+                    this.activePedestrians.add(scrollGroupsPane);
                 }
             }
             this.activePedestrians.revalidate();
@@ -375,9 +372,19 @@ public class ActiveEntitiesPanel extends JTabbedPane {
 
 
     /***************************************    SUPPORT FUNCTIONS    *****************************************/
-    //Update panel without loose information on the position of the JscrollPane
-    private void updatePanel(){
-        
+    //Update panel without lose information on the position of the JscrollPane
+    private void updatePedestriansPanel(){
+        if(scrollGroupsPane != null && !scrollGroupsPane.getVerticalScrollBar().getValueIsAdjusting()) {
+
+            int verticalValue = scrollGroupsPane.getVerticalScrollBar().getValue();
+            //System.out.println("Value before panel update: " + scrollGroupsPane.getVerticalScrollBar().getMaximum());
+
+            updateFilteredCrowd();
+            //System.out.println("Value after panel update: " + scrollGroupsPane.getVerticalScrollBar().getMaximum());
+
+            scrollGroupsPane.getVerticalScrollBar().setValue(verticalValue);
+            //System.out.println("Value after manual set: " + scrollGroupsPane.getVerticalScrollBar().getMaximum());
+        }
     }
 
     public void disableFilters(){
@@ -396,4 +403,7 @@ public class ActiveEntitiesPanel extends JTabbedPane {
         energyFilter.setEnabled(true);
     }
 
+    public Timer getRefresh() {
+        return refresh;
+    }
 }

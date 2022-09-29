@@ -90,38 +90,36 @@ public class Building {
     /**
      * Return true if an entity is closer to the building more than the "bounds distance"
      * */
-    public boolean checkCollision(Entity entity){
+    public Line2D checkCollision(Entity entity){
         EntityBound entityBounds = new EntityBound(entity);
 
-        if(entityBounds.getBoundsRectangle().intersectsLine(entranceUpWall) || entityBounds.getBoundsRectangle().intersectsLine(entranceBottomWall) ||
-                entityBounds.getBoundsRectangle().intersectsLine(exitUpWall) || entityBounds.getBoundsRectangle().intersectsLine(exitBottomWall) ||
-                entityBounds.getBoundsRectangle().intersectsLine(upWall) || entityBounds.getBoundsRectangle().intersectsLine(bottomWall))
-            return true;
+        if(!entityBounds.getBoundsRectangle().intersects(entrance.getDoorShape()) && !entityBounds.getBoundsRectangle().intersects(exit.getDoorShape())) {
+            if (entityBounds.getBoundsRectangle().intersectsLine(entranceUpWall))
+                return entranceUpWall;
+            if (entityBounds.getBoundsRectangle().intersectsLine(entranceBottomWall))
+                return entranceBottomWall;
+            if (entityBounds.getBoundsRectangle().intersectsLine(exitUpWall))
+                return exitUpWall;
+            if (entityBounds.getBoundsRectangle().intersectsLine(exitBottomWall))
+                return exitBottomWall;
+            if (entityBounds.getBoundsRectangle().intersectsLine(upWall))
+                return upWall;
+            if (entityBounds.getBoundsRectangle().intersectsLine(bottomWall))
+                return bottomWall;
+        }
 
-        for(Room room: this.rooms)
-            if(room.checkCollision(entity))
-                return true;
 
-        return false;
+        for(Room room: this.rooms) {
+            Line2D wall = room.checkCollision(entity);
+            if (wall != null)
+                return wall;
+        }
+
+
+
+        return null;
     }
 
-    /**
-     * Return true if an entity is closer to the building more than the "bounds distance"
-     * */
-    public boolean checkFutureCollision(Pedestrian pedestrian){
-        Pedestrian temp = new Pedestrian(pedestrian.getPosition(), -1, this);
-
-        if(temp.getEntityBounds().intersectsLine(entranceUpWall) || temp.getEntityBounds().intersectsLine(entranceBottomWall) ||
-                temp.getEntityBounds().intersectsLine(exitUpWall) || temp.getEntityBounds().intersectsLine(exitBottomWall) ||
-                temp.getEntityBounds().intersectsLine(upWall) || temp.getEntityBounds().intersectsLine(bottomWall))
-            return true;
-
-        for(Room room: this.rooms)
-            if(room.checkCollision(pedestrian))
-                return true;
-
-        return false;
-    }
 
     /**
      * Return true if a pedestrian is closer to the building more than the minimum safety distance

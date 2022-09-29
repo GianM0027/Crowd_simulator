@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,7 +111,7 @@ public class Animation extends JPanel implements ActionListener {
                 g2D.setStroke(new BasicStroke(0));
                 g2D.setPaint(group.getColor());
 
-                /* print bounds
+
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getUpLeft().getX(), pedestrian.getEntityBounds().getUpLeft().getY(), 2, 2));
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getUpRight().getX(), pedestrian.getEntityBounds().getUpRight().getY(), 2, 2));
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getUp().getX(), pedestrian.getEntityBounds().getUp().getY(), 2, 2));
@@ -119,7 +120,7 @@ public class Animation extends JPanel implements ActionListener {
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getBottomLeft().getX(), pedestrian.getEntityBounds().getBottomLeft().getY(), 2, 2));
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getBottomRight().getX(), pedestrian.getEntityBounds().getBottomRight().getY(), 2, 2));
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getBottom().getX(), pedestrian.getEntityBounds().getBottom().getY(), 2, 2));
-            */
+
             }
         }
     }
@@ -143,9 +144,13 @@ public class Animation extends JPanel implements ActionListener {
     /******************************    Animation commands    *************************************/
     public void pause(){
         this.timer.stop();
+        for(Pedestrian pedestrian : crowd)
+            pedestrian.stopWasteEnergyTimer();
     }
 
     public void resume(){
         this.timer.start();
+        for(Pedestrian pedestrian : crowd)
+            pedestrian.startWasteEnergyTimer();
     }
 }
