@@ -1,8 +1,6 @@
 package models;
 
-import support.Support;
-import support.constants.Constant;
-
+import processing.core.PVector;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -15,10 +13,12 @@ import java.util.List;
 public class Group{
     private boolean startWalking;
     private List<Pedestrian> pedestrians;
+    private PVector avgGroupPosition;
     private List<WayPoint> goalsList;
     private int groupID;
     private Color color;
     private boolean isMoving;
+    private Timer timer;
 
 
     public Group(int groupID, List<WayPoint> goalsList, List<Pedestrian> pedestrians){
@@ -29,11 +29,12 @@ public class Group{
         this.isMoving = true;
 
         for(Pedestrian p: pedestrians) {
-            p.setGoalsList(new ArrayList<>(goalsList));
+            p.setGoalsList(goalsList);
             p.setGroupID(groupID);
         }
 
-        new Timer(groupID*5000, e -> setStartWalking(true)).start();
+        timer = new Timer(groupID*6000, e -> setStartWalking(true));
+        timer.start();
     }
 
 
@@ -48,17 +49,33 @@ public class Group{
         String result = "{";
 
         for(int i = 0; i < goalsList.size(); i++) {
-            if(goalsList.get(i).getWaypointID() != -1) {
-                result += (goalsList.get(i).getWaypointID());
-                result += ", ";
-            }
+            result += (goalsList.get(i).getWaypointID());
+            result += ", ";
         }
 
         return result.subSequence(0,result.length()-2) + "}";
     }
 
+    public void removeFirstGoal(){
+        goalsList.remove(0);
+
+        for(Pedestrian p : this.pedestrians)
+            p.updatePath();
+    }
+
     public Color getColor() {
         return color;
+    }
+
+    public PVector getAvgGroupPosition() {
+        return avgGroupPosition;
+    }
+
+    public void setAvgGroupPosition(PVector avgGroupPosition) {
+        if(pedestrians.size() > 1)
+            this.avgGroupPosition = avgGroupPosition;
+        else
+            this.avgGroupPosition = new PVector((float)pedestrians.get(0).getPosition().getX(), (float)pedestrians.get(0).getPosition().getY());
     }
 
     public void setColor(Color color) {
@@ -79,6 +96,7 @@ public class Group{
 
     public void setStartWalking(boolean startWalking) {
         this.startWalking = startWalking;
+        timer.stop();
     }
 
     public String getGroupSimbol(){

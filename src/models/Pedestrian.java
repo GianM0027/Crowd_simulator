@@ -6,9 +6,6 @@ import support.constants.Constant;
 
 import processing.core.PVector;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -19,7 +16,7 @@ import java.util.Objects;
 /**
  * Every Pedestrian is a mobile entity with its own characteristics
  * */
-public class Pedestrian extends Entity implements ActionListener {
+public class Pedestrian extends Entity {
     private Rectangle2D pedestrianShape;
     private int gender;
     private int age;
@@ -29,7 +26,6 @@ public class Pedestrian extends Entity implements ActionListener {
     private int groupID;
     private List<WayPoint> goalsList;
     private WayPoint currentGoal;
-    private int goalsNumber;
     private List<Obstacle> obstacles;
     private Building building;
     private boolean isRestTime;
@@ -55,7 +51,6 @@ public class Pedestrian extends Entity implements ActionListener {
         this.building = building;
 
         this.groupID = groupId;
-        this.goalsNumber = 0;
 
         this.gender = Support.getRandomValue(Constant.MALE, Constant.FEMALE); //random among MALE and FEMALE
         this.age = Support.getRandomValue(Constant.CHILD, Constant.OLD); //random among CHILD, YOUNG and OLD
@@ -72,6 +67,7 @@ public class Pedestrian extends Entity implements ActionListener {
         velocity = new PVector(0, 0);
         maxspeed = assignMaxSpeed();
         maxforce = 0.1f; //default 0.03f
+        currentGoal = building.getEntrance();
 
         //timer that decreases and increases energy
         energyWasteTimer = new Timer(1000, e -> handleEnergy());
@@ -86,21 +82,9 @@ public class Pedestrian extends Entity implements ActionListener {
     /***********************************      PEDESTRIAN MOTION METHODS       *********************************/
 
     /**
-     * Collision with another entity
-     * */
-    public boolean checkCollision(Entity entity){
-        EntityBound entityBounds = new EntityBound(entity);
-
-        return entityBounds.getBoundsRectangle().intersects(this.getEntityBounds().getBoundsRectangle());
-    }
-
-    /**
      * Compute next position towards a goal, it ignores obstacles and other pedestrians
      * */
     public void nextPosition(JPanel panel, ArrayList<Pedestrian> crowd){
-        //System.out.println("Pedestrian " + this.getVelocity() + "\t Goals: " + this.getGoalPointstoString());
-        //System.out.println("Current Goal: " + currentGoal.getWaypointID() + "\n");
-
         if(currentGoal == null)
             currentGoal = new WayPoint(new Point2D.Double(panel.getWidth() + 10, panel.getHeight()/2d));
 
@@ -109,14 +93,14 @@ public class Pedestrian extends Entity implements ActionListener {
         update();
         updateBounds();
 
-        if(this.centerPosition.dist(currentGoal.getVectorPosition()) < Constant.GOAL_DISTANCE && !goalsList.isEmpty()){
+        if(currentGoal.getEntityType() == Constant.DOOR && currentGoal.getShape().contains(this.entityBounds.getCenter())){
+            updateCurrentGoalAfterDoor();
+        }
+
+        if(currentGoal.getEntityType() == Constant.GENERIC_WAYPOINT && this.centerPosition.dist(currentGoal.getVectorPosition()) < Constant.GOAL_DISTANCE){
             if(group.isMoving()) {
-                if(currentGoal.getEntityType() == Constant.GENERIC_WAYPOINT) {
-                    group.setMoving(false);
-                    waypointTimer = new Timer(Support.getRandomValue(Constant.MIN_TIME_FOR_WAYPOINT, Constant.MAX_TIME_FOR_WAYPOINT), this);
-                }
-                else
-                    waypointTimer = new Timer(0, this);
+                group.setMoving(false);
+                waypointTimer = new Timer(Support.getRandomValue(Constant.MIN_TIME_FOR_WAYPOINT, Constant.MAX_TIME_FOR_WAYPOINT), e -> updateCurrentGoal());
                 waypointTimer.start();
             }
         }
@@ -152,15 +136,25 @@ public class Pedestrian extends Entity implements ActionListener {
         float dirMultiplicator = 1.5f;
         float avoidMultiplicator = 1.5f;
 
+        //if this pedestrian is out of the building
         if(this.position.x < Constant.BUILDING_DISTANCE_LEFT - 10) {
             cohMultiplicator = 2;
             sepMultiplicator = 3;
-            dirMultiplicator = 2;
+            dirMultiplicator = 1.6f;
         }
 
+        //if the pedestrian has collided
         if(this.hasCollided)
-            direction.mult(2);
+            direction.mult(4);
 
+        //if the pedestrian is far from the group
+        if(this.group.getPedestrians().size() > 1) {
+            if (this.position.dist(group.getAvgGroupPosition()) > Constant.PEDESTRIAN_HEIGHT * this.group.getPedestrians().size()) {
+                cohMultiplicator = 2;
+                sepMultiplicator = 3;
+                dirMultiplicator = 1.6f;
+            }
+        }
 
         separation.mult(sepMultiplicator);
         cohesion.mult(cohMultiplicator);
@@ -242,16 +236,16 @@ public class Pedestrian extends Entity implements ActionListener {
 
 
     // Cohesion
-    // For the average position (i.e. center) of all nearby boids, calculate steering vector towards that position
+    // For the average position (i.e. center) of all the members of a group, calculate steering vector towards that position
     PVector cohesion (ArrayList<Pedestrian> pedestrians) {
-        float minAvgNeighborDist = 300; //default = 50 -> what is the avg minimum distance that determine where is the core of the group
         PVector sum = new PVector(0,0);   // Start with empty vector to accumulate all positions
         int count = 0;
 
         for (Pedestrian other : pedestrians) {
             float d = PVector.dist(centerPosition, other.centerPosition);
-            if ((d > 0) && (d < minAvgNeighborDist)) {
+            if (d > 0) {
                 sum.add(other.position); // Add position
+                this.group.setAvgGroupPosition(sum);
                 count++;
             }
         }
@@ -280,7 +274,7 @@ public class Pedestrian extends Entity implements ActionListener {
             if(this.centerPosition.dist(obstacleCenter) < obstacleDist){
                 PVector diff = PVector.sub(this.position, obstacleCenter);
                 diff.normalize();
-                diff.div(this.centerPosition.dist(obstacleCenter));        // Weight by distance
+                diff.div(this.centerPosition.dist(obstacleCenter)/2);        // Weight by distance
                 steer.add(diff);
             }
         }
@@ -289,71 +283,84 @@ public class Pedestrian extends Entity implements ActionListener {
     }
 
     private void avoidWall(){
-        Line2D wall = building.checkCollision(this);
+        List<Integer> collidedPoints = building.collisionPoints(this);
 
-        if(wall != null) {
-            //if the wall is vertical and it is in the middle between the pedestrian and the goal
-            if(wall.getX1() == wall.getX2() && wallBeforeGoal(wall, 0)) {
+        if(!collidedPoints.isEmpty()){
+            if(collidedPoints.contains(Constant.UP)){
                 hasCollided = true;
-                velocity = new PVector(0, velocity.y);
+                if(velocity.y < 0) //if the pedestrian is trying to go higher on the screen, it cannot anymore
+                    velocity = new PVector(velocity.x, 0);
             }
 
-            //horizontal wall
-            if(wall.getY1() == wall.getY2() && wallBeforeGoal(wall, 1)) {
+            if(collidedPoints.contains(Constant.BOTTOM)){
                 hasCollided = true;
-                velocity = new PVector(velocity.x, 0);
+                if(velocity.y > 0) //if the pedestrian is trying to go down on the screen, it cannot anymore
+                    velocity = new PVector(velocity.x, 0);
+            }
+
+            if(collidedPoints.contains(Constant.LEFT)){
+                hasCollided = true;
+                if(velocity.x < 0) //if the pedestrian is trying to go towards left, it cannot anymore
+                    velocity = new PVector(0, velocity.y);
+            }
+
+            if(collidedPoints.contains(Constant.RIGHT)){
+                hasCollided = true;
+                if(velocity.x > 0) //if the pedestrian is trying to go towards right, it cannot anymore
+                    velocity = new PVector(0, velocity.y);
+            }
+        }
+        else
+            hasCollided = false;
+    }
+
+
+    /**
+     * When a pedestrian reach a door this algorithm compute the next goal or the next door
+     * */
+    private void updateCurrentGoalAfterDoor(){
+        if(!goalsList.isEmpty()) {
+
+            //if the next goal is in a room (where is not the pedestrian), set the door of that room as the currentGoal
+            if(goalsList.get(0).getRoom() != null && !goalsList.get(0).getRoom().getRoomRectangle().intersects(this.getPedestrianShape())){
+                currentGoal = goalsList.get(0).getRoom().getDoor();
+            }
+            else {
+                currentGoal = goalsList.get(0);
             }
         }
     }
 
-    private boolean wallBeforeGoal(Line2D wall, int orientation){
-        //wall is vertical
-        if(orientation == 0){
-            if(wall.getX1() > this.getEntityBounds().getCenter().getX() && currentGoal.getPosition().getX() > wall.getX1())
-                return true;
-        }
+    /**
+     * When a pedestrian is done with a certain waypoint, this algorithm compute the next goal or the next door
+     * */
+    public void updateCurrentGoal() {
+        Room pedestrianRoom = currentGoal.getRoom();
 
-        //wall is horizontal
-        else{
-            if(this.getEntityBounds().getCenter().getY() < wall.getY1() && wall.getY1() < currentGoal.getPosition().getY())
-                return true;
-            if(this.getEntityBounds().getCenter().getY() > wall.getY1() && wall.getY1() > currentGoal.getPosition().getY())
-                return true;
-        }
+        if(!goalsList.isEmpty())
+            group.removeFirstGoal();
+        currentGoal = goalsList.get(0);
 
-        return false;
-    }
+        //Pedestrian in a room and next goal in a place that is not the same room
+        if (pedestrianRoom != null && currentGoal.getRoom() != pedestrianRoom)
+            currentGoal = pedestrianRoom.getDoor();
 
-
-    // When a group is done with a waypoint can switch to another
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(currentGoal.getEntityType() == Constant.DOOR) {
-            if (!this.goalsList.isEmpty()) {
-                this.goalsList.remove(0);
-                this.setCurrentGoal(this.goalsList.get(0));
-            }
-        }
-        else {
-            //if (!this.goalsList.isEmpty())
-                //this.goalsList.remove(0);
-
-            if (!this.goalsList.isEmpty()) {
-                for (Pedestrian p : group.getPedestrians()) {
-                    p.goalsList.remove(currentGoal);
-                    p.setCurrentGoal(this.goalsList.get(0));
-                }
-            }
-        }
-
-        /*
-        else {
-            for(Pedestrian p : group.getPedestrians())
-                p.setCurrentGoal(new WayPoint(new Point2D.Double(panel.getWidth() + 100, panel.getHeight() / 2d)));
-        }*/
+        //Pedestrian in the hall and next goal in a room
+        if(pedestrianRoom == null && currentGoal.getRoom() != null)
+            currentGoal = currentGoal.getRoom().getDoor();
 
         group.setMoving(true);
         waypointTimer.stop();
+    }
+
+    /**
+     * Function called to make sure that this pedestrian is not getting lost around the building,
+     * every x milliseconds check the goal list and update the path to follow
+     * */
+    public void updatePath(){
+        if(currentGoal != goalsList.get(0) && currentGoal.getEntityType() != Constant.DOOR){
+            currentGoal = goalsList.get(0);
+        }
     }
 
 
@@ -459,10 +466,7 @@ public class Pedestrian extends Entity implements ActionListener {
     }
 
     public void setGoalsList(List<WayPoint> goalsList) {
-        this.goalsList = new ArrayList<>(goalsList);
-        goalsNumber = goalsList.size();
-        if(!goalsList.isEmpty())
-            currentGoal = goalsList.get(0);
+        this.goalsList = goalsList;
     }
 
     public List<WayPoint> getGoalsList() {
@@ -476,13 +480,9 @@ public class Pedestrian extends Entity implements ActionListener {
     public String getGoalPointstoString(){
         String result = "{";
 
-        for(int i = 0; i < goalsList.size(); i++) {
-            result += (goalsList.get(i).getWaypointID());
-            result += ", ";/*
-            if(goalsList.get(i).getWaypointID() != -1) {
-                result += (goalsList.get(i).getWaypointID());
-                result += ", ";
-            }*/
+        for (WayPoint wayPoint : goalsList) {
+            result += (wayPoint.getWaypointID());
+            result += ", ";
         }
 
         return result.subSequence(0,result.length()-2) + "}";
@@ -490,10 +490,6 @@ public class Pedestrian extends Entity implements ActionListener {
 
     public void setGroupID(int groupID) {
         this.groupID = groupID;
-    }
-
-    public void setCurrentGoal(WayPoint currentGoal) {
-        this.currentGoal = currentGoal;
     }
 
     public void setGroup(Group group) {

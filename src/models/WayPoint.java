@@ -4,21 +4,23 @@ import processing.core.PVector;
 import support.EntityBound;
 import support.constants.Constant;
 
+import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.util.Vector;
+import java.awt.geom.Rectangle2D;
 
 public class WayPoint extends Entity {
     private EntityBound bounds;
     private int waypointID;
-    private Ellipse2D wayPointShape;
+    private Rectangle2D wayPointShape;
+    private Room room;
 
     public WayPoint(Point2D position){
         super(position);
         entityType = Constant.GENERIC_WAYPOINT;
 
         waypointID = -1;
-        wayPointShape = new Ellipse2D.Double(position.getX(), position.getY(), Constant.WAYPOINT_WIDTH, Constant.WAYPOINT_HEIGHT);
+        wayPointShape = new Rectangle2D.Double(position.getX(), position.getY(), Constant.WAYPOINT_WIDTH, Constant.WAYPOINT_HEIGHT);
         bounds = new EntityBound(this);
     }
 
@@ -39,7 +41,7 @@ public class WayPoint extends Entity {
         return bounds;
     }
 
-    public Ellipse2D getWayPointShape() {
+    public Rectangle2D getShape() {
         return wayPointShape;
     }
 
@@ -53,5 +55,12 @@ public class WayPoint extends Entity {
 
     public void setWaypointID(int waypointID) {
         this.waypointID = waypointID;
+    }
+
+    public Room getRoom() {
+        return this.room;
+    }
+    public void setRoom(Room room){
+        this.room = room;
     }
 }

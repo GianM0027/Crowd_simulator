@@ -37,7 +37,7 @@ public class Constant {
     public static final int MIN_TIME_FOR_WAYPOINT = 3000; //10000
     public static final int MAX_TIME_FOR_WAYPOINT = 7000; //15000
     public static final int BOUNDS_DISTANCE = 4;
-    public static final int BUILDING_STROKE = 4;
+    public static final int BUILDING_STROKE = 6; //default 4
     public static final int BUILDING_DOOR_SIZE = PEDESTRIAN_WIDTH *6;
     public static final int BUILDING_DISTANCE_UP_DOWN = 10; //not lower than 10
     public static final int BUILDING_DISTANCE_LEFT = 200;
@@ -48,6 +48,12 @@ public class Constant {
     public static final int GENERIC_WAYPOINT = -3;
     public static final int DOOR = -4;
     public static final int REST_WAYPOINT = -5;
-    public static final int GOAL_DISTANCE = BUILDING_DOOR_SIZE/5;
+    public static final int GOAL_DISTANCE = BUILDING_DOOR_SIZE/7;
 
+
+    //Label for points of a pedestrian that collided
+    public static final int UP = 100;
+    public static final int BOTTOM = 101;
+    public static final int RIGHT = 102;
+    public static final int LEFT = 103;
 }

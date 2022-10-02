@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Room{
@@ -15,10 +17,13 @@ public class Room{
 
     private Door door;
 
+    private List<WayPoint> wayPoints;
     private Line2D leftWall;
     private Line2D rightWall;
     private Line2D doorWallLeft;
     private Line2D doorWallRight;
+
+    List<Rectangle2D> wallsList;
 
     public Room(double roomPositionX, double roomPositionY, double width, double height){
         leftWall = new Line2D.Double(roomPositionX, roomPositionY, roomPositionX, roomPositionY + height);
@@ -37,13 +42,23 @@ public class Room{
 
         door = new Door(doorWallLeft.getP2(), doorWallRight.getP2());
 
+        createWallsList();
+
         roomRectangle = new Rectangle2D.Double(roomPositionX, roomPositionY, width, height);
+    }
+
+    private void createWallsList(){
+        this.wallsList = new ArrayList<>();
+        wallsList.add(new Rectangle2D.Double(leftWall.getX1()-3, leftWall.getY1()-3, Constant.BUILDING_STROKE, leftWall.getY2()-leftWall.getY1()));
+        wallsList.add(new Rectangle2D.Double(rightWall.getX1()-3, rightWall.getY1()-3, Constant.BUILDING_STROKE, rightWall.getY2()-rightWall.getY1()));
+        wallsList.add(new Rectangle2D.Double(doorWallLeft.getX1()-3, doorWallLeft.getY1()-3, doorWallLeft.getX2()-doorWallLeft.getX1()+5, Constant.BUILDING_STROKE));
+        wallsList.add(new Rectangle2D.Double(doorWallRight.getX2()-3, doorWallRight.getY2()-3, doorWallRight.getX1()-doorWallRight.getX2()+5, Constant.BUILDING_STROKE));
     }
 
     public Line2D checkCollision(Entity entity){
         Rectangle2D entityBoundsRec = new EntityBound(entity).getBoundsRectangle();
 
-        if(!entityBoundsRec.intersects(door.getDoorShape())) {
+        if(!entityBoundsRec.intersects(door.getShape())) {
             if (entityBoundsRec.intersectsLine(leftWall))
                 return leftWall;
             if (entityBoundsRec.intersectsLine(rightWall))
@@ -57,6 +72,30 @@ public class Room{
         return null;
     }
 
+    public void pointsCollision(EntityBound pBounds, List<Integer> collisionPoints){
+
+        for(Rectangle2D r : this.wallsList){
+            //check if pedestrian collided on the wall
+            if(pBounds.getBoundsRectangle().intersects(r)){
+                //if there is a collision find which point of the pedestrian collided
+                for(Point2D point : pBounds.getBorderPoints()){
+
+                    if(r.contains(point) && point.equals(pBounds.getRight()))
+                        collisionPoints.add(Constant.RIGHT); //collided the right part of the pedestrian
+
+                    if(r.contains(point) && point.equals(pBounds.getLeft()))
+                        collisionPoints.add(Constant.LEFT); //collided the left part of the pedestrian
+
+                    if(r.contains(point) && point.equals(pBounds.getBottom()))
+                        collisionPoints.add(Constant.BOTTOM); //collided the bottom part of the pedestrian
+
+                    if(r.contains(point) && point.equals(pBounds.getUp()))
+                        collisionPoints.add(Constant.UP); //collided the upper part of the pedestrian
+                }
+            }
+        }
+    }
+
 
     public void drawRoom(Graphics2D g2D){
         g2D.draw(leftWall);
@@ -65,10 +104,23 @@ public class Room{
         g2D.draw(doorWallRight);
     }
 
+    /**
+     * true if in this room there are waypoints currently contained also in the goal list of the parameter pedestrian
+     * */
+    public boolean hasWaypoints(Pedestrian pedestrian){
+        for(WayPoint w : pedestrian.getGoalsList())
+            if(this.wayPoints.contains(w))
+                return true;
+        return false;
+    }
+
     public Door getDoor() {
         return door;
     }
 
+    public List<Rectangle2D> getWallsList() {
+        return wallsList;
+    }
 
     public Line2D getLeftWall() {
         return leftWall;
@@ -91,6 +143,15 @@ public class Room{
     }
     public Rectangle2D getDoorFreeSpace() {
         return new Rectangle2D.Double(door.getPosition().getX() - 20, door.getPosition().getY() - 20, Constant.BUILDING_DOOR_SIZE + 20, 40);
+    }
+    public void setWayPoints(List<WayPoint> wayPoints){
+        this.wayPoints = new ArrayList<>();
+        for (WayPoint w : wayPoints){
+            if(this.roomRectangle.contains(w.getPosition()))
+                this.wayPoints.add(w);
+        }
+        for(WayPoint w : this.wayPoints)
+            w.setRoom(this);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package models;
 
-import processing.core.PVector;
 import support.EntityBound;
 import support.Support;
 import support.constants.Constant;
@@ -9,6 +8,7 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +27,12 @@ public class Building {
     private Line2D upWall;
     private Line2D bottomWall;
 
+    private List<Rectangle2D> wallsList;
+
+    List<WayPoint> wayPoints;
+
+
+
     public Building(int panelWidth, int panelHeight){
         //dimension of the external structure
         width = panelWidth - Constant.BUILDING_DISTANCE_LEFT - Constant.BUILDING_DISTANCE_RIGHT;
@@ -42,7 +48,6 @@ public class Building {
         Point2D exitWallDownUp = new Point2D.Double(panelWidth - Constant.BUILDING_DISTANCE_RIGHT,panelHeight/2 + Constant.BUILDING_DOOR_SIZE/2);
         Point2D exitWallDownDown = new Point2D.Double(panelWidth - Constant.BUILDING_DISTANCE_RIGHT, panelHeight - Constant.BUILDING_DISTANCE_UP_DOWN - 1);
 
-
         //external structure with entrance and exit
         entranceUpWall = new Line2D.Double(entranceWallUpUp, entranceWallUpDown);
         entranceBottomWall = new Line2D.Double(entranceWallDownUp, entranceWallDownDown);
@@ -51,9 +56,11 @@ public class Building {
         upWall = new Line2D.Double(entranceWallUpUp, exitWallUpUp);
         bottomWall = new Line2D.Double(entranceWallDownDown, exitWallDownDown);
 
-
         entrance = new Door(entranceWallUpDown, entranceWallDownUp);
         exit = new Door(exitWallUpDown, exitWallDownUp);
+
+        //obtaining rectangles from walls
+        buildWallsRectangles();
 
         //rooms of the building (up and down)
         rooms = new ArrayList<>();
@@ -93,7 +100,7 @@ public class Building {
     public Line2D checkCollision(Entity entity){
         EntityBound entityBounds = new EntityBound(entity);
 
-        if(!entityBounds.getBoundsRectangle().intersects(entrance.getDoorShape()) && !entityBounds.getBoundsRectangle().intersects(exit.getDoorShape())) {
+        if(!entityBounds.getBoundsRectangle().intersects(entrance.getShape()) && !entityBounds.getBoundsRectangle().intersects(exit.getShape())) {
             if (entityBounds.getBoundsRectangle().intersectsLine(entranceUpWall))
                 return entranceUpWall;
             if (entityBounds.getBoundsRectangle().intersectsLine(entranceBottomWall))
@@ -108,16 +115,53 @@ public class Building {
                 return bottomWall;
         }
 
-
         for(Room room: this.rooms) {
             Line2D wall = room.checkCollision(entity);
             if (wall != null)
                 return wall;
         }
 
-
-
         return null;
+    }
+
+
+    /**
+     * Return an Array with the points of the pedestrian that collided with a wall
+     * */
+    public List<Integer> collisionPoints(Pedestrian p){
+        EntityBound pBounds = new EntityBound(p);
+
+        List<Integer> pointsCollision = new ArrayList<>();
+
+        //check onn building walls
+        for(Rectangle2D r : this.wallsList){
+
+            //check if pedestrian collided on the wall
+            if(pBounds.getBoundsRectangle().intersects(r)){
+                //if there is a collision find which point of the pedestrian collided
+                for(Point2D point : pBounds.getBorderPoints()){
+
+                    if(r.contains(point) && point.equals(pBounds.getRight()))
+                        pointsCollision.add(Constant.RIGHT); //collided the right part of the pedestrian
+
+                    if(r.contains(point) && point.equals(pBounds.getLeft()))
+                        pointsCollision.add(Constant.LEFT); //collided the left part of the pedestrian
+
+                    if(r.contains(point) && point.equals(pBounds.getBottom()))
+                        pointsCollision.add(Constant.BOTTOM); //collided the bottom part of the pedestrian
+
+                    if(r.contains(point) && point.equals(pBounds.getUp()))
+                        pointsCollision.add(Constant.UP); //collided the upper part of the pedestrian
+                }
+            }
+        }
+
+        //check on rooms' walls
+        for(Room room : rooms)
+            room.pointsCollision(pBounds, pointsCollision);
+
+        System.out.println(pointsCollision);
+        return pointsCollision;
     }
 
 
@@ -135,6 +179,18 @@ public class Building {
             return true;
 
         return false;
+    }
+
+    private void buildWallsRectangles(){
+        wallsList = new ArrayList<>();
+
+        wallsList.add(new Rectangle2D.Double(entranceUpWall.getX1()-3, entranceUpWall.getY1()-3, Constant.BUILDING_STROKE, entranceUpWall.getY2()-entranceUpWall.getY1() + 5));
+        wallsList.add(new Rectangle2D.Double(entranceBottomWall.getX1()-3, entranceBottomWall.getY1()-2, Constant.BUILDING_STROKE, entranceBottomWall.getY2()-entranceBottomWall.getY1() + 5));
+        wallsList.add(new Rectangle2D.Double(exitUpWall.getX1()-3, exitUpWall.getY1()-3, Constant.BUILDING_STROKE, exitUpWall.getY2()-exitUpWall.getY1() + 5));
+        wallsList.add(new Rectangle2D.Double(exitBottomWall.getX1()-3, exitBottomWall.getY1()-2, Constant.BUILDING_STROKE, exitBottomWall.getY2()-exitBottomWall.getY1() + 5));
+        wallsList.add(new Rectangle2D.Double(upWall.getX1()-3, upWall.getY1()-3, upWall.getX2()-upWall.getX1(), Constant.BUILDING_STROKE));
+        wallsList.add(new Rectangle2D.Double(bottomWall.getX1()-3, bottomWall.getY1()-3, bottomWall.getX2()-bottomWall.getX1(), Constant.BUILDING_STROKE));
+
     }
 
     public Line2D getEntranceUpWall() {
@@ -161,6 +217,10 @@ public class Building {
         return bottomWall;
     }
 
+    public List<Rectangle2D> getWallsList() {
+        return wallsList;
+    }
+
     public Door getEntrance() {
         return entrance;
     }
@@ -175,5 +235,11 @@ public class Building {
 
     public Rectangle2D getHall() {
         return hall;
+    }
+
+    public void setWayPoints(List<WayPoint> wayPoints){
+        this.wayPoints = wayPoints;
+        for(Room room : rooms)
+            room.setWayPoints(wayPoints);
     }
 }

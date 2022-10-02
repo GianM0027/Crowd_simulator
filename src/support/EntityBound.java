@@ -8,6 +8,8 @@ import support.constants.Constant;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Calculates bounds of any entity
@@ -24,6 +26,8 @@ public class EntityBound{
     private Point2D left;
     private Point2D right;
     private Point2D bottom;
+
+    private List<Point2D> borderPoints;
 
     private double width; //width of the shape created from bounds
     private double height; //width of the shape created from bounds
@@ -74,14 +78,32 @@ public class EntityBound{
         this.bottomLeft = new Point2D.Double(this.left.getX(), this.bottom.getY());
         this.bottomRight = new Point2D.Double(this.right.getX(), this.bottom.getY());
 
+        addBorderPointsToList();
+
         this.width = this.right.getX() - this.left.getX();
         this.height = this.bottom.getY() - this.up.getY();
 
         this.boundsRectangle = new Rectangle2D.Double(upLeft.getX(), upLeft.getY(), width, height);
     }
 
+    private void addBorderPointsToList(){
+        borderPoints = new ArrayList<>();
+        //borderPoints.add(upLeft);
+        borderPoints.add(up);
+        //borderPoints.add(upRight);
+        borderPoints.add(left);
+        borderPoints.add(right);
+        //borderPoints.add(bottomLeft);
+        borderPoints.add(bottom);
+        //borderPoints.add(bottomRight);
+    }
+
     public boolean intersectsLine(Line2D line){
         return this.getBoundsRectangle().intersectsLine(line);
+    }
+
+    public List<Point2D> getBorderPoints() {
+        return borderPoints;
     }
 
     public Rectangle2D getBoundsRectangle() {

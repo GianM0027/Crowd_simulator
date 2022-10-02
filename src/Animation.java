@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,8 +85,9 @@ public class Animation extends JPanel implements ActionListener {
         //draw way points
         g2D.setPaint(Color.red);
         for (WayPoint wayPoint : wayPoints) {
-            g2D.fill(wayPoint.getWayPointShape());
+            g2D.fill(wayPoint.getShape());
             g2D.drawString(Integer.toString(wayPoint.getWaypointID()), (int)wayPoint.getPosition().getX(), (int)wayPoint.getPosition().getY());
+
 
             /* print bounds
             g2D.fill(new Ellipse2D.Double(wayPoint.getEntityBounds().getUpLeft().getX(), wayPoint.getEntityBounds().getUpLeft().getY(), 2, 2));

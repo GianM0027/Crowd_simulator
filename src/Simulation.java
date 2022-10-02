@@ -58,6 +58,7 @@ public class Simulation extends JPanel{
         createObstacles();
         createWayPoints();
         createCrowd();
+        this.building.setWayPoints(wayPoints);
 
         //Printing entities on the "active entities panel"
         ActiveEntitiesPanel.getInstance().setObstaclesTab();
@@ -264,7 +265,7 @@ public class Simulation extends JPanel{
         }
 
         //adding the doors through their path as waypoints
-        addDoorToGoalsList(goalsList);
+        //addDoorToGoalsList(goalsList);
 
         return goalsList;
     }
