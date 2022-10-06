@@ -58,9 +58,9 @@ public class Group{
 
     public void removeFirstGoal(){
         goalsList.remove(0);
-
+/*
         for(Pedestrian p : this.pedestrians)
-            p.updatePath();
+            p.checkPathIsCorrect();*/
     }
 
     public Color getColor() {

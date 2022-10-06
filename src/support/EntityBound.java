@@ -88,14 +88,14 @@ public class EntityBound{
 
     private void addBorderPointsToList(){
         borderPoints = new ArrayList<>();
-        //borderPoints.add(upLeft);
+        borderPoints.add(upLeft);
         borderPoints.add(up);
-        //borderPoints.add(upRight);
+        borderPoints.add(upRight);
         borderPoints.add(left);
         borderPoints.add(right);
-        //borderPoints.add(bottomLeft);
+        borderPoints.add(bottomLeft);
         borderPoints.add(bottom);
-        //borderPoints.add(bottomRight);
+        borderPoints.add(bottomRight);
     }
 
     public boolean intersectsLine(Line2D line){

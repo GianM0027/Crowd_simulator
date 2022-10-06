@@ -131,7 +131,7 @@ public class Simulation extends JPanel{
                                 this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.OBSTACLE_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1));
 
                 o = new Obstacle(point);
-            }while (building.checkCollision(o) != null || building.checkCollisionOnDoorFreeSpace(o));
+            }while (!building.distanceIsEnough(o) || building.checkCollisionOnDoorFreeSpace(o));
 
             this.obstacles.add(i, o);
         }
@@ -156,7 +156,7 @@ public class Simulation extends JPanel{
 
                 w = new WayPoint(point);
                 w.setWaypointID(id++);
-            }while (building.checkCollision(w) != null || building.checkCollisionOnDoorFreeSpace(w));
+            }while (!building.distanceIsEnough(w) || building.checkCollisionOnDoorFreeSpace(w));
 
             this.wayPoints.add(i, w);
         }

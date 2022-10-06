@@ -34,15 +34,15 @@ public class Constant {
 
 
     // animation's constants
-    public static final int MIN_TIME_FOR_WAYPOINT = 3000; //10000
-    public static final int MAX_TIME_FOR_WAYPOINT = 7000; //15000
+    public static final int MIN_TIME_FOR_WAYPOINT = 5000; //default = 10000
+    public static final int MAX_TIME_FOR_WAYPOINT = 9000; //default = 15000
     public static final int BOUNDS_DISTANCE = 4;
     public static final int BUILDING_STROKE = 6; //default 4
     public static final int BUILDING_DOOR_SIZE = PEDESTRIAN_WIDTH *6;
     public static final int BUILDING_DISTANCE_UP_DOWN = 10; //not lower than 10
     public static final int BUILDING_DISTANCE_LEFT = 200;
     public static final int BUILDING_DISTANCE_RIGHT = 20;
-    public static final int ANIMATION_DELAY = 40; //default 40
+    public static final int ANIMATION_DELAY = 20; //default 40
 
     //Waypoints constants
     public static final int GENERIC_WAYPOINT = -3;
@@ -56,4 +56,9 @@ public class Constant {
     public static final int BOTTOM = 101;
     public static final int RIGHT = 102;
     public static final int LEFT = 103;
+    public static final int UP_LEFT = 104;
+    public static final int UP_RIGHT = 105;
+    public static final int BOTTOM_LEFT = 106;
+    public static final int BOTTOM_RIGHT = 107;
+
 }

@@ -11,7 +11,9 @@ public class Door extends WayPoint{
     private Line2D doorLine;
     private Rectangle2D doorShape;
 
-    public Door(Point2D startPosition, Point2D endPosition) {
+    private Room room;
+
+    public Door(Point2D startPosition, Point2D endPosition, Room room) {
         super(startPosition);
 
         entityType = Constant.DOOR;
@@ -25,6 +27,15 @@ public class Door extends WayPoint{
         position.setLocation(doorsMiddlePoint());
     }
 
+    public Door(Point2D position, Room room) {
+        super(position);
+        entityType = Constant.DOOR;
+
+        this.room = room;
+        doorShape = new Rectangle2D.Double(position.getX() - Constant.BUILDING_DOOR_SIZE/2f, position.getY(), Constant.BUILDING_DOOR_SIZE, Constant.BUILDING_STROKE);
+        position.setLocation(doorsMiddlePoint());
+    }
+
     public Rectangle2D getShape() {
         return doorShape;
     }
@@ -32,4 +43,6 @@ public class Door extends WayPoint{
     public Point2D doorsMiddlePoint(){
         return new Point2D.Double(doorShape.getCenterX(), doorShape.getCenterY());
     }
+
+
 }

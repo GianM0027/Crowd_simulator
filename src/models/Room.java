@@ -16,6 +16,8 @@ public class Room{
     private Rectangle2D roomRectangle;
 
     private Door door;
+    private Door frontDoorOut;
+    private Door frontDoorIn;
 
     private List<WayPoint> wayPoints;
     private Line2D leftWall;
@@ -23,11 +25,12 @@ public class Room{
     private Line2D doorWallLeft;
     private Line2D doorWallRight;
 
-    List<Rectangle2D> wallsList;
+    private List<Rectangle2D> wallsList;
 
     public Room(double roomPositionX, double roomPositionY, double width, double height){
         leftWall = new Line2D.Double(roomPositionX, roomPositionY, roomPositionX, roomPositionY + height);
         rightWall = new Line2D.Double(roomPositionX + width, roomPositionY, roomPositionX + width, roomPositionY + height);
+
 
         //if the room is on the upper part of the building
         if(roomPositionY <= Constant.BUILDING_DISTANCE_UP_DOWN*2){
@@ -40,7 +43,11 @@ public class Room{
             doorWallRight = new Line2D.Double(roomPositionX + width, roomPositionY, roomPositionX + width/2 + Constant.BUILDING_DOOR_SIZE/2d, roomPositionY);
         }
 
-        door = new Door(doorWallLeft.getP2(), doorWallRight.getP2());
+        door = new Door(doorWallLeft.getP2(), doorWallRight.getP2(), this);
+        if(roomPositionY <= Constant.BUILDING_DISTANCE_UP_DOWN*2)
+            setFrontDoorsRoomUp();
+        else
+            setFrontDoorsRoomDown();
 
         createWallsList();
 
@@ -91,6 +98,18 @@ public class Room{
 
                     if(r.contains(point) && point.equals(pBounds.getUp()))
                         collisionPoints.add(Constant.UP); //collided the upper part of the pedestrian
+
+                    if(r.contains(point) && point.equals(pBounds.getUpRight()))
+                        collisionPoints.add(Constant.UP_RIGHT); //collided the upper-right part of the pedestrian
+
+                    if(r.contains(point) && point.equals(pBounds.getUpLeft()))
+                        collisionPoints.add(Constant.UP_LEFT); //collided the upper-left part of the pedestrian
+
+                    if(r.contains(point) && point.equals(pBounds.getBottomLeft()))
+                        collisionPoints.add(Constant.BOTTOM_LEFT); //collided the bottom-left part of the pedestrian
+
+                    if(r.contains(point) && point.equals(pBounds.getBottomRight()))
+                        collisionPoints.add(Constant.BOTTOM_RIGHT); //collided the bottom-right part of the pedestrian
                 }
             }
         }
@@ -102,6 +121,21 @@ public class Room{
         g2D.draw(rightWall);
         g2D.draw(doorWallLeft);
         g2D.draw(doorWallRight);
+    }
+
+    public boolean distanceIsEnough(Entity entity){
+        EntityBound entityBounds = new EntityBound(entity);
+
+        if (leftWall.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+            return false;
+        if (rightWall.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+            return false;
+        if (doorWallLeft.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+            return false;
+        if (doorWallRight.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+            return false;
+
+        return true;
     }
 
     /**
@@ -116,6 +150,14 @@ public class Room{
 
     public Door getDoor() {
         return door;
+    }
+
+    public Door getFrontDoorOut() {
+        return frontDoorOut;
+    }
+
+    public Door getFrontDoorIn() {
+        return frontDoorIn;
     }
 
     public List<Rectangle2D> getWallsList() {
@@ -152,6 +194,20 @@ public class Room{
         }
         for(WayPoint w : this.wayPoints)
             w.setRoom(this);
+    }
+
+    private void setFrontDoorsRoomUp(){
+        Point2D positionOut = new Point2D.Double(this.door.getPosition().getX(), this.door.getPosition().getY() + (Constant.PEDESTRIAN_HEIGHT));  //-6
+        Point2D positionIn = new Point2D.Double(this.door.getPosition().getX(), this.door.getPosition().getY() - (Constant.PEDESTRIAN_HEIGHT + 6));    //+3
+        frontDoorOut = new Door(positionOut, this);
+        frontDoorIn = new Door(positionIn, this);
+    }
+
+    private void setFrontDoorsRoomDown(){
+        Point2D positionOut = new Point2D.Double(this.door.getPosition().getX(), this.door.getPosition().getY() - (Constant.PEDESTRIAN_HEIGHT + 6)); //+3
+        Point2D positionIn = new Point2D.Double(this.door.getPosition().getX(), this.door.getPosition().getY() + (Constant.PEDESTRIAN_HEIGHT));  //-6
+        frontDoorOut = new Door(positionOut, this);
+        frontDoorIn = new Door(positionIn, this);
     }
 
     @Override

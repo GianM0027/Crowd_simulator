@@ -56,8 +56,8 @@ public class Building {
         upWall = new Line2D.Double(entranceWallUpUp, exitWallUpUp);
         bottomWall = new Line2D.Double(entranceWallDownDown, exitWallDownDown);
 
-        entrance = new Door(entranceWallUpDown, entranceWallDownUp);
-        exit = new Door(exitWallUpDown, exitWallDownUp);
+        entrance = new Door(entranceWallUpDown, entranceWallDownUp, null);
+        exit = new Door(exitWallUpDown, exitWallDownUp, null);
 
         //obtaining rectangles from walls
         buildWallsRectangles();
@@ -124,6 +124,33 @@ public class Building {
         return null;
     }
 
+    /**
+     * Return true if an entity is closer to the building more than the "bounds distance"
+     * */
+    public boolean distanceIsEnough(Entity entity){
+        EntityBound entityBounds = new EntityBound(entity);
+
+            if (entranceUpWall.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+                return false;
+            if (entranceBottomWall.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+                return false;
+            if (exitUpWall.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+                return false;
+            if (exitBottomWall.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+                return false;
+            if (upWall.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+                return false;
+            if (bottomWall.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+                return false;
+
+
+        for(Room room: this.rooms) {
+            if(!room.distanceIsEnough(entity))
+                return false;
+        }
+        return true;
+    }
+
 
     /**
      * Return an Array with the points of the pedestrian that collided with a wall
@@ -152,6 +179,18 @@ public class Building {
 
                     if(r.contains(point) && point.equals(pBounds.getUp()))
                         pointsCollision.add(Constant.UP); //collided the upper part of the pedestrian
+
+                    if(r.contains(point) && point.equals(pBounds.getUpRight()))
+                        pointsCollision.add(Constant.UP_RIGHT); //collided the upper-right part of the pedestrian
+
+                    if(r.contains(point) && point.equals(pBounds.getUpLeft()))
+                        pointsCollision.add(Constant.UP_LEFT); //collided the upper-left part of the pedestrian
+
+                    if(r.contains(point) && point.equals(pBounds.getBottomLeft()))
+                        pointsCollision.add(Constant.BOTTOM_LEFT); //collided the bottom-left part of the pedestrian
+
+                    if(r.contains(point) && point.equals(pBounds.getBottomRight()))
+                        pointsCollision.add(Constant.BOTTOM_RIGHT); //collided the bottom-right part of the pedestrian
                 }
             }
         }
@@ -160,7 +199,6 @@ public class Building {
         for(Room room : rooms)
             room.pointsCollision(pBounds, pointsCollision);
 
-        System.out.println(pointsCollision);
         return pointsCollision;
     }
 
