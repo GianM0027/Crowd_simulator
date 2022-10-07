@@ -73,7 +73,7 @@ public class Pedestrian extends Entity {
 
         //timer that decreases and increases energy
         energyWasteTimer = new Timer(1000, e -> handleEnergy());
-        energyWasteTimer.start();
+        //energyWasteTimer.start();
 
         System.out.println("\t\tCurrent goal -> Entrance");
     }
@@ -585,11 +585,13 @@ public class Pedestrian extends Entity {
     }
 
     public void stopWasteEnergyTimer(){
-        energyWasteTimer.stop();
+        if(energyWasteTimer.isRunning())
+            energyWasteTimer.stop();
     }
 
     public void startWasteEnergyTimer(){
-        energyWasteTimer.start();
+        if(!energyWasteTimer.isRunning())
+            energyWasteTimer.start();
     }
 
     public void updateBounds() {

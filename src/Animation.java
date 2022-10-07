@@ -149,13 +149,9 @@ public class Animation extends JPanel implements ActionListener {
     /******************************    Animation commands    *************************************/
     public void pause(){
         this.timer.stop();
-        for(Pedestrian pedestrian : crowd)
-            pedestrian.stopWasteEnergyTimer();
     }
 
     public void resume(){
         this.timer.start();
-        for(Pedestrian pedestrian : crowd)
-            pedestrian.startWasteEnergyTimer();
     }
 }

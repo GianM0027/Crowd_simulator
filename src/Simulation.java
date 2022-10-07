@@ -81,10 +81,24 @@ public class Simulation extends JPanel{
      * */
     protected void pauseSimulation(){
         this.animation.pause();
+
+        for(Group group : this.groups)
+            if(!group.isStartWalking())
+                group.getStartWalkingTimer().stop();
+
+        for(Pedestrian pedestrian : crowd)
+            pedestrian.stopWasteEnergyTimer();
     }
 
     protected void resumeSimulation(){
         this.animation.resume();
+
+        for(Group group : this.groups)
+            if(!group.isStartWalking())
+                group.getStartWalkingTimer().start();
+
+        for(Pedestrian pedestrian : crowd)
+            pedestrian.startWasteEnergyTimer();
     }
 
 

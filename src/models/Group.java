@@ -18,7 +18,7 @@ public class Group{
     private int groupID;
     private Color color;
     private boolean isMoving;
-    private Timer timer;
+    private Timer startWalkingTimer;
 
 
     public Group(int groupID, List<WayPoint> goalsList, List<Pedestrian> pedestrians){
@@ -33,8 +33,8 @@ public class Group{
             p.setGroupID(groupID);
         }
 
-        timer = new Timer(groupID*6000, e -> setStartWalking(true));
-        timer.start();
+        startWalkingTimer = new Timer(groupID*6000, e -> setStartWalking(true));
+        startWalkingTimer.start();
     }
 
 
@@ -96,7 +96,19 @@ public class Group{
 
     public void setStartWalking(boolean startWalking) {
         this.startWalking = startWalking;
-        timer.stop();
+        startWalkingTimer.stop();
+    }
+
+    public Timer getStartWalkingTimer() {
+        return startWalkingTimer;
+    }
+
+    public void setStartWalkingTimer(Timer startWalkingTimer) {
+        this.startWalkingTimer = startWalkingTimer;
+    }
+
+    public boolean isStartWalking() {
+        return startWalking;
     }
 
     public String getGroupSimbol(){
