@@ -137,7 +137,7 @@ public class Pedestrian extends Entity {
     private void weightForces(PVector separation, PVector cohesion, PVector direction, PVector avoidObstacle){
         //default values
         float sepMultiplicator = 2.2f;
-        float cohMultiplicator = 1.1f;
+        float cohMultiplicator = 1.0f;
         float dirMultiplicator = 1.0f;
         float avoidMultiplicator = 1.0f;
 
@@ -145,7 +145,7 @@ public class Pedestrian extends Entity {
         if(this.position.x < Constant.BUILDING_DISTANCE_LEFT - 10) {
             cohMultiplicator = 1.5f;
             sepMultiplicator = 2.5f;
-            dirMultiplicator = 1.1f;
+            dirMultiplicator = 1.3f;
         }
 
         //if the pedestrian has collided
@@ -163,14 +163,6 @@ public class Pedestrian extends Entity {
             }
         }
 
-        //if this pedestrian is visiting a goal
-        if(this.isVisiting){
-            cohMultiplicator = 0.3f;
-            sepMultiplicator = 0.3f;
-            dirMultiplicator = 0.3f;
-            avoidMultiplicator = 0.3f;
-        }
-
         separation.mult(sepMultiplicator);
         cohesion.mult(cohMultiplicator);
         direction.mult(dirMultiplicator);
@@ -182,8 +174,12 @@ public class Pedestrian extends Entity {
         // Update velocity
         velocity.add(accelerationVect);
 
-        // Limit speed
+        // Limit speed (if the pedestrian is visiting a goalt then its velocity is reduced
+        float oldSpeed = this.maxspeed;
+        if(this.isVisiting)
+            maxspeed = 0.3f;
         velocity.limit(maxspeed);
+        maxspeed = oldSpeed;
 
         //walls avoidance
         avoidWall();
@@ -351,9 +347,13 @@ public class Pedestrian extends Entity {
             }
         }
         else{
-            //go away from the building
-            for(Pedestrian p : this.group.getPedestrians())
-                p.setCurrentGoal(new WayPoint(new Point2D.Double(building.getExit().getPosition().getX() + 200, building.getExit().getPosition().getY()))); //point outside of the view
+            if(!currentGoal.equals(building.getExit()))
+                findTheExit();
+            else {
+                //go away from the building
+                for (Pedestrian p : this.group.getPedestrians())
+                    p.setCurrentGoal(new WayPoint(new Point2D.Double(building.getExit().getPosition().getX() + 200, building.getExit().getPosition().getY()))); //point outside of the view
+            }
         }
     }
 
@@ -367,13 +367,11 @@ public class Pedestrian extends Entity {
 
             //there are not goals anymore
             if(goalsList.isEmpty()){
-                //findTheExit();
-                /*
-                for(Pedestrian p : this.group.getPedestrians())
-                    p.setCurrentGoal(building.getExit());*/
+                findTheExit();
                 waypointTimer.stop();
                 group.setMoving(true);
                 this.isVisiting = false;
+                return;
             }
 
             //IF THERE ARE STILL GOALS, CHECK IF PEDESTRIANS NEED TO PASS THROUGH A DOOR TO REACH THE NEW GOAL
@@ -412,28 +410,21 @@ public class Pedestrian extends Entity {
 
 
     /**
-     * Function called to make sure that this pedestrian is not getting lost around the building,
-     * every x milliseconds check the goal list and update the path to follow
+     * When a group is done with all the goals, it can look for the exit door
      * */
-    public void checkPathIsCorrect(){
-        if(!goalsList.isEmpty()) {
+    public void findTheExit(){
+        Room pedestrianRoom = null;
+        for(Room room : building.getRooms())
+            if(room.getRoomRectangle().intersects(this.pedestrianShape) && !building.getHall().intersects(this.pedestrianShape))
+                pedestrianRoom = room;
 
-            //CHECK IF (ONLY) THIS PEDESTRIAN NEED TO CHANGE THE CURRENT GOAL
+        //the pedestrian is still in a room, go towards the door of that room
+        if(pedestrianRoom != null)
+            currentGoal = pedestrianRoom.getFrontDoorOut();
 
-            //pedestrian left behind who has yet to enter the room
-            if(building.getHall().intersects(this.getPedestrianShape())){
-
-                //there is another goal into that room (set the door of that room as currentgoal)
-                if(currentGoal.getEntityType() == Constant.DOOR && !currentGoal.equals(building.getEntrance())){
-                    if(!currentGoal.getRoom().hasWaypoints(this))
-                        return;
-                }
-
-                //the other pedestrians are leaving the room (see where they are going and update the current goal with a door or a goal)
-
-
-            }
-        }
+        //the pedestrian in not in a room, go directly toward the exit of the building
+        else
+            currentGoal = building.getExit();
     }
 
 

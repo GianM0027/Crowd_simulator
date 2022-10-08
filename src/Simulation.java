@@ -278,57 +278,10 @@ public class Simulation extends JPanel{
             goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 10);
         }
 
-        //adding the doors through their path as waypoints
-        //addDoorToGoalsList(goalsList);
-
         return goalsList;
     }
 
-    private void addDoorToGoalsList(List<WayPoint> goalsList){
-        //add exit and entrance of the builing
-        goalsList.add(0, building.getEntrance());
-        goalsList.add(building.getExit());
 
-        //add "middle goals" (doors between points)
-        for(int i = 1; i < goalsList.size(); i++){
-
-            //if previous waypoint was in the hall (the next one could be still in the hall or in a room)
-            if(building.getHall().contains(goalsList.get(i-1).getPosition())){
-                //if the actual goal is in a room add a door of that room to the goalsList
-                for(Room room : building.getRooms()){
-                    if(room.getRoomRectangle().contains(goalsList.get(i).getPosition())) {
-                        goalsList.add(i, room.getDoor());
-                        i++;
-                    }
-                }
-                //else the actual goal is still in the hall
-            }
-
-            //if previous waypoint was in a room (the next one could be in the same room, in the hall, in another room)
-            else{
-                for(Room room : building.getRooms()){
-                    if(room.getRoomRectangle().contains(goalsList.get(i-1).getPosition())){
-                        //the actual goal can be in the hall
-                        if(building.getHall().contains(goalsList.get(i).getPosition())){
-                            goalsList.add(i, room.getDoor());
-                            i++;
-                        }
-
-                        //the actual goal can be in another room
-                        for(Room room1 : building.getRooms()){
-                            if(room1.getRoomRectangle().contains(goalsList.get(i).getPosition()) && !room.equals(room1)){
-                                goalsList.add(i, room1.getDoor());
-                                goalsList.add(i, room.getDoor());
-                                i+=2;
-                            }
-                        }
-
-                        //else the actual goal is in the same room as the previous one
-                    }
-                }
-            }
-        }
-    }
 
     /***************************************    ACCESSORS    *****************************************/
     public int getNumberOfPeople() {

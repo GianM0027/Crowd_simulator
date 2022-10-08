@@ -37,7 +37,7 @@ public class Constant {
     public static final int MIN_TIME_FOR_WAYPOINT = 5000; //default = 10000
     public static final int MAX_TIME_FOR_WAYPOINT = 9000; //default = 15000
     public static final int BOUNDS_DISTANCE = 4;
-    public static final int BUILDING_STROKE = 6; //default 4
+    public static final int BUILDING_STROKE = 7; //default 4
     public static final int BUILDING_DOOR_SIZE = PEDESTRIAN_WIDTH *6;
     public static final int BUILDING_DISTANCE_UP_DOWN = 10; //not lower than 10
     public static final int BUILDING_DISTANCE_LEFT = 200;
