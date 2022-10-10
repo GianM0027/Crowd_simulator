@@ -14,6 +14,7 @@ public class WayPoint extends Entity {
     private int waypointID;
     private Rectangle2D wayPointShape;
     private Room room;
+    private boolean restingArea;
 
     public WayPoint(Point2D position){
         super(position);
@@ -55,6 +56,14 @@ public class WayPoint extends Entity {
 
     public void setWaypointID(int waypointID) {
         this.waypointID = waypointID;
+
+        //every 5 waypoints, 1 is a resting area
+        if(waypointID % Constant.PERCENTAGE_OF_REST_POINTS == 0)
+            this.restingArea = true;
+    }
+
+    public boolean isRestingArea() {
+        return this.restingArea;
     }
 
     public Room getRoom() {

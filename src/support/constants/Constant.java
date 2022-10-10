@@ -47,7 +47,7 @@ public class Constant {
     //Waypoints constants
     public static final int GENERIC_WAYPOINT = -3;
     public static final int DOOR = -4;
-    public static final int REST_WAYPOINT = -5;
+    public static final int PERCENTAGE_OF_REST_POINTS = 5; //indicates every how many normal waypoints there should be a rest area
     public static final int GOAL_DISTANCE = BUILDING_DOOR_SIZE/7;
 
 

@@ -159,7 +159,6 @@ public class Simulation extends JPanel{
     private void createWayPoints(){
         this.wayPoints = new ArrayList<>();
         WayPoint w;
-        int id = 0;
 
         for(int i = 0; i < this.numberOfWayPoints; i++){
             do {
@@ -169,7 +168,7 @@ public class Simulation extends JPanel{
                                 this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.WAYPOINT_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1));
 
                 w = new WayPoint(point);
-                w.setWaypointID(id++);
+                w.setWaypointID(i);
             }while (!building.distanceIsEnough(w) || building.checkCollisionOnDoorFreeSpace(w));
 
             this.wayPoints.add(i, w);
@@ -242,6 +241,9 @@ public class Simulation extends JPanel{
     private List<WayPoint> goalsList(int groupSize){
         ArrayList<WayPoint> goalsList = new ArrayList<>(this.wayPoints);
         float groupsGoalsRatio = (float)groupSize/goalsList.size();
+
+        //remove all the resting points, they will be adeed dinamilly if necessary
+        goalsList.removeIf(WayPoint::isRestingArea);
 
         //If the group if pedestrian has size lower than 1/20 of the list of goals then 30% of probability to assign each goal
         if(groupsGoalsRatio <= 0.55) {

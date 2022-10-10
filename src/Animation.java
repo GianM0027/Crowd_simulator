@@ -88,9 +88,16 @@ public class Animation extends JPanel implements ActionListener {
         //draw way points
         g2D.setPaint(Color.red);
         for (WayPoint wayPoint : wayPoints) {
-            g2D.fill(wayPoint.getShape());
-            g2D.drawString(Integer.toString(wayPoint.getWaypointID()), (int)wayPoint.getPosition().getX(), (int)wayPoint.getPosition().getY());
-
+            if(wayPoint.isRestingArea()) {
+                g2D.setPaint(Color.blue);
+                g2D.fill(wayPoint.getShape());
+                g2D.drawString(Integer.toString(wayPoint.getWaypointID()), (int) wayPoint.getPosition().getX(), (int) wayPoint.getPosition().getY());
+                g2D.setPaint(Color.red);
+            }
+            else{
+                g2D.fill(wayPoint.getShape());
+                g2D.drawString(Integer.toString(wayPoint.getWaypointID()), (int) wayPoint.getPosition().getX(), (int) wayPoint.getPosition().getY());
+            }
 
             /* print bounds
             g2D.fill(new Ellipse2D.Double(wayPoint.getEntityBounds().getUpLeft().getX(), wayPoint.getEntityBounds().getUpLeft().getY(), 2, 2));
@@ -116,7 +123,7 @@ public class Animation extends JPanel implements ActionListener {
                 g2D.setStroke(new BasicStroke(0));
                 g2D.setPaint(group.getColor());
 
-
+/*
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getUpLeft().getX(), pedestrian.getEntityBounds().getUpLeft().getY(), 2, 2));
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getUpRight().getX(), pedestrian.getEntityBounds().getUpRight().getY(), 2, 2));
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getUp().getX(), pedestrian.getEntityBounds().getUp().getY(), 2, 2));
@@ -125,7 +132,7 @@ public class Animation extends JPanel implements ActionListener {
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getBottomLeft().getX(), pedestrian.getEntityBounds().getBottomLeft().getY(), 2, 2));
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getBottomRight().getX(), pedestrian.getEntityBounds().getBottomRight().getY(), 2, 2));
                 g2D.fill(new Ellipse2D.Double(pedestrian.getEntityBounds().getBottom().getX(), pedestrian.getEntityBounds().getBottom().getY(), 2, 2));
-
+*/
             }
         }
     }

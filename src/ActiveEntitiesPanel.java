@@ -79,7 +79,7 @@ public class ActiveEntitiesPanel extends JTabbedPane {
         setPedestriansTab(Simulation.getInstance().getCrowd());
 
         refresh = new Timer(100, e -> updatePedestriansPanel());
-        //refresh.start();
+        refresh.start();
     }
 
     /**
@@ -247,6 +247,7 @@ public class ActiveEntitiesPanel extends JTabbedPane {
                 noObstacles.setForeground(Color.GRAY);
                 activePedestrians.add(noObstacles);
             }
+
             //else if the simulation is started, you retrieve the list of pedestrians and show it
             else {
 
@@ -277,12 +278,11 @@ public class ActiveEntitiesPanel extends JTabbedPane {
                             pedestrianListModel.add(j - 1, "Pedestrian " + j + ": " + pedestrians.get(j - 1).getGenderString() +
                                     "   -   " + pedestrians.get(j - 1).getAgeString() +
                                     "   -   " + "Velocity: " + String.format("%.2f", pedestrians.get(j - 1).getVelocity()) +
-                                    "   -   " + "Energy: " + String.format("%.1f", pedestrians.get(j - 1).getEnergy()) +
-                                    "   -   " + "Group ID: " + pedestrians.get(j - 1).getGroupID());
+                                    "   -   " + "Energy: " + String.format("%.1f", pedestrians.get(j - 1).getEnergy()));
                         }
                         JList pedestriansList = new JList(pedestrianListModel);
 
-                        this.activePedestrians.removeAll();
+                        //this.activePedestrians.removeAll();
 
                         groupPanel.add(labelPanel, BorderLayout.NORTH);
                         labelPanel.setBackground(Color.LIGHT_GRAY);
@@ -294,7 +294,7 @@ public class ActiveEntitiesPanel extends JTabbedPane {
                     }
 
                     scrollGroupsPane.setViewportView(allGroupsPanel);
-                    scrollGroupsPane.getVerticalScrollBar().setUnitIncrement(8);
+                    scrollGroupsPane.getVerticalScrollBar().setUnitIncrement(20);
                     scrollGroupsPane.setPreferredSize(new Dimension(this.activePedestrians.getWidth() - 8, this.activePedestrians.getHeight() - 8));
 
                     this.activePedestrians.add(scrollGroupsPane);
@@ -375,15 +375,17 @@ public class ActiveEntitiesPanel extends JTabbedPane {
     //Update panel without lose information on the position of the JscrollPane
     private void updatePedestriansPanel(){
         if(scrollGroupsPane != null && !scrollGroupsPane.getVerticalScrollBar().getValueIsAdjusting()) {
-
+            int maximum = scrollGroupsPane.getVerticalScrollBar().getMaximum();
+            int blockIncrement = scrollGroupsPane.getVerticalScrollBar().getBlockIncrement();
+            int visibleAmount = scrollGroupsPane.getVerticalScrollBar().getVisibleAmount();
             int verticalValue = scrollGroupsPane.getVerticalScrollBar().getValue();
-            //System.out.println("Value before panel update: " + scrollGroupsPane.getVerticalScrollBar().getMaximum());
 
             updateFilteredCrowd();
-            //System.out.println("Value after panel update: " + scrollGroupsPane.getVerticalScrollBar().getMaximum());
 
+            scrollGroupsPane.getVerticalScrollBar().setMaximum(maximum);
+            scrollGroupsPane.getVerticalScrollBar().setBlockIncrement(blockIncrement);
+            scrollGroupsPane.getVerticalScrollBar().setVisibleAmount(visibleAmount);
             scrollGroupsPane.getVerticalScrollBar().setValue(verticalValue);
-            //System.out.println("Value after manual set: " + scrollGroupsPane.getVerticalScrollBar().getMaximum());
         }
     }
 

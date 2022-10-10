@@ -68,12 +68,12 @@ public class Pedestrian extends Entity {
         accelerationVect = new PVector(0, 0);
         velocity = new PVector(0, 0);
         maxspeed = assignMaxSpeed();
-        maxforce = 0.1f; //default 0.03f
+        maxforce = 0.08f; //default 0.1f
         currentGoal = building.getEntrance(); //current goal by default is the entrance of the building
 
         //timer that decreases and increases energy
         energyWasteTimer = new Timer(1000, e -> handleEnergy());
-        //energyWasteTimer.start();
+        energyWasteTimer.start();
 
         System.out.println("\t\tCurrent goal -> Entrance");
     }
@@ -139,7 +139,7 @@ public class Pedestrian extends Entity {
         float sepMultiplicator = 2.2f;
         float cohMultiplicator = 1.0f;
         float dirMultiplicator = 1.0f;
-        float avoidMultiplicator = 1.0f;
+        float avoidMultiplicator = 0.6f;
 
         //if this pedestrian is out of the building
         if(this.position.x < Constant.BUILDING_DISTANCE_LEFT - 10) {
@@ -285,7 +285,7 @@ public class Pedestrian extends Entity {
             if(this.centerPosition.dist(obstacleCenter) < obstacleDist){
                 PVector diff = PVector.sub(this.position, obstacleCenter);
                 diff.normalize();
-                diff.div(this.centerPosition.dist(obstacleCenter)/2);        // Weight by distance
+                diff.div(this.centerPosition.dist(obstacleCenter)/4);        // Weight by distance
                 steer.add(diff);
             }
         }
@@ -443,10 +443,11 @@ public class Pedestrian extends Entity {
                 case (Constant.OLD) -> energy -= 0.2;
             }
         }
-        /*
-        if(energy < Constant.GO_TO_REST)
+
+        if(energy < Constant.GO_TO_REST) {
+            isRestTime = true;
             //ricerca waypoint to rest
-        */
+        }
     }
 
     /**
@@ -505,9 +506,6 @@ public class Pedestrian extends Entity {
             return "Old";
     }
 
-    public int getGroupID() {
-        return groupID;
-    }
 
     public String getPositionString(){
         return "[" + (int)this.position.x + ", " + (int)this.position.y + "]";
