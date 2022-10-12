@@ -21,6 +21,7 @@ public class Simulation extends JPanel{
     private ArrayList<Group> groups;
     private ArrayList<Obstacle> obstacles;
     private ArrayList<WayPoint> wayPoints;
+    private ArrayList<WayPoint> restingPoints;
     private Building building;
     private int numberOfPeople;
     private int numberOfGroups;
@@ -28,6 +29,7 @@ public class Simulation extends JPanel{
     private int maxGroupSize;
     private int numberOfObstacles;
     private int numberOfWayPoints;
+
 
     public Simulation(){
         this.isRunning = false;
@@ -66,6 +68,7 @@ public class Simulation extends JPanel{
         ActiveEntitiesPanel.getInstance().setPedestriansTab(this.crowd);
         ActiveEntitiesPanel.getInstance().enableFilters();
         ActiveEntitiesPanel.getInstance().updateFilteredCrowd();
+        ActiveEntitiesPanel.getInstance().getRefresh().start();
 
         this.removeAll();
         this.revalidate();
@@ -116,7 +119,6 @@ public class Simulation extends JPanel{
         ActiveEntitiesPanel.getInstance().setFiltersTab();
         ActiveEntitiesPanel.getInstance().disableFilters();
         ActiveEntitiesPanel.getInstance().setPedestriansTab(this.crowd);
-        ActiveEntitiesPanel.getInstance().getRefresh().stop();
 
         for(Pedestrian pedestrian : crowd)
             pedestrian.stopWasteEnergyTimer();
@@ -174,6 +176,9 @@ public class Simulation extends JPanel{
             this.wayPoints.add(i, w);
         }
         Support.sortWayPoints(this.wayPoints);
+
+        this.restingPoints = new ArrayList<>(wayPoints);
+        restingPoints.removeIf(wayPoint -> !wayPoint.isRestingArea());
     }
 
     /**
@@ -219,6 +224,11 @@ public class Simulation extends JPanel{
                 groupColor = new Color(new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat());
                 group.setColor(groupColor);
             }while(groupColor == Color.GRAY || groupColor == Color.WHITE || groupColor == Color.BLACK || groupColor == Color.RED);
+
+            //SET RESTING POINTS
+            restingPoints = new ArrayList<>(wayPoints);
+            restingPoints.removeIf(w -> !w.isRestingArea());
+            group.setRestingPoints(restingPoints);
 
             groups.add(group);
 

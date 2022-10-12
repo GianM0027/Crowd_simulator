@@ -28,7 +28,6 @@ public class Pedestrian extends Entity {
     private WayPoint currentGoal;
     private List<Obstacle> obstacles;
     private Building building;
-    private boolean isRestTime;
     private boolean hasCollided;
     private boolean isVisiting;
 
@@ -57,7 +56,6 @@ public class Pedestrian extends Entity {
         this.age = Support.getRandomValue(Constant.CHILD, Constant.OLD); //random among CHILD, YOUNG and OLD
         this.energy = assignEnergy();
         this.maxEnergy = energy;
-        this.isRestTime = false;
         this.hasCollided = false;
         this.isVisiting = false;
 
@@ -97,10 +95,20 @@ public class Pedestrian extends Entity {
         update();
         updateBounds();
 
+        //pedestrian intersects a door
         if(currentGoal.getEntityType() == Constant.DOOR && currentGoal.getShape().intersects(this.pedestrianShape)){
             updateCurrentGoalAfterDoor();
         }
 
+        //pedestrian intersects a resting area
+        if(currentGoal.isRestingArea() && this.centerPosition.dist(currentGoal.getVectorPosition()) < Constant.GOAL_DISTANCE*2) {
+            group.setMoving(false);
+            this.isVisiting = true;
+            group.setRestingTime(true);
+            group.setGoingToRest(false);
+        }
+
+        //pedestrian intersects a generic waypoint
         if(currentGoal.getEntityType() == Constant.GENERIC_WAYPOINT && this.centerPosition.dist(currentGoal.getVectorPosition()) < Constant.GOAL_DISTANCE){
             if(group.isMoving()) {
                 group.setMoving(false);
@@ -138,15 +146,9 @@ public class Pedestrian extends Entity {
         //default values
         float sepMultiplicator = 2.2f;
         float cohMultiplicator = 1.0f;
-        float dirMultiplicator = 1.0f;
+        float dirMultiplicator = 1.2f;
         float avoidMultiplicator = 0.6f;
 
-        //if this pedestrian is out of the building
-        if(this.position.x < Constant.BUILDING_DISTANCE_LEFT - 10) {
-            cohMultiplicator = 1.5f;
-            sepMultiplicator = 2.5f;
-            dirMultiplicator = 1.3f;
-        }
 
         //if the pedestrian has collided
         if(this.hasCollided) {
@@ -154,9 +156,16 @@ public class Pedestrian extends Entity {
             cohMultiplicator = 1;
         }
 
-        //if the pedestrian is far from the group
-        if(this.group.getPedestrians().size() > 1) {
-            if (this.position.dist(group.getAvgGroupPosition()) > Constant.PEDESTRIAN_HEIGHT * this.group.getPedestrians().size()) {
+        //if this pedestrian is out of the building
+        else if(this.position.x < Constant.BUILDING_DISTANCE_LEFT - 10) {
+            cohMultiplicator = 1.5f;
+            sepMultiplicator = 2.5f;
+            dirMultiplicator = 1.3f;
+        }
+
+        //if the pedestrian is far from the group (far from the slowest person in the group)
+        else if(this.group.getPedestrians().size() > 1) {
+            if (this.position.dist(group.getAvgGroupPosition()) > Constant.PEDESTRIAN_WIDTH * this.group.getPedestrians().size()) {
                 cohMultiplicator = 1.5f;
                 sepMultiplicator = 2.5f;
                 dirMultiplicator = 1.1f;
@@ -210,7 +219,7 @@ public class Pedestrian extends Entity {
     // Separation
     // Method checks for nearby pedestrians and steers away
     PVector separate (ArrayList<Pedestrian> pedestrians) {
-        float desiredseparation = (float)this.entityBounds.getWidth();
+        float desiredSeparation = (float)this.entityBounds.getWidth();
         PVector steer = new PVector(0, 0);
         int count = 0;
 
@@ -219,7 +228,7 @@ public class Pedestrian extends Entity {
             float d = PVector.dist(position, other.position);
 
             // If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
-            if ((d > 0) && (d < desiredseparation)) {
+            if ((d > 0) && (d < desiredSeparation)) {
                 // Calculate vector pointing away from neighbor
                 PVector diff = PVector.sub(position, other.position);
                 diff.normalize();
@@ -402,8 +411,8 @@ public class Pedestrian extends Entity {
                 }
             }
         }
-
-        waypointTimer.stop();
+        if(waypointTimer != null)
+            waypointTimer.stop();
         group.setMoving(true);
         this.isVisiting = false;
     }
@@ -434,9 +443,8 @@ public class Pedestrian extends Entity {
     /***********************************      PEDESTRIAN'S CHARACTERISTICS      *********************************/
 
     private void handleEnergy(){
-        if(isRestTime && energy < maxEnergy)
-            energy += 1;
-        if(!isRestTime){
+        //if the group is not resting
+        if(!this.group.isRestTime()){
             switch (this.age) {
                 case (Constant.CHILD) -> energy -= 0.15;
                 case (Constant.YOUNG) -> energy -= 0.1;
@@ -444,11 +452,58 @@ public class Pedestrian extends Entity {
             }
         }
 
-        if(energy < Constant.GO_TO_REST) {
-            isRestTime = true;
-            //ricerca waypoint to rest
+        //if one member of the group is tired and the group is not going to rest yet
+        if(energy < Constant.GO_TO_REST && !group.isGoingToRest() && !group.isRestTime()) {
+            if(this.isVisiting)
+                findNearestRestingArea(this.position);
+            else if(!goalsList.isEmpty())
+                findNearestRestingArea(goalsList.get(0).getVectorPosition());
+            group.setGoingToRest(true);
+        }
+
+        if(this.group.isRestTime()){
+            increaseEnergy();
+            checkIfGroupCanGoAway();
         }
     }
+
+    private void increaseEnergy() {
+        //restore energy if the pedestrian is close to the rest point
+        if (this.energy < this.maxEnergy &&
+                this.position.dist(currentGoal.getVectorPosition()) < Constant.GOAL_DISTANCE*(this.group.getPedestrians().size()/2f))
+            this.energy++;
+    }
+
+    private void checkIfGroupCanGoAway(){
+        boolean goAway = true;
+
+        for(Pedestrian p : this.group.getPedestrians()){
+            if(p.energy < p.maxEnergy) {
+                goAway = false;
+                break;
+            }
+        }
+
+        if(goAway) {
+            group.setRestingTime(false);
+            updateCurrentGoal();
+        }
+    }
+
+    private void findNearestRestingArea(PVector position){
+        WayPoint closest = this.group.getRestingPoints().get(0);
+
+        for(WayPoint restingPoint : this.group.getRestingPoints()){
+            if(position.dist(restingPoint.getVectorPosition()) < position.dist(closest.getVectorPosition()))
+                closest = restingPoint;
+        }
+
+        if(this.isVisiting)
+            this.goalsList.add(0, closest);
+        else
+            this.goalsList.add(1, closest);
+    }
+
 
     /**
      * Assigns a value of energy to a pedestrian according to their age (the function uses constants MIN_ENERGY_* and

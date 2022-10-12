@@ -15,9 +15,13 @@ public class Group{
     private List<Pedestrian> pedestrians;
     private PVector avgGroupPosition;
     private List<WayPoint> goalsList;
+    private List<WayPoint> restingPoints;
+    private Pedestrian slowest;
     private int groupID;
     private Color color;
     private boolean isMoving;
+    private boolean isRestingTime;
+    private boolean isGoingToRest;
     private Timer startWalkingTimer;
 
 
@@ -27,6 +31,8 @@ public class Group{
         this.pedestrians = pedestrians;
         this.goalsList = goalsList;
         this.isMoving = true;
+        this.isRestingTime = false;
+        this.isGoingToRest = false;
 
         for(Pedestrian p: pedestrians) {
             p.setGoalsList(goalsList);
@@ -58,13 +64,18 @@ public class Group{
 
     public void removeFirstGoal(){
         goalsList.remove(0);
-/*
-        for(Pedestrian p : this.pedestrians)
-            p.checkPathIsCorrect();*/
     }
 
     public Color getColor() {
         return color;
+    }
+
+    public Pedestrian getSlowest() {
+        return slowest;
+    }
+
+    public boolean isRestTime(){
+        return isRestingTime;
     }
 
     public PVector getAvgGroupPosition() {
@@ -109,6 +120,26 @@ public class Group{
 
     public boolean isStartWalking() {
         return startWalking;
+    }
+
+    public List<WayPoint> getRestingPoints() {
+        return restingPoints;
+    }
+
+    public void setRestingTime(boolean restingTime) {
+        isRestingTime = restingTime;
+    }
+
+    public boolean isGoingToRest() {
+        return isGoingToRest;
+    }
+
+    public void setGoingToRest(boolean goingToRest) {
+        isGoingToRest = goingToRest;
+    }
+
+    public void setRestingPoints(List<WayPoint> rp){
+        this.restingPoints = rp;
     }
 
     public String getGroupSimbol(){

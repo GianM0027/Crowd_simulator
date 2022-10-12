@@ -79,7 +79,6 @@ public class ActiveEntitiesPanel extends JTabbedPane {
         setPedestriansTab(Simulation.getInstance().getCrowd());
 
         refresh = new Timer(100, e -> updatePedestriansPanel());
-        refresh.start();
     }
 
     /**
@@ -375,17 +374,25 @@ public class ActiveEntitiesPanel extends JTabbedPane {
     //Update panel without lose information on the position of the JscrollPane
     private void updatePedestriansPanel(){
         if(scrollGroupsPane != null && !scrollGroupsPane.getVerticalScrollBar().getValueIsAdjusting()) {
-            int maximum = scrollGroupsPane.getVerticalScrollBar().getMaximum();
-            int blockIncrement = scrollGroupsPane.getVerticalScrollBar().getBlockIncrement();
-            int visibleAmount = scrollGroupsPane.getVerticalScrollBar().getVisibleAmount();
+            int maximumV = scrollGroupsPane.getVerticalScrollBar().getMaximum();
+            int blockIncrementV = scrollGroupsPane.getVerticalScrollBar().getBlockIncrement();
+            int visibleAmountV = scrollGroupsPane.getVerticalScrollBar().getVisibleAmount();
             int verticalValue = scrollGroupsPane.getVerticalScrollBar().getValue();
+            int maximumH = scrollGroupsPane.getHorizontalScrollBar().getMaximum();
+            int blockIncrementH = scrollGroupsPane.getHorizontalScrollBar().getBlockIncrement();
+            int visibleAmountH = scrollGroupsPane.getHorizontalScrollBar().getVisibleAmount();
+            int horizontalValue = scrollGroupsPane.getHorizontalScrollBar().getValue();
 
             updateFilteredCrowd();
 
-            scrollGroupsPane.getVerticalScrollBar().setMaximum(maximum);
-            scrollGroupsPane.getVerticalScrollBar().setBlockIncrement(blockIncrement);
-            scrollGroupsPane.getVerticalScrollBar().setVisibleAmount(visibleAmount);
+            scrollGroupsPane.getVerticalScrollBar().setMaximum(maximumV);
+            scrollGroupsPane.getVerticalScrollBar().setBlockIncrement(blockIncrementV);
+            scrollGroupsPane.getVerticalScrollBar().setVisibleAmount(visibleAmountV);
             scrollGroupsPane.getVerticalScrollBar().setValue(verticalValue);
+            scrollGroupsPane.getHorizontalScrollBar().setMaximum(maximumH);
+            scrollGroupsPane.getHorizontalScrollBar().setBlockIncrement(blockIncrementH);
+            scrollGroupsPane.getHorizontalScrollBar().setVisibleAmount(visibleAmountH);
+            scrollGroupsPane.getHorizontalScrollBar().setValue(verticalValue);
         }
     }
 
