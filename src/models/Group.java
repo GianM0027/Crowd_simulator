@@ -52,14 +52,18 @@ public class Group{
         return groupID;
     }
     public String getGoalPointstoString(){
-        String result = "{";
 
-        for(int i = 0; i < goalsList.size(); i++) {
-            result += (goalsList.get(i).getWaypointID());
-            result += ", ";
+        if(!goalsList.isEmpty()) {
+            String result = "{";
+
+            for (int i = 0; i < goalsList.size(); i++) {
+                result += (goalsList.get(i).getWaypointID());
+                result += ", ";
+            }
+
+            return result.subSequence(0, result.length() - 2) + "}";
         }
-
-        return result.subSequence(0,result.length()-2) + "}";
+        else return "None";
     }
 
     public void removeFirstGoal(){

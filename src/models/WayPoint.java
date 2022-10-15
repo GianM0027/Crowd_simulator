@@ -4,8 +4,6 @@ import processing.core.PVector;
 import support.EntityBound;
 import support.constants.Constant;
 
-import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
