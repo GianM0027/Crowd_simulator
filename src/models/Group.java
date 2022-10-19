@@ -39,8 +39,16 @@ public class Group{
             p.setGroupID(groupID);
         }
 
-        startWalkingTimer = new Timer(groupID*6000, e -> setStartWalking(true));
+        startWalkingTimer = new Timer(groupID*2000, e -> startWalkingTimers());
+        startWalkingTimer.setRepeats(false);
         startWalkingTimer.start();
+    }
+
+    private void startWalkingTimers(){
+        this.startWalking = true;
+
+        for(Pedestrian p : this.pedestrians)
+            p.getEnergyWasteTimer().start();
     }
 
 
@@ -107,11 +115,6 @@ public class Group{
 
     public boolean hasStartedWalking() {
         return startWalking;
-    }
-
-    public void setStartWalking(boolean startWalking) {
-        this.startWalking = startWalking;
-        startWalkingTimer.stop();
     }
 
     public Timer getStartWalkingTimer() {

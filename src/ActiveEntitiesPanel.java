@@ -78,7 +78,7 @@ public class ActiveEntitiesPanel extends JTabbedPane {
         setFiltersTab();
         setPedestriansTab(Simulation.getInstance().getCrowd());
 
-        refresh = new Timer(100, e -> updatePedestriansPanel());
+        refresh = new Timer(1000, e -> updatePedestriansPanel());
     }
 
     /**

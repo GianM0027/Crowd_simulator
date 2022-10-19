@@ -42,7 +42,7 @@ public class Pedestrian extends Entity {
     private EntityBound entityBounds;
     private Timer energyWasteTimer;
     private Timer waypointTimer;
-
+    private float energyLoss;
 
     public Pedestrian(Point2D position, int groupId, Building building){
         super(position);
@@ -68,12 +68,17 @@ public class Pedestrian extends Entity {
         maxspeed = assignMaxSpeed();
         maxforce = 0.08f; //default 0.1f
         currentGoal = building.getEntrance(); //current goal by default is the entrance of the building
+        //how much energy lose every pedestrian according to their age
+        switch (this.age) {
+            case (Constant.CHILD) -> energyLoss = 0.15f;
+            case (Constant.YOUNG) -> energyLoss = 0.1f;
+            case (Constant.OLD) -> energyLoss -= 0.2f;
+        }
 
         //timer that decreases and increases energy
         energyWasteTimer = new Timer(1000, e -> handleEnergy());
-        energyWasteTimer.start();
 
-        System.out.println("\t\tCurrent goal -> Entrance");
+        //System.out.println("\t\tCurrent goal -> Entrance");
     }
 
 
@@ -101,7 +106,7 @@ public class Pedestrian extends Entity {
         }
 
         //pedestrian intersects a resting area
-        if(currentGoal.isRestingArea() && this.centerPosition.dist(currentGoal.getVectorPosition()) < Constant.GOAL_DISTANCE) {
+        else if(currentGoal.isRestingArea() && this.centerPosition.dist(currentGoal.getVectorPosition()) < Constant.GOAL_DISTANCE) {
             group.setMoving(false);
             this.isVisiting = true;
             group.setRestingTime(true);
@@ -109,11 +114,12 @@ public class Pedestrian extends Entity {
         }
 
         //pedestrian intersects a generic waypoint
-        if(currentGoal.getEntityType() == Constant.GENERIC_WAYPOINT && this.centerPosition.dist(currentGoal.getVectorPosition()) < Constant.GOAL_DISTANCE){
+        else if(currentGoal.getEntityType() == Constant.GENERIC_WAYPOINT && this.centerPosition.dist(currentGoal.getVectorPosition()) < Constant.GOAL_DISTANCE){
             if(group.isMoving()) {
                 group.setMoving(false);
                 this.isVisiting = true;
                 waypointTimer = new Timer(Support.getRandomValue(Constant.MIN_TIME_FOR_WAYPOINT, Constant.MAX_TIME_FOR_WAYPOINT), e -> updateCurrentGoal());
+                waypointTimer.setRepeats(false);
                 waypointTimer.start();
             }
         }
@@ -153,7 +159,7 @@ public class Pedestrian extends Entity {
         //if the pedestrian has collided
         if(this.hasCollided) {
             dirMultiplicator = 3f;
-            cohMultiplicator = 1;
+            cohMultiplicator = 0;
         }
 
         //if this pedestrian is out of the building
@@ -355,11 +361,11 @@ public class Pedestrian extends Entity {
             //if the next goal is in a room (where is not the pedestrian), set the door of that room as the currentGoal
             if(goalsList.get(0).getRoom() != null && !goalsList.get(0).getRoom().getRoomRectangle().intersects(this.getPedestrianShape())){
                 currentGoal = goalsList.get(0).getRoom().getFrontDoorIn();
-                System.out.println(this.getGoalPointstoString() + "\t\tCurrent goal -> Entering a room");
+                //System.out.println(this.getGoalPointstoString() + "\t\tCurrent goal -> Entering a room");
             }
             else {
                 currentGoal = goalsList.get(0);
-                System.out.println(this.getGoalPointstoString() + "\t\tCurrent goal -> " + currentGoal.getWaypointID());
+                //System.out.println(this.getGoalPointstoString() + "\t\tCurrent goal -> " + currentGoal.getWaypointID());
             }
         }
         else{
@@ -397,17 +403,17 @@ public class Pedestrian extends Entity {
                 //Pedestrian in a room and next goal in a place that is not the same room
                 if (pedestrianRoom != null && !pedestrianRoom.equals(p.getCurrentGoal().getRoom())) {
                     p.setCurrentGoal(pedestrianRoom.getFrontDoorOut());
-                    System.out.println(this.getGoalPointstoString() + "\t\tCurrent goal -> Leaving a room");
+                    //System.out.println(this.getGoalPointstoString() + "\t\tCurrent goal -> Leaving a room");
                 }
 
                 //Pedestrian inside the building but not in a room and next goal is in a room
                 else if (pedestrianRoom == null && p.getCurrentGoal().getRoom() != null) {
                     p.setCurrentGoal(p.getCurrentGoal().getRoom().getFrontDoorIn());
-                    System.out.println(this.getGoalPointstoString() + "\t\tCurrent goal -> Entering a room");
+                    //System.out.println(this.getGoalPointstoString() + "\t\tCurrent goal -> Entering a room");
                 }
 
                 else{
-                    System.out.println(this.getGoalPointstoString() + "\t\tCurrent goal -> " + currentGoal.getWaypointID());
+                    //System.out.println(this.getGoalPointstoString() + "\t\tCurrent goal -> " + currentGoal.getWaypointID());
                 }
             }
         }
@@ -417,8 +423,6 @@ public class Pedestrian extends Entity {
                 p.findTheExit();
         }
 
-        if(waypointTimer != null)
-            waypointTimer.stop();
         group.setMoving(true);
         this.isVisiting = false;
     }
@@ -448,29 +452,24 @@ public class Pedestrian extends Entity {
 
     /***********************************      PEDESTRIAN'S CHARACTERISTICS      *********************************/
 
-    private void handleEnergy(){
-        if(this.group.isStartWalking()) {
-            //if the group is not resting
-            if (!this.group.isRestTime()) {
-                switch (this.age) {
-                    case (Constant.CHILD) -> energy -= 0.15;
-                    case (Constant.YOUNG) -> energy -= 0.1;
-                    case (Constant.OLD) -> energy -= 0.2;
-                }
-            }
+    private void handleEnergy() {
+        //if the group is resting
+        if (this.group.isRestTime()) {
+            increaseEnergy();
+            checkIfGroupCanGoAway();
+        }
+
+        //else, if it is not resting
+        else{
+            energy -= energyLoss;
 
             //if one member of the group is tired and the group is not going to rest yet
-            if (energy < Constant.GO_TO_REST && !group.isGoingToRest() && !group.isRestTime()) {
+            if (energy < Constant.GO_TO_REST && !group.isGoingToRest()) {
                 if (this.isVisiting)
                     findNearestRestingArea(this.position);
                 else if (!goalsList.isEmpty())
                     findNearestRestingArea(goalsList.get(0).getVectorPosition());
                 group.setGoingToRest(true);
-            }
-
-            if (this.group.isRestTime()) {
-                increaseEnergy();
-                checkIfGroupCanGoAway();
             }
         }
     }
@@ -575,6 +574,9 @@ public class Pedestrian extends Entity {
 
     public Rectangle2D getPedestrianShape() {
         return pedestrianShape;
+    }
+    public Timer getEnergyWasteTimer(){
+        return energyWasteTimer;
     }
 
     public WayPoint getCurrentGoal() {

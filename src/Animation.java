@@ -22,6 +22,7 @@ public class Animation extends JPanel implements ActionListener {
     private List<WayPoint> wayPoints;
     private Building building;
 
+
     //simulation parameters
     private Timer timer;
 
@@ -35,7 +36,7 @@ public class Animation extends JPanel implements ActionListener {
         this.setPreferredSize(new Dimension(this.parentPanel.getWidth(), this.parentPanel.getHeight()));
         this.building = building;
 
-        timer = new Timer(Constant.ANIMATION_DELAY, this);
+        timer = new Timer(0, this);
         timer.start();
     }
 
@@ -147,7 +148,6 @@ public class Animation extends JPanel implements ActionListener {
             if(pedestrian.getGroup().hasStartedWalking())
                 pedestrian.nextPosition(this, new ArrayList<>(crowd));
         }
-
 
         repaint();
     }
