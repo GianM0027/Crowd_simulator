@@ -123,6 +123,15 @@ public class Pedestrian extends Entity {
                 waypointTimer.start();
             }
         }
+        else{
+            //check if the pedestrian is in a room where there is nothing to do or if they are in the hall but they should not be there
+            for(Room r : building.getRooms())
+                if(r.getRoomRectangle().intersects(this.pedestrianShape)) {
+                    Room pedestrianRoom = r;
+                    if(!pedestrianRoom.hasCurrentWaypoint(this))
+                        currentGoal = r.getFrontDoorOut();
+                }
+        }
     }
 
 
@@ -158,8 +167,8 @@ public class Pedestrian extends Entity {
 
         //if the pedestrian has collided
         if(this.hasCollided) {
-            dirMultiplicator = 3f;
             cohMultiplicator = 0;
+            //dirMultiplicator = 1.5f;
         }
 
         //if this pedestrian is out of the building
@@ -399,6 +408,7 @@ public class Pedestrian extends Entity {
                         pedestrianRoom = p.getCurrentGoal().getRoom();
 
                 p.setCurrentGoal(goalsList.get(0)); //setting next goal as current
+
 
                 //Pedestrian in a room and next goal in a place that is not the same room
                 if (pedestrianRoom != null && !pedestrianRoom.equals(p.getCurrentGoal().getRoom())) {

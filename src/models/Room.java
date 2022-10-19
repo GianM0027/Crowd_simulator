@@ -148,6 +148,13 @@ public class Room{
         return false;
     }
 
+    /**
+     * true if this room contains the current goal of the pedestrian
+     * */
+    public boolean hasCurrentWaypoint(Pedestrian pedestrian){
+        return this.wayPoints.contains(pedestrian.getCurrentGoal()) || this.wayPoints.contains(pedestrian.getGoalsList().get(0));
+    }
+
     public Door getDoor() {
         return door;
     }
