@@ -1,5 +1,6 @@
 package models;
 
+import com.google.gson.annotations.Expose;
 import support.EntityBound;
 import support.Support;
 import support.constants.Constant;
@@ -18,13 +19,19 @@ import java.util.Objects;
  * */
 public class Pedestrian extends Entity {
     private Rectangle2D pedestrianShape;
+    @Expose
     private int gender;
+    @Expose
     private int age;
+    @Expose
     private float energy;
+    @Expose
     private float maxEnergy;
     private Group group;
+    @Expose
     private int groupID;
     private List<WayPoint> goalsList;
+    @Expose
     private WayPoint currentGoal;
     private List<Obstacle> obstacles;
     private Building building;
@@ -34,7 +41,9 @@ public class Pedestrian extends Entity {
 
     /** motion parameters */
     private PVector position;
+
     private PVector centerPosition;
+
     private PVector velocity;
     private PVector accelerationVect;
     float maxforce;    // Maximum steering force
@@ -549,6 +558,13 @@ public class Pedestrian extends Entity {
         return velocity;
     }
 
+
+    /*************************************   getter and setter   **********************************************/
+
+    public String staticValuesToJSon(){
+        return "{ [" + "group: " + groupID + "gender: "+gender+", age: "+ age+ "" + "max energy: " + maxEnergy +"]}";
+    }
+
     public int getGender() {
         return gender;
     }
@@ -564,9 +580,6 @@ public class Pedestrian extends Entity {
             return "Female";
     }
 
-    public EntityBound getEntityBounds() {
-        return entityBounds;
-    }
 
     public String getAgeString() {
         if(this.getAge() == Constant.CHILD)
@@ -600,6 +613,9 @@ public class Pedestrian extends Entity {
     public float getVelocity() {
         return maxspeed;
     }
+    public PVector getCurrentVelocity() {
+        return velocity;
+    }
 
     public float getEnergy() {
         return energy;
@@ -611,6 +627,10 @@ public class Pedestrian extends Entity {
 
     public List<WayPoint> getGoalsList() {
         return goalsList;
+    }
+
+    public PVector getCenterPosition() {
+        return centerPosition;
     }
 
     public Group getGroup() {

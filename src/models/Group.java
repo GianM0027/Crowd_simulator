@@ -1,5 +1,6 @@
 package models;
 
+import com.google.gson.annotations.Expose;
 import processing.core.PVector;
 import javax.swing.*;
 import java.awt.*;
@@ -12,12 +13,14 @@ import java.util.List;
  * */
 public class Group{
     private boolean startWalking;
+    @Expose
+    private int groupID;
+    @Expose
     private List<Pedestrian> pedestrians;
     private PVector avgGroupPosition;
+    @Expose
     private List<WayPoint> goalsList;
     private List<WayPoint> restingPoints;
-    private Pedestrian slowest;
-    private int groupID;
     private Color color;
     private boolean isMoving;
     private boolean isRestingTime;
@@ -82,9 +85,6 @@ public class Group{
         return color;
     }
 
-    public Pedestrian getSlowest() {
-        return slowest;
-    }
 
     public boolean isRestTime(){
         return isRestingTime;

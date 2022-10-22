@@ -1,11 +1,13 @@
 import models.*;
+import support.dataHandler.DataHandler;
 import support.Support;
 import support.constants.Constant;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -30,6 +32,10 @@ public class Simulation extends JPanel{
     private int numberOfObstacles;
     private int numberOfWayPoints;
 
+    //collect data parameters
+    private javax.swing.Timer collectDataTimer;
+    private int timestampNum;
+
 
     public Simulation(){
         this.isRunning = false;
@@ -38,6 +44,7 @@ public class Simulation extends JPanel{
         this.numberOfObstacles = 0;
         this.numberOfPeople = 0;
         this.numberOfWayPoints = 0;
+        this.timestampNum = 0;
     }
 
 
@@ -55,7 +62,7 @@ public class Simulation extends JPanel{
     /**
      *
      * */
-    protected void startSimulation(){
+    protected void startSimulation() throws IOException {
         this.building = new Building(this.getWidth(), this.getHeight());
         createObstacles();
         createWayPoints();
@@ -77,6 +84,22 @@ public class Simulation extends JPanel{
         this.add(animation);
         this.revalidate();
         this.repaint();
+
+        //collect static data from obstacles, groups and waypoints
+        DataHandler dataHandler = new DataHandler();
+        dataHandler.setObstaclesData(obstacles);
+        dataHandler.setWaypointsData(wayPoints);
+        dataHandler.setGroupsStaticData(groups);
+        dataHandler.setPedestriansStaticData(crowd);
+
+        collectDataTimer = new Timer(1000, e -> {
+            try {
+                collectData(dataHandler);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        collectDataTimer.start();
     }
 
     /**
@@ -84,6 +107,8 @@ public class Simulation extends JPanel{
      * */
     protected void pauseSimulation(){
         this.animation.pause();
+        this.collectDataTimer.stop();
+        ActiveEntitiesPanel.getInstance().getRefresh().stop();
 
         for(Group group : this.groups)
             if(!group.isStartWalking())
@@ -95,6 +120,8 @@ public class Simulation extends JPanel{
 
     protected void resumeSimulation(){
         this.animation.resume();
+        this.collectDataTimer.start();
+        ActiveEntitiesPanel.getInstance().getRefresh().start();
 
         for(Group group : this.groups)
             if(!group.isStartWalking())
@@ -123,10 +150,23 @@ public class Simulation extends JPanel{
         for(Pedestrian pedestrian : crowd)
             pedestrian.stopWasteEnergyTimer();
 
+        this.collectDataTimer.stop();
+        ActiveEntitiesPanel.getInstance().getRefresh().stop();
+
         this.setIsRunning(false);
         this.removeAll();
         this.revalidate();
         this.repaint();
+    }
+
+    private void collectData(DataHandler dataHandler) throws IOException {
+        dataHandler.setPedestriansTimestamp(crowd, timestampNum);
+        dataHandler.setGroupsTimestamp(groups, timestampNum);
+        timestampNum++;
+
+        if(timestampNum == 5){
+            dataHandler.simulationDataToJSON();
+        }
     }
 
 

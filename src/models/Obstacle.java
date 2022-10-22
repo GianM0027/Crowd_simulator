@@ -1,5 +1,6 @@
 package models;
 
+import com.google.gson.annotations.Expose;
 import support.EntityBound;
 import support.Support;
 import support.constants.Constant;
@@ -13,6 +14,15 @@ public class Obstacle extends Entity {
     private EntityBound bounds;
     private Shape obstacleShape;
 
+
+    //parameters for data collection:
+    @Expose
+    private float central_position_x;
+    @Expose
+    private float central_position_y;
+    @Expose
+    private float radius;
+
     public Obstacle(Point2D position){
         super(position);
         entityType = Constant.OBSTACLE;
@@ -23,6 +33,10 @@ public class Obstacle extends Entity {
             obstacleShape = new Rectangle2D.Double(position.getX(), position.getY(), Constant.OBSTACLE_WIDTH, Constant.OBSTACLE_HEIGHT);
 
         bounds = new EntityBound(this);
+
+        central_position_x = (float)bounds.getCenter().getX();
+        central_position_y = (float)bounds.getCenter().getY();
+        radius = Constant.OBSTACLE_HEIGHT/2f;
     }
 
     /**

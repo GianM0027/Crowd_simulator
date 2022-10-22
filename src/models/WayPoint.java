@@ -1,5 +1,6 @@
 package models;
 
+import com.google.gson.annotations.Expose;
 import processing.core.PVector;
 import support.EntityBound;
 import support.constants.Constant;
@@ -9,10 +10,21 @@ import java.awt.geom.Rectangle2D;
 
 public class WayPoint extends Entity {
     private EntityBound bounds;
-    private int waypointID;
     private Rectangle2D wayPointShape;
     private Room room;
     private boolean restingArea;
+
+
+    //parameters for data collection:
+    @Expose
+    private float central_position_x;
+    @Expose
+    private float central_position_y;
+    @Expose
+    private float radius;
+    @Expose
+    private int waypointID;
+
 
     public WayPoint(Point2D position){
         super(position);
@@ -21,6 +33,10 @@ public class WayPoint extends Entity {
         waypointID = -1;
         wayPointShape = new Rectangle2D.Double(position.getX(), position.getY(), Constant.WAYPOINT_WIDTH, Constant.WAYPOINT_HEIGHT);
         bounds = new EntityBound(this);
+
+        central_position_x = (float)bounds.getCenter().getX();
+        central_position_y = (float)bounds.getCenter().getY();
+        radius = Constant.WAYPOINT_HEIGHT/2f;
     }
 
     /**
@@ -70,4 +86,5 @@ public class WayPoint extends Entity {
     public void setRoom(Room room){
         this.room = room;
     }
+
 }

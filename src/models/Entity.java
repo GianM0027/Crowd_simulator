@@ -1,5 +1,7 @@
 package models;
 
+import com.google.gson.annotations.Expose;
+
 import java.awt.*;
 import java.awt.geom.Point2D;
 
@@ -9,7 +11,9 @@ import java.awt.geom.Point2D;
 public abstract class Entity {
     protected int entityType;
     protected Color color;
+
     protected Point2D position;
+
 
     public Entity(Point2D position) {
         this.position = position;

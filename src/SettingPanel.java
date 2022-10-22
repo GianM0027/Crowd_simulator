@@ -4,6 +4,7 @@ import support.constants.Constant;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Panel with controls and settings of the simulation
@@ -85,7 +86,13 @@ public class SettingPanel extends JPanel {
         gbd.gridx = 1;
         this.playButton = new JButton(playButton);
         this.playButton.setFocusable(false);
-        this.playButton.addActionListener(e -> startSimulation());
+        this.playButton.addActionListener(e -> {
+            try {
+                startSimulation();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         buttonsPanel.add(this.playButton, gbd);
 
         gbd.gridx = 2;
@@ -227,7 +234,7 @@ public class SettingPanel extends JPanel {
     /**
      * Functionality of the "play button", it start a new simulation or resume an existing one
      * */
-    private void startSimulation(){
+    private void startSimulation() throws IOException {
         //when pressed the play button but there are not valid parameters in the fields nothing happens
         if(Simulation.getInstance().missingParameters())
             return;

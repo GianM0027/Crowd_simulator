@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="core-3.3.7">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/external libraries/core-3.3.7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/core-3.3.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
