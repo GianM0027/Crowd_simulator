@@ -164,7 +164,7 @@ public class Simulation extends JPanel{
         dataHandler.setGroupsTimestamp(groups, timestampNum);
         timestampNum++;
 
-        if(timestampNum == 5){
+        if(timestampNum == 2){
             dataHandler.simulationDataToJSON();
         }
     }

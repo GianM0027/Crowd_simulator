@@ -114,29 +114,29 @@ public class DataHandler{
         //create the file
         writer.println("{");
 
-        writer.println("\"Obstacles\": {");
+        writer.println("\"Obstacles\": [{");
         for(String s : obstaclesData)
             writer.println(s);
-        writer.println("},");
+        writer.println("}],");
 
-        writer.println("\"Waypoints\": {");
+        writer.println("\"Waypoints\": [{");
         for(String s : waypointsData)
             writer.println(s);
-        writer.println("},");
+        writer.println("}],");
 
-        writer.println("\"Groups\": {");
+        writer.println("\"Groups\": [{");
         for(int i = 0; i < groupsStaticData.size(); i++){
             writer.println(groupsStaticData.get(i));
             writeGrupsTimestamp(writer, i);
         }
-        writer.println("},");
+        writer.println("}],");
 
-        writer.println("\"Pedestrians\": {");
+        writer.println("\"Pedestrians\": [{");
         for(int i = 0; i < pedestriansStaticData.size(); i++){
             writer.println(pedestriansStaticData.get(i));
             writePedestrianTimestamp(writer, i);
         }
-        writer.println("}");
+        writer.println("}]");
 
         writer.println("}");
         writer.close();

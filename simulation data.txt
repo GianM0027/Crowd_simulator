@@ -1,76 +1,51 @@
 {
-"Obstacles": {
+"Obstacles": [{
 "obstacle 1":{
-  "central_position_x": 471.0,
-  "central_position_y": 187.0,
+  "central_position_x": 502.0,
+  "central_position_y": 130.0,
   "radius": 6.0
 },
 "obstacle 2":{
-  "central_position_x": 1545.0,
-  "central_position_y": 565.0,
+  "central_position_x": 1120.0,
+  "central_position_y": 461.0,
   "radius": 6.0
 }
-},
-"Waypoints": {
+}],
+"Waypoints": [{
 "waypoint 1":{
-  "central_position_x": 917.0,
-  "central_position_y": 328.0,
+  "central_position_x": 636.0,
+  "central_position_y": 468.0,
   "radius": 3.0,
   "waypointID": 1
 },
 "waypoint 2":{
-  "central_position_x": 1294.0,
-  "central_position_y": 431.0,
+  "central_position_x": 826.0,
+  "central_position_y": 139.0,
   "radius": 3.0,
   "waypointID": 0
 }
-},
-"Groups": {
+}],
+"Groups": [{
 "group 0":{
   "groupID": 0,
   "pedestrians": [
     {
       "gender": 1,
-      "age": 4,
-      "energy": 48.0,
-      "maxEnergy": 48.0,
+      "age": 3,
+      "energy": 41.0,
+      "maxEnergy": 41.0,
       "groupID": 0,
       "currentGoal": {
         "central_position_x": 203.0,
-        "central_position_y": 341.0,
+        "central_position_y": 233.0,
         "radius": 3.0,
         "waypointID": -1
       }
     }
   ],
-  "goalsList": [
-    {
-      "central_position_x": 917.0,
-      "central_position_y": 328.0,
-      "radius": 3.0,
-      "waypointID": 1
-    }
-  ]
+  "goalsList": []
 ,
 "timestamp 0": [
-{
-  "isVisitingAWaypoint": false,
-  "isResting": false,
-  "hasStartedWalking": true,
-  "time": false
-},
-{
-  "isVisitingAWaypoint": false,
-  "isResting": false,
-  "hasStartedWalking": true,
-  "time": false
-},
-{
-  "isVisitingAWaypoint": false,
-  "isResting": false,
-  "hasStartedWalking": true,
-  "time": false
-},
 {
   "isVisitingAWaypoint": false,
   "isResting": false,
@@ -90,13 +65,13 @@
   "pedestrians": [
     {
       "gender": 2,
-      "age": 5,
-      "energy": 33.0,
-      "maxEnergy": 33.0,
+      "age": 4,
+      "energy": 35.0,
+      "maxEnergy": 35.0,
       "groupID": 1,
       "currentGoal": {
         "central_position_x": 203.0,
-        "central_position_y": 341.0,
+        "central_position_y": 233.0,
         "radius": 3.0,
         "waypointID": -1
       }
@@ -116,120 +91,66 @@
   "isResting": false,
   "hasStartedWalking": true,
   "time": false
-},
-{
-  "isVisitingAWaypoint": false,
-  "isResting": false,
-  "hasStartedWalking": true,
-  "time": false
-},
-{
-  "isVisitingAWaypoint": false,
-  "isResting": false,
-  "hasStartedWalking": true,
-  "time": false
-},
-{
-  "isVisitingAWaypoint": false,
-  "isResting": false,
-  "hasStartedWalking": true,
-  "time": false
 }
 ]
 }
-},
-"Pedestrians": {
+}],
+"Pedestrians": [{
 "pedestrian 0":{
   "gender": 1,
-  "age": 4,
-  "energy": 48.0,
-  "maxEnergy": 48.0,
+  "age": 3,
+  "energy": 41.0,
+  "maxEnergy": 41.0,
   "groupID": 0,
   "currentGoal": {
     "central_position_x": 203.0,
-    "central_position_y": 341.0,
+    "central_position_y": 233.0,
     "radius": 3.0,
     "waypointID": -1
   }
 ,
 "timestamp 0": [
 {
-  "central_position_x": 181.20784,
-  "central_position_y": 601.45984,
+  "central_position_x": 116.31728,
+  "central_position_y": 240.06148,
   "currentGoal": -1,
   "time": 0.0
 },
 {
-  "central_position_x": 190.06963,
-  "central_position_y": 498.40317,
+  "central_position_x": 166.17145,
+  "central_position_y": 247.46019,
   "currentGoal": -1,
   "time": 1.0
-},
-{
-  "central_position_x": 190.06963,
-  "central_position_y": 405.14404,
-  "currentGoal": -1,
-  "time": 2.0
-},
-{
-  "central_position_x": 258.43414,
-  "central_position_y": 358.96994,
-  "currentGoal": 1,
-  "time": 3.0
-},
-{
-  "central_position_x": 361.79517,
-  "central_position_y": 353.61362,
-  "currentGoal": 1,
-  "time": 4.0
 }
 ]
 },
 "pedestrian 1":{
   "gender": 2,
-  "age": 5,
-  "energy": 33.0,
-  "maxEnergy": 33.0,
+  "age": 4,
+  "energy": 35.0,
+  "maxEnergy": 35.0,
   "groupID": 1,
   "currentGoal": {
     "central_position_x": 203.0,
-    "central_position_y": 341.0,
+    "central_position_y": 233.0,
     "radius": 3.0,
     "waypointID": -1
   }
 ,
 "timestamp 1": [
 {
-  "central_position_x": 80.0,
-  "central_position_y": 652.0,
+  "central_position_x": 131.0,
+  "central_position_y": 161.0,
   "currentGoal": -1,
   "time": 0.0
 },
 {
-  "central_position_x": 82.23464,
-  "central_position_y": 646.7345,
+  "central_position_x": 135.9021,
+  "central_position_y": 167.2206,
   "currentGoal": -1,
   "time": 1.0
-},
-{
-  "central_position_x": 125.59617,
-  "central_position_y": 544.56146,
-  "currentGoal": -1,
-  "time": 2.0
-},
-{
-  "central_position_x": 175.52454,
-  "central_position_y": 426.91757,
-  "currentGoal": -1,
-  "time": 3.0
-},
-{
-  "central_position_x": 244.8865,
-  "central_position_y": 355.01483,
-  "currentGoal": -1,
-  "time": 4.0
 }
 ]
 }
-}
+}]
 }
