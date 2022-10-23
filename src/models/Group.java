@@ -148,8 +148,4 @@ public class Group{
     public void setRestingPoints(List<WayPoint> rp){
         this.restingPoints = rp;
     }
-
-    public String getGroupSimbol(){
-        return "\u2B1B";
-    }
 }

@@ -8,8 +8,8 @@ public class PedestrianTimestamp {
     private float central_position_x;
     @Expose
     private float central_position_y;
-    //@Expose
-    private float velocity;
+    @Expose
+    private boolean leftTheBuilding;
     @Expose
     private int currentGoal;
     @Expose
@@ -18,7 +18,7 @@ public class PedestrianTimestamp {
     public PedestrianTimestamp(Pedestrian pedestrian, float time){
         this.central_position_x = pedestrian.getCenterPosition().x;
         this.central_position_y = pedestrian.getCenterPosition().y;
-        this.velocity = pedestrian.getCurrentVelocity().mag();
+        this.leftTheBuilding = pedestrian.hasLeftTheBuilding();
         this.currentGoal = pedestrian.getCurrentGoal().getWaypointID();
         this.time = time;
     }

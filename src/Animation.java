@@ -141,11 +141,18 @@ public class Animation extends JPanel implements ActionListener {
     /******************************    Handle pedestrians' movement    *************************************/
     @Override
     public void actionPerformed(ActionEvent e) {
+        boolean simulationCanEnd = true;
 
         for (Pedestrian pedestrian : crowd) {
+            if(!pedestrian.hasLeftTheBuilding())
+                simulationCanEnd = false;
+
             if(pedestrian.getGroup().hasStartedWalking())
                 pedestrian.nextPosition(this, new ArrayList<>(crowd));
         }
+
+        if(simulationCanEnd && !crowd.isEmpty())
+            Simulation.getInstance().stopSimulation();
 
         repaint();
     }

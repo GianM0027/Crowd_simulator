@@ -37,6 +37,7 @@ public class Pedestrian extends Entity {
     private Building building;
     private boolean hasCollided;
     private boolean isVisiting;
+    private boolean leftTheBuilding;
 
 
     /** motion parameters */
@@ -67,6 +68,7 @@ public class Pedestrian extends Entity {
         this.maxEnergy = energy;
         this.hasCollided = false;
         this.isVisiting = false;
+        this.leftTheBuilding = false;
 
         //motion parameters
         this.position = new PVector((float)position.getX(), (float)position.getY());
@@ -177,7 +179,7 @@ public class Pedestrian extends Entity {
         //if the pedestrian has collided
         if(this.hasCollided) {
             cohMultiplicator = 0;
-            //dirMultiplicator = 1.5f;
+            avoidMultiplicator = 0f;
         }
 
         //if this pedestrian is out of the building
@@ -390,9 +392,10 @@ public class Pedestrian extends Entity {
             if(!currentGoal.equals(building.getExit()))
                 findTheExit();
             else {
+                this.leftTheBuilding = true;
                 //go away from the building
                 for (Pedestrian p : this.group.getPedestrians())
-                    p.setCurrentGoal(new WayPoint(new Point2D.Double(building.getExit().getPosition().getX() + 200, building.getExit().getPosition().getY()))); //point outside of the view
+                    p.setCurrentGoal(new WayPoint(new Point2D.Double(building.getExit().getPosition().getX() + 1000, building.getExit().getPosition().getY()))); //point outside of the view
             }
         }
     }
@@ -580,6 +583,9 @@ public class Pedestrian extends Entity {
             return "Female";
     }
 
+    public boolean hasLeftTheBuilding(){
+        return leftTheBuilding;
+    }
 
     public String getAgeString() {
         if(this.getAge() == Constant.CHILD)

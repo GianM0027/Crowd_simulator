@@ -232,7 +232,7 @@ public class SettingPanel extends JPanel {
     }
 
     /**
-     * Functionality of the "play button", it start a new simulation or resume an existing one
+     * Functionalities of the "play button", it starts a new simulation or resume an existing one
      * */
     private void startSimulation() throws IOException {
         //when pressed the play button but there are not valid parameters in the fields nothing happens
@@ -241,7 +241,6 @@ public class SettingPanel extends JPanel {
 
         //if it does not exist a simulation yet, you create a new one
         if(!Simulation.getInstance().isRunning()) {
-            Simulation.getInstance().setIsRunning(true);
             Simulation.getInstance().startSimulation();
             enableStopPauseButtons();
         }

@@ -123,16 +123,16 @@ public class Room{
         g2D.draw(doorWallRight);
     }
 
-    public boolean distanceIsEnough(Entity entity){
+    public boolean distanceIsEnough(Entity entity, int distance){
         EntityBound entityBounds = new EntityBound(entity);
 
-        if (leftWall.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+        if (leftWall.ptLineDist(entityBounds.getCenter()) < distance)
             return false;
-        if (rightWall.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+        if (rightWall.ptLineDist(entityBounds.getCenter()) < distance)
             return false;
-        if (doorWallLeft.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+        if (doorWallLeft.ptLineDist(entityBounds.getCenter()) < distance)
             return false;
-        if (doorWallRight.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+        if (doorWallRight.ptLineDist(entityBounds.getCenter()) < distance)
             return false;
 
         return true;

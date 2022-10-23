@@ -129,23 +129,24 @@ public class Building {
      * */
     public boolean distanceIsEnough(Entity entity){
         EntityBound entityBounds = new EntityBound(entity);
+        int distance = Constant.GOAL_DISTANCE*2 + Constant.PEDESTRIAN_HEIGHT;
 
-            if (entranceUpWall.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+            if (entranceUpWall.ptLineDist(entityBounds.getCenter()) < distance)
                 return false;
-            if (entranceBottomWall.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+            if (entranceBottomWall.ptLineDist(entityBounds.getCenter()) < distance)
                 return false;
-            if (exitUpWall.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+            if (exitUpWall.ptLineDist(entityBounds.getCenter()) < distance)
                 return false;
-            if (exitBottomWall.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+            if (exitBottomWall.ptLineDist(entityBounds.getCenter()) < distance)
                 return false;
-            if (upWall.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+            if (upWall.ptLineDist(entityBounds.getCenter()) < distance)
                 return false;
-            if (bottomWall.ptLineDist(entityBounds.getCenter()) < Constant.GOAL_DISTANCE + Constant.PEDESTRIAN_HEIGHT)
+            if (bottomWall.ptLineDist(entityBounds.getCenter()) < distance)
                 return false;
 
 
         for(Room room: this.rooms) {
-            if(!room.distanceIsEnough(entity))
+            if(!room.distanceIsEnough(entity, distance))
                 return false;
         }
         return true;

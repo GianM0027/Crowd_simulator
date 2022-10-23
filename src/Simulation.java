@@ -63,6 +63,7 @@ public class Simulation extends JPanel{
      *
      * */
     protected void startSimulation() throws IOException {
+        this.isRunning = true;
         this.building = new Building(this.getWidth(), this.getHeight());
         createObstacles();
         createWayPoints();
@@ -80,7 +81,7 @@ public class Simulation extends JPanel{
         this.removeAll();
         this.revalidate();
         this.repaint();
-        animation = new Animation(this, this.crowd, this.obstacles, this.wayPoints, this.groups, this.building);
+        this.animation = new Animation(this, this.crowd, this.obstacles, this.wayPoints, this.groups, this.building);
         this.add(animation);
         this.revalidate();
         this.repaint();
@@ -150,22 +151,24 @@ public class Simulation extends JPanel{
         for(Pedestrian pedestrian : crowd)
             pedestrian.stopWasteEnergyTimer();
 
-        this.collectDataTimer.stop();
         ActiveEntitiesPanel.getInstance().getRefresh().stop();
 
-        this.setIsRunning(false);
+        this.isRunning = false;
         this.removeAll();
         this.revalidate();
         this.repaint();
     }
 
     private void collectData(DataHandler dataHandler) throws IOException {
-        dataHandler.setPedestriansTimestamp(crowd, timestampNum);
-        dataHandler.setGroupsTimestamp(groups, timestampNum);
-        timestampNum++;
-
-        if(timestampNum == 2){
+        //if the simulation ends, set the file with all the data
+        if(!this.isRunning){
             dataHandler.simulationDataToJSON();
+            this.collectDataTimer.stop();
+        }
+        else{
+            dataHandler.setPedestriansTimestamp(crowd, timestampNum);
+            dataHandler.setGroupsTimestamp(groups, timestampNum);
+            timestampNum++;
         }
     }
 
@@ -187,7 +190,7 @@ public class Simulation extends JPanel{
                                 this.getHeight() - Constant.BUILDING_DISTANCE_UP_DOWN - Constant.BUILDING_STROKE - Constant.OBSTACLE_WIDTH - 2 * Constant.BOUNDS_DISTANCE - 1));
 
                 o = new Obstacle(point);
-            }while (!building.distanceIsEnough(o) || building.checkCollisionOnDoorFreeSpace(o));
+            }while (!building.distanceIsEnough(o) || building.checkCollisionOnDoorFreeSpace(o) || checkCollisionOnOtherEntities(o));
 
             this.obstacles.add(i, o);
         }
@@ -211,7 +214,7 @@ public class Simulation extends JPanel{
 
                 w = new WayPoint(point);
                 w.setWaypointID(i);
-            }while (!building.distanceIsEnough(w) || building.checkCollisionOnDoorFreeSpace(w));
+            }while (!building.distanceIsEnough(w) || building.checkCollisionOnDoorFreeSpace(w) || checkCollisionOnOtherEntities(w));
 
             this.wayPoints.add(i, w);
         }
@@ -333,6 +336,24 @@ public class Simulation extends JPanel{
         return goalsList;
     }
 
+    private boolean checkCollisionOnOtherEntities(Obstacle o){
+        for(Obstacle obstacle : obstacles)
+            if(o.getEntityBounds().getBoundsRectangle().intersects(obstacle.getEntityBounds().getBoundsRectangle()))
+                return true;
+
+        return false;
+    }
+
+    private boolean checkCollisionOnOtherEntities(WayPoint w){
+        for(Obstacle obstacle : obstacles)
+            if(w.getEntityBounds().getBoundsRectangle().intersects(obstacle.getEntityBounds().getBoundsRectangle()))
+                return true;
+        for(WayPoint wayPoint : wayPoints)
+            if(w.getEntityBounds().getBoundsRectangle().intersects(wayPoint.getEntityBounds().getBoundsRectangle()))
+                return true;
+
+        return false;
+    }
 
 
     /***************************************    ACCESSORS    *****************************************/
