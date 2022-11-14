@@ -1,248 +1,138 @@
 {
 "Obstacles": [{
 "obstacle 1":{
-  "central_position_x": 230.0,
-  "central_position_y": 449.0,
+  "central_position_x": 267.0,
+  "central_position_y": 382.0,
   "radius": 6.0
 },
 "obstacle 2":{
-  "central_position_x": 244.0,
-  "central_position_y": 380.0,
+  "central_position_x": 311.0,
+  "central_position_y": 359.0,
   "radius": 6.0
 },
 "obstacle 3":{
-  "central_position_x": 262.0,
-  "central_position_y": 228.0,
+  "central_position_x": 407.0,
+  "central_position_y": 129.0,
   "radius": 6.0
 },
 "obstacle 4":{
-  "central_position_x": 284.0,
-  "central_position_y": 385.0,
-  "radius": 6.0
-},
-"obstacle 5":{
-  "central_position_x": 343.0,
-  "central_position_y": 155.0,
-  "radius": 6.0
-},
-"obstacle 6":{
-  "central_position_x": 411.0,
-  "central_position_y": 421.0,
-  "radius": 6.0
-},
-"obstacle 7":{
-  "central_position_x": 492.0,
-  "central_position_y": 422.0,
-  "radius": 6.0
-},
-"obstacle 8":{
-  "central_position_x": 563.0,
-  "central_position_y": 95.0,
-  "radius": 6.0
-},
-"obstacle 9":{
-  "central_position_x": 578.0,
-  "central_position_y": 401.0,
-  "radius": 6.0
-},
-"obstacle 10":{
-  "central_position_x": 602.0,
-  "central_position_y": 86.0,
-  "radius": 6.0
-},
-"obstacle 11":{
-  "central_position_x": 633.0,
-  "central_position_y": 112.0,
-  "radius": 6.0
-},
-"obstacle 12":{
-  "central_position_x": 753.0,
-  "central_position_y": 54.0,
-  "radius": 6.0
-},
-"obstacle 13":{
-  "central_position_x": 824.0,
-  "central_position_y": 107.0,
-  "radius": 6.0
-},
-"obstacle 14":{
-  "central_position_x": 917.0,
-  "central_position_y": 217.0,
-  "radius": 6.0
-},
-"obstacle 15":{
-  "central_position_x": 971.0,
-  "central_position_y": 144.0,
-  "radius": 6.0
-},
-"obstacle 16":{
-  "central_position_x": 977.0,
-  "central_position_y": 361.0,
-  "radius": 6.0
-},
-"obstacle 17":{
-  "central_position_x": 1060.0,
-  "central_position_y": 148.0,
-  "radius": 6.0
-},
-"obstacle 18":{
-  "central_position_x": 1098.0,
+  "central_position_x": 592.0,
   "central_position_y": 213.0,
   "radius": 6.0
 },
-"obstacle 19":{
-  "central_position_x": 1126.0,
-  "central_position_y": 404.0,
+"obstacle 5":{
+  "central_position_x": 807.0,
+  "central_position_y": 39.0,
   "radius": 6.0
 },
-"obstacle 20":{
-  "central_position_x": 1158.0,
-  "central_position_y": 441.0,
+"obstacle 6":{
+  "central_position_x": 912.0,
+  "central_position_y": 53.0,
   "radius": 6.0
 },
-"obstacle 21":{
-  "central_position_x": 1167.0,
-  "central_position_y": 62.0,
+"obstacle 7":{
+  "central_position_x": 925.0,
+  "central_position_y": 107.0,
   "radius": 6.0
 },
-"obstacle 22":{
-  "central_position_x": 1173.0,
-  "central_position_y": 153.0,
+"obstacle 8":{
+  "central_position_x": 1052.0,
+  "central_position_y": 309.0,
+  "radius": 6.0
+},
+"obstacle 9":{
+  "central_position_x": 1061.0,
+  "central_position_y": 224.0,
+  "radius": 6.0
+},
+"obstacle 10":{
+  "central_position_x": 1116.0,
+  "central_position_y": 424.0,
+  "radius": 6.0
+},
+"obstacle 11":{
+  "central_position_x": 1143.0,
+  "central_position_y": 363.0,
+  "radius": 6.0
+},
+"obstacle 12":{
+  "central_position_x": 1172.0,
+  "central_position_y": 370.0,
   "radius": 6.0
 }
 }],
 "Waypoints": [{
 "waypoint 1":{
-  "central_position_x": 252.0,
-  "central_position_y": 137.0,
-  "radius": 3.0,
-  "waypointID": 12
-},
-"waypoint 2":{
-  "central_position_x": 275.0,
-  "central_position_y": 51.0,
-  "radius": 3.0,
-  "waypointID": 16
-},
-"waypoint 3":{
-  "central_position_x": 315.0,
-  "central_position_y": 212.0,
-  "radius": 3.0,
-  "waypointID": 10
-},
-"waypoint 4":{
-  "central_position_x": 316.0,
-  "central_position_y": 36.0,
-  "radius": 3.0,
-  "waypointID": 2
-},
-"waypoint 5":{
-  "central_position_x": 322.0,
-  "central_position_y": 426.0,
-  "radius": 3.0,
-  "waypointID": 14
-},
-"waypoint 6":{
-  "central_position_x": 331.0,
-  "central_position_y": 235.0,
-  "radius": 3.0,
-  "waypointID": 8
-},
-"waypoint 7":{
-  "central_position_x": 392.0,
-  "central_position_y": 147.0,
-  "radius": 3.0,
-  "waypointID": 7
-},
-"waypoint 8":{
-  "central_position_x": 414.0,
-  "central_position_y": 129.0,
-  "radius": 3.0,
-  "waypointID": 9
-},
-"waypoint 9":{
-  "central_position_x": 488.0,
-  "central_position_y": 367.0,
-  "radius": 3.0,
-  "waypointID": 13
-},
-"waypoint 10":{
-  "central_position_x": 582.0,
-  "central_position_y": 202.0,
-  "radius": 3.0,
-  "waypointID": 21
-},
-"waypoint 11":{
-  "central_position_x": 592.0,
-  "central_position_y": 108.0,
-  "radius": 3.0,
-  "waypointID": 0
-},
-"waypoint 12":{
-  "central_position_x": 614.0,
-  "central_position_y": 480.0,
-  "radius": 3.0,
-  "waypointID": 15
-},
-"waypoint 13":{
-  "central_position_x": 640.0,
-  "central_position_y": 442.0,
-  "radius": 3.0,
-  "waypointID": 3
-},
-"waypoint 14":{
-  "central_position_x": 724.0,
-  "central_position_y": 457.0,
-  "radius": 3.0,
-  "waypointID": 6
-},
-"waypoint 15":{
-  "central_position_x": 725.0,
-  "central_position_y": 434.0,
-  "radius": 3.0,
-  "waypointID": 1
-},
-"waypoint 16":{
-  "central_position_x": 753.0,
-  "central_position_y": 203.0,
-  "radius": 3.0,
-  "waypointID": 19
-},
-"waypoint 17":{
-  "central_position_x": 838.0,
-  "central_position_y": 229.0,
-  "radius": 3.0,
-  "waypointID": 20
-},
-"waypoint 18":{
-  "central_position_x": 969.0,
-  "central_position_y": 395.0,
+  "central_position_x": 233.0,
+  "central_position_y": 397.0,
   "radius": 3.0,
   "waypointID": 11
 },
-"waypoint 19":{
-  "central_position_x": 975.0,
-  "central_position_y": 45.0,
+"waypoint 2":{
+  "central_position_x": 264.0,
+  "central_position_y": 90.0,
   "radius": 3.0,
   "waypointID": 5
 },
-"waypoint 20":{
-  "central_position_x": 1066.0,
-  "central_position_y": 469.0,
+"waypoint 3":{
+  "central_position_x": 297.0,
+  "central_position_y": 123.0,
   "radius": 3.0,
-  "waypointID": 17
+  "waypointID": 7
 },
-"waypoint 21":{
-  "central_position_x": 1086.0,
-  "central_position_y": 445.0,
+"waypoint 4":{
+  "central_position_x": 425.0,
+  "central_position_y": 150.0,
   "radius": 3.0,
-  "waypointID": 18
+  "waypointID": 3
 },
-"waypoint 22":{
-  "central_position_x": 1097.0,
-  "central_position_y": 424.0,
+"waypoint 5":{
+  "central_position_x": 493.0,
+  "central_position_y": 66.0,
+  "radius": 3.0,
+  "waypointID": 10
+},
+"waypoint 6":{
+  "central_position_x": 601.0,
+  "central_position_y": 34.0,
   "radius": 3.0,
   "waypointID": 4
+},
+"waypoint 7":{
+  "central_position_x": 609.0,
+  "central_position_y": 425.0,
+  "radius": 3.0,
+  "waypointID": 8
+},
+"waypoint 8":{
+  "central_position_x": 905.0,
+  "central_position_y": 213.0,
+  "radius": 3.0,
+  "waypointID": 2
+},
+"waypoint 9":{
+  "central_position_x": 981.0,
+  "central_position_y": 66.0,
+  "radius": 3.0,
+  "waypointID": 6
+},
+"waypoint 10":{
+  "central_position_x": 1015.0,
+  "central_position_y": 135.0,
+  "radius": 3.0,
+  "waypointID": 0
+},
+"waypoint 11":{
+  "central_position_x": 1078.0,
+  "central_position_y": 403.0,
+  "radius": 3.0,
+  "waypointID": 1
+},
+"waypoint 12":{
+  "central_position_x": 1089.0,
+  "central_position_y": 94.0,
+  "radius": 3.0,
+  "waypointID": 9
 }
 }],
 "Groups": [{
@@ -251,22 +141,9 @@
   "pedestrians": [
     {
       "gender": 1,
-      "age": 5,
-      "energy": 28.0,
-      "maxEnergy": 28.0,
-      "groupID": 0,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
-      "gender": 2,
       "age": 4,
-      "energy": 36.0,
-      "maxEnergy": 36.0,
+      "energy": 37.0,
+      "maxEnergy": 37.0,
       "groupID": 0,
       "currentGoal": {
         "central_position_x": 203.0,
@@ -278,8 +155,8 @@
     {
       "gender": 1,
       "age": 3,
-      "energy": 49.0,
-      "maxEnergy": 49.0,
+      "energy": 46.0,
+      "maxEnergy": 46.0,
       "groupID": 0,
       "currentGoal": {
         "central_position_x": 203.0,
@@ -291,73 +168,8 @@
     {
       "gender": 2,
       "age": 5,
-      "energy": 21.0,
-      "maxEnergy": 21.0,
-      "groupID": 0,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
-      "gender": 2,
-      "age": 3,
-      "energy": 50.0,
-      "maxEnergy": 50.0,
-      "groupID": 0,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
-      "gender": 1,
-      "age": 5,
-      "energy": 36.0,
-      "maxEnergy": 36.0,
-      "groupID": 0,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
-      "gender": 1,
-      "age": 3,
-      "energy": 42.0,
-      "maxEnergy": 42.0,
-      "groupID": 0,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
-      "gender": 2,
-      "age": 5,
-      "energy": 29.0,
-      "maxEnergy": 29.0,
-      "groupID": 0,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
-      "gender": 2,
-      "age": 3,
-      "energy": 47.0,
-      "maxEnergy": 47.0,
+      "energy": 27.0,
+      "maxEnergy": 27.0,
       "groupID": 0,
       "currentGoal": {
         "central_position_x": 203.0,
@@ -369,58 +181,22 @@
   ],
   "goalsList": [
     {
-      "central_position_x": 275.0,
-      "central_position_y": 51.0,
-      "radius": 3.0,
-      "waypointID": 16
-    },
-    {
-      "central_position_x": 331.0,
-      "central_position_y": 235.0,
-      "radius": 3.0,
-      "waypointID": 8
-    },
-    {
-      "central_position_x": 414.0,
-      "central_position_y": 129.0,
-      "radius": 3.0,
-      "waypointID": 9
-    },
-    {
-      "central_position_x": 488.0,
-      "central_position_y": 367.0,
-      "radius": 3.0,
-      "waypointID": 13
-    },
-    {
-      "central_position_x": 640.0,
-      "central_position_y": 442.0,
+      "central_position_x": 425.0,
+      "central_position_y": 150.0,
       "radius": 3.0,
       "waypointID": 3
     },
     {
-      "central_position_x": 725.0,
-      "central_position_y": 434.0,
+      "central_position_x": 609.0,
+      "central_position_y": 425.0,
       "radius": 3.0,
-      "waypointID": 1
+      "waypointID": 8
     },
     {
-      "central_position_x": 753.0,
-      "central_position_y": 203.0,
+      "central_position_x": 981.0,
+      "central_position_y": 66.0,
       "radius": 3.0,
-      "waypointID": 19
-    },
-    {
-      "central_position_x": 1066.0,
-      "central_position_y": 469.0,
-      "radius": 3.0,
-      "waypointID": 17
-    },
-    {
-      "central_position_x": 1097.0,
-      "central_position_y": 424.0,
-      "radius": 3.0,
-      "waypointID": 4
+      "waypointID": 6
     }
   ]
 ,
@@ -430,14 +206,14 @@
   "isVisitingAWaypoint": false,
   "isResting": false,
   "hasStartedWalking": true,
-  "time": 2.0
+  "time": 0.0
 },
 {
   "leftTheBuilding": false,
   "isVisitingAWaypoint": false,
   "isResting": false,
   "hasStartedWalking": true,
-  "time": 3.0
+  "time": 1.0
 }
 ]
 },
@@ -445,127 +221,10 @@
   "groupID": 1,
   "pedestrians": [
     {
-      "gender": 2,
-      "age": 5,
-      "energy": 40.0,
-      "maxEnergy": 40.0,
-      "groupID": 1,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
       "gender": 1,
-      "age": 5,
-      "energy": 23.0,
-      "maxEnergy": 23.0,
-      "groupID": 1,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
-      "gender": 2,
-      "age": 4,
-      "energy": 33.0,
-      "maxEnergy": 33.0,
-      "groupID": 1,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
-      "gender": 1,
-      "age": 4,
-      "energy": 33.0,
-      "maxEnergy": 33.0,
-      "groupID": 1,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
-      "gender": 1,
-      "age": 5,
-      "energy": 26.0,
-      "maxEnergy": 26.0,
-      "groupID": 1,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
-      "gender": 2,
-      "age": 4,
-      "energy": 50.0,
-      "maxEnergy": 50.0,
-      "groupID": 1,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
-      "gender": 2,
       "age": 3,
-      "energy": 43.0,
-      "maxEnergy": 43.0,
-      "groupID": 1,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
-      "gender": 2,
-      "age": 3,
-      "energy": 49.0,
-      "maxEnergy": 49.0,
-      "groupID": 1,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
-      "gender": 2,
-      "age": 4,
-      "energy": 31.0,
-      "maxEnergy": 31.0,
-      "groupID": 1,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
-      "gender": 1,
-      "age": 4,
-      "energy": 40.0,
-      "maxEnergy": 40.0,
+      "energy": 47.0,
+      "maxEnergy": 47.0,
       "groupID": 1,
       "currentGoal": {
         "central_position_x": 203.0,
@@ -577,22 +236,10 @@
   ],
   "goalsList": [
     {
-      "central_position_x": 252.0,
-      "central_position_y": 137.0,
+      "central_position_x": 1078.0,
+      "central_position_y": 403.0,
       "radius": 3.0,
-      "waypointID": 12
-    },
-    {
-      "central_position_x": 640.0,
-      "central_position_y": 442.0,
-      "radius": 3.0,
-      "waypointID": 3
-    },
-    {
-      "central_position_x": 1086.0,
-      "central_position_y": 445.0,
-      "radius": 3.0,
-      "waypointID": 18
+      "waypointID": 1
     }
   ]
 ,
@@ -602,14 +249,14 @@
   "isVisitingAWaypoint": false,
   "isResting": false,
   "hasStartedWalking": false,
-  "time": 2.0
+  "time": 0.0
 },
 {
   "leftTheBuilding": false,
   "isVisitingAWaypoint": false,
   "isResting": false,
   "hasStartedWalking": true,
-  "time": 3.0
+  "time": 1.0
 }
 ]
 },
@@ -618,35 +265,9 @@
   "pedestrians": [
     {
       "gender": 1,
-      "age": 4,
-      "energy": 34.0,
-      "maxEnergy": 34.0,
-      "groupID": 2,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
-      "gender": 1,
-      "age": 4,
-      "energy": 33.0,
-      "maxEnergy": 33.0,
-      "groupID": 2,
-      "currentGoal": {
-        "central_position_x": 203.0,
-        "central_position_y": 233.0,
-        "radius": 3.0,
-        "waypointID": -1
-      }
-    },
-    {
-      "gender": 1,
-      "age": 4,
-      "energy": 33.0,
-      "maxEnergy": 33.0,
+      "age": 3,
+      "energy": 50.0,
+      "maxEnergy": 50.0,
       "groupID": 2,
       "currentGoal": {
         "central_position_x": 203.0,
@@ -658,22 +279,22 @@
   ],
   "goalsList": [
     {
-      "central_position_x": 322.0,
-      "central_position_y": 426.0,
+      "central_position_x": 601.0,
+      "central_position_y": 34.0,
       "radius": 3.0,
-      "waypointID": 14
+      "waypointID": 4
     },
     {
-      "central_position_x": 640.0,
-      "central_position_y": 442.0,
+      "central_position_x": 1078.0,
+      "central_position_y": 403.0,
       "radius": 3.0,
-      "waypointID": 3
+      "waypointID": 1
     },
     {
-      "central_position_x": 969.0,
-      "central_position_y": 395.0,
+      "central_position_x": 1089.0,
+      "central_position_y": 94.0,
       "radius": 3.0,
-      "waypointID": 11
+      "waypointID": 9
     }
   ]
 ,
@@ -683,14 +304,201 @@
   "isVisitingAWaypoint": false,
   "isResting": false,
   "hasStartedWalking": false,
-  "time": 2.0
+  "time": 0.0
 },
 {
   "leftTheBuilding": false,
   "isVisitingAWaypoint": false,
   "isResting": false,
   "hasStartedWalking": false,
-  "time": 3.0
+  "time": 1.0
+}
+]
+},
+"group 3":{
+  "groupID": 3,
+  "pedestrians": [
+    {
+      "gender": 1,
+      "age": 5,
+      "energy": 26.0,
+      "maxEnergy": 26.0,
+      "groupID": 3,
+      "currentGoal": {
+        "central_position_x": 203.0,
+        "central_position_y": 233.0,
+        "radius": 3.0,
+        "waypointID": -1
+      }
+    },
+    {
+      "gender": 1,
+      "age": 4,
+      "energy": 33.0,
+      "maxEnergy": 33.0,
+      "groupID": 3,
+      "currentGoal": {
+        "central_position_x": 203.0,
+        "central_position_y": 233.0,
+        "radius": 3.0,
+        "waypointID": -1
+      }
+    },
+    {
+      "gender": 1,
+      "age": 4,
+      "energy": 40.0,
+      "maxEnergy": 40.0,
+      "groupID": 3,
+      "currentGoal": {
+        "central_position_x": 203.0,
+        "central_position_y": 233.0,
+        "radius": 3.0,
+        "waypointID": -1
+      }
+    },
+    {
+      "gender": 2,
+      "age": 5,
+      "energy": 35.0,
+      "maxEnergy": 35.0,
+      "groupID": 3,
+      "currentGoal": {
+        "central_position_x": 203.0,
+        "central_position_y": 233.0,
+        "radius": 3.0,
+        "waypointID": -1
+      }
+    }
+  ],
+  "goalsList": [
+    {
+      "central_position_x": 425.0,
+      "central_position_y": 150.0,
+      "radius": 3.0,
+      "waypointID": 3
+    },
+    {
+      "central_position_x": 601.0,
+      "central_position_y": 34.0,
+      "radius": 3.0,
+      "waypointID": 4
+    },
+    {
+      "central_position_x": 1078.0,
+      "central_position_y": 403.0,
+      "radius": 3.0,
+      "waypointID": 1
+    }
+  ]
+,
+"timestamp 3": [
+{
+  "leftTheBuilding": false,
+  "isVisitingAWaypoint": false,
+  "isResting": false,
+  "hasStartedWalking": false,
+  "time": 0.0
+},
+{
+  "leftTheBuilding": false,
+  "isVisitingAWaypoint": false,
+  "isResting": false,
+  "hasStartedWalking": false,
+  "time": 1.0
+}
+]
+},
+"group 4":{
+  "groupID": 4,
+  "pedestrians": [
+    {
+      "gender": 2,
+      "age": 5,
+      "energy": 21.0,
+      "maxEnergy": 21.0,
+      "groupID": 4,
+      "currentGoal": {
+        "central_position_x": 203.0,
+        "central_position_y": 233.0,
+        "radius": 3.0,
+        "waypointID": -1
+      }
+    },
+    {
+      "gender": 2,
+      "age": 5,
+      "energy": 22.0,
+      "maxEnergy": 22.0,
+      "groupID": 4,
+      "currentGoal": {
+        "central_position_x": 203.0,
+        "central_position_y": 233.0,
+        "radius": 3.0,
+        "waypointID": -1
+      }
+    },
+    {
+      "gender": 1,
+      "age": 5,
+      "energy": 22.0,
+      "maxEnergy": 22.0,
+      "groupID": 4,
+      "currentGoal": {
+        "central_position_x": 203.0,
+        "central_position_y": 233.0,
+        "radius": 3.0,
+        "waypointID": -1
+      }
+    }
+  ],
+  "goalsList": [
+    {
+      "central_position_x": 233.0,
+      "central_position_y": 397.0,
+      "radius": 3.0,
+      "waypointID": 11
+    },
+    {
+      "central_position_x": 425.0,
+      "central_position_y": 150.0,
+      "radius": 3.0,
+      "waypointID": 3
+    },
+    {
+      "central_position_x": 609.0,
+      "central_position_y": 425.0,
+      "radius": 3.0,
+      "waypointID": 8
+    },
+    {
+      "central_position_x": 905.0,
+      "central_position_y": 213.0,
+      "radius": 3.0,
+      "waypointID": 2
+    },
+    {
+      "central_position_x": 981.0,
+      "central_position_y": 66.0,
+      "radius": 3.0,
+      "waypointID": 6
+    }
+  ]
+,
+"timestamp 4": [
+{
+  "leftTheBuilding": false,
+  "isVisitingAWaypoint": false,
+  "isResting": false,
+  "hasStartedWalking": false,
+  "time": 0.0
+},
+{
+  "leftTheBuilding": false,
+  "isVisitingAWaypoint": false,
+  "isResting": false,
+  "hasStartedWalking": false,
+  "time": 1.0
 }
 ]
 }
@@ -698,9 +506,9 @@
 "Pedestrians": [{
 "pedestrian 0":{
   "gender": 1,
-  "age": 5,
-  "energy": 28.0,
-  "maxEnergy": 28.0,
+  "age": 4,
+  "energy": 37.0,
+  "maxEnergy": 37.0,
   "groupID": 0,
   "currentGoal": {
     "central_position_x": 203.0,
@@ -711,26 +519,26 @@
 ,
 "timestamp 0": [
 {
-  "central_position_x": 58.365925,
-  "central_position_y": 204.4846,
+  "central_position_x": 156.57579,
+  "central_position_y": 143.28827,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 2.0
+  "time": 0.0
 },
 {
-  "central_position_x": 95.35529,
-  "central_position_y": 199.78668,
+  "central_position_x": 142.08295,
+  "central_position_y": 195.28392,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 3.0
+  "time": 1.0
 }
 ]
 },
 "pedestrian 1":{
-  "gender": 2,
-  "age": 4,
-  "energy": 36.0,
-  "maxEnergy": 36.0,
+  "gender": 1,
+  "age": 3,
+  "energy": 46.0,
+  "maxEnergy": 46.0,
   "groupID": 0,
   "currentGoal": {
     "central_position_x": 203.0,
@@ -741,26 +549,26 @@
 ,
 "timestamp 1": [
 {
-  "central_position_x": 87.167885,
-  "central_position_y": 185.21713,
+  "central_position_x": 123.02402,
+  "central_position_y": 256.9472,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 2.0
+  "time": 0.0
 },
 {
-  "central_position_x": 110.57118,
-  "central_position_y": 208.17812,
+  "central_position_x": 135.58978,
+  "central_position_y": 258.5003,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 3.0
+  "time": 1.0
 }
 ]
 },
 "pedestrian 2":{
-  "gender": 1,
-  "age": 3,
-  "energy": 49.0,
-  "maxEnergy": 49.0,
+  "gender": 2,
+  "age": 5,
+  "energy": 27.0,
+  "maxEnergy": 27.0,
   "groupID": 0,
   "currentGoal": {
     "central_position_x": 203.0,
@@ -771,27 +579,27 @@
 ,
 "timestamp 2": [
 {
-  "central_position_x": 42.21996,
-  "central_position_y": 348.19803,
+  "central_position_x": 74.71904,
+  "central_position_y": 382.97778,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 2.0
+  "time": 0.0
 },
 {
-  "central_position_x": 58.992874,
-  "central_position_y": 310.59573,
+  "central_position_x": 100.496765,
+  "central_position_y": 348.58423,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 3.0
+  "time": 1.0
 }
 ]
 },
 "pedestrian 3":{
-  "gender": 2,
-  "age": 5,
-  "energy": 21.0,
-  "maxEnergy": 21.0,
-  "groupID": 0,
+  "gender": 1,
+  "age": 3,
+  "energy": 47.0,
+  "maxEnergy": 47.0,
+  "groupID": 1,
   "currentGoal": {
     "central_position_x": 203.0,
     "central_position_y": 233.0,
@@ -801,27 +609,27 @@
 ,
 "timestamp 3": [
 {
-  "central_position_x": 133.98898,
-  "central_position_y": 341.1893,
+  "central_position_x": 131.0,
+  "central_position_y": 410.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 2.0
+  "time": 0.0
 },
 {
-  "central_position_x": 122.928665,
-  "central_position_y": 284.01877,
+  "central_position_x": 131.436,
+  "central_position_y": 409.0558,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 3.0
+  "time": 1.0
 }
 ]
 },
 "pedestrian 4":{
-  "gender": 2,
+  "gender": 1,
   "age": 3,
   "energy": 50.0,
   "maxEnergy": 50.0,
-  "groupID": 0,
+  "groupID": 2,
   "currentGoal": {
     "central_position_x": 203.0,
     "central_position_y": 233.0,
@@ -831,27 +639,27 @@
 ,
 "timestamp 4": [
 {
-  "central_position_x": 181.51424,
-  "central_position_y": 182.5705,
+  "central_position_x": 86.0,
+  "central_position_y": 349.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 2.0
+  "time": 0.0
 },
 {
-  "central_position_x": 163.38773,
-  "central_position_y": 206.99959,
+  "central_position_x": 86.0,
+  "central_position_y": 349.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 3.0
+  "time": 1.0
 }
 ]
 },
 "pedestrian 5":{
   "gender": 1,
   "age": 5,
-  "energy": 36.0,
-  "maxEnergy": 36.0,
-  "groupID": 0,
+  "energy": 26.0,
+  "maxEnergy": 26.0,
+  "groupID": 3,
   "currentGoal": {
     "central_position_x": 203.0,
     "central_position_y": 233.0,
@@ -861,27 +669,27 @@
 ,
 "timestamp 5": [
 {
-  "central_position_x": 99.32127,
-  "central_position_y": 192.31145,
+  "central_position_x": 86.0,
+  "central_position_y": 203.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 2.0
+  "time": 0.0
 },
 {
-  "central_position_x": 128.61429,
-  "central_position_y": 207.74564,
+  "central_position_x": 86.0,
+  "central_position_y": 203.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 3.0
+  "time": 1.0
 }
 ]
 },
 "pedestrian 6":{
   "gender": 1,
-  "age": 3,
-  "energy": 42.0,
-  "maxEnergy": 42.0,
-  "groupID": 0,
+  "age": 4,
+  "energy": 33.0,
+  "maxEnergy": 33.0,
+  "groupID": 3,
   "currentGoal": {
     "central_position_x": 203.0,
     "central_position_y": 233.0,
@@ -891,27 +699,27 @@
 ,
 "timestamp 6": [
 {
-  "central_position_x": 115.54393,
-  "central_position_y": 159.51881,
+  "central_position_x": 80.0,
+  "central_position_y": 455.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 2.0
+  "time": 0.0
 },
 {
-  "central_position_x": 106.536385,
-  "central_position_y": 194.4582,
+  "central_position_x": 80.0,
+  "central_position_y": 455.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 3.0
+  "time": 1.0
 }
 ]
 },
 "pedestrian 7":{
-  "gender": 2,
-  "age": 5,
-  "energy": 29.0,
-  "maxEnergy": 29.0,
-  "groupID": 0,
+  "gender": 1,
+  "age": 4,
+  "energy": 40.0,
+  "maxEnergy": 40.0,
+  "groupID": 3,
   "currentGoal": {
     "central_position_x": 203.0,
     "central_position_y": 233.0,
@@ -921,27 +729,27 @@
 ,
 "timestamp 7": [
 {
-  "central_position_x": 73.84283,
-  "central_position_y": 51.52799,
+  "central_position_x": 181.0,
+  "central_position_y": 103.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 2.0
+  "time": 0.0
 },
 {
-  "central_position_x": 81.80467,
-  "central_position_y": 73.52328,
+  "central_position_x": 181.0,
+  "central_position_y": 103.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 3.0
+  "time": 1.0
 }
 ]
 },
 "pedestrian 8":{
   "gender": 2,
-  "age": 3,
-  "energy": 47.0,
-  "maxEnergy": 47.0,
-  "groupID": 0,
+  "age": 5,
+  "energy": 35.0,
+  "maxEnergy": 35.0,
+  "groupID": 3,
   "currentGoal": {
     "central_position_x": 203.0,
     "central_position_y": 233.0,
@@ -951,27 +759,27 @@
 ,
 "timestamp 8": [
 {
-  "central_position_x": 99.887825,
-  "central_position_y": 136.66447,
+  "central_position_x": 43.0,
+  "central_position_y": 400.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 2.0
+  "time": 0.0
 },
 {
-  "central_position_x": 103.14923,
-  "central_position_y": 181.09021,
+  "central_position_x": 43.0,
+  "central_position_y": 400.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 3.0
+  "time": 1.0
 }
 ]
 },
 "pedestrian 9":{
   "gender": 2,
   "age": 5,
-  "energy": 40.0,
-  "maxEnergy": 40.0,
-  "groupID": 1,
+  "energy": 21.0,
+  "maxEnergy": 21.0,
+  "groupID": 4,
   "currentGoal": {
     "central_position_x": 203.0,
     "central_position_y": 233.0,
@@ -981,27 +789,27 @@
 ,
 "timestamp 9": [
 {
-  "central_position_x": 57.0,
-  "central_position_y": 461.0,
+  "central_position_x": 71.0,
+  "central_position_y": 172.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 2.0
+  "time": 0.0
 },
 {
-  "central_position_x": 57.25396,
-  "central_position_y": 460.9896,
+  "central_position_x": 71.0,
+  "central_position_y": 172.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 3.0
+  "time": 1.0
 }
 ]
 },
 "pedestrian 10":{
-  "gender": 1,
+  "gender": 2,
   "age": 5,
-  "energy": 23.0,
-  "maxEnergy": 23.0,
-  "groupID": 1,
+  "energy": 22.0,
+  "maxEnergy": 22.0,
+  "groupID": 4,
   "currentGoal": {
     "central_position_x": 203.0,
     "central_position_y": 233.0,
@@ -1011,27 +819,27 @@
 ,
 "timestamp 10": [
 {
-  "central_position_x": 64.0,
-  "central_position_y": 344.0,
+  "central_position_x": 49.0,
+  "central_position_y": 453.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 2.0
+  "time": 0.0
 },
 {
-  "central_position_x": 64.41133,
-  "central_position_y": 343.5085,
+  "central_position_x": 49.0,
+  "central_position_y": 453.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 3.0
+  "time": 1.0
 }
 ]
 },
 "pedestrian 11":{
-  "gender": 2,
-  "age": 4,
-  "energy": 33.0,
-  "maxEnergy": 33.0,
-  "groupID": 1,
+  "gender": 1,
+  "age": 5,
+  "energy": 22.0,
+  "maxEnergy": 22.0,
+  "groupID": 4,
   "currentGoal": {
     "central_position_x": 203.0,
     "central_position_y": 233.0,
@@ -1041,318 +849,18 @@
 ,
 "timestamp 11": [
 {
-  "central_position_x": 62.0,
-  "central_position_y": 54.0,
+  "central_position_x": 98.0,
+  "central_position_y": 257.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 2.0
+  "time": 0.0
 },
 {
-  "central_position_x": 62.245647,
-  "central_position_y": 54.605545,
+  "central_position_x": 98.0,
+  "central_position_y": 257.0,
   "leftTheBuilding": false,
   "currentGoal": -1,
-  "time": 3.0
-}
-]
-},
-"pedestrian 12":{
-  "gender": 1,
-  "age": 4,
-  "energy": 33.0,
-  "maxEnergy": 33.0,
-  "groupID": 1,
-  "currentGoal": {
-    "central_position_x": 203.0,
-    "central_position_y": 233.0,
-    "radius": 3.0,
-    "waypointID": -1
-  }
-,
-"timestamp 12": [
-{
-  "central_position_x": 115.0,
-  "central_position_y": 106.0,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 2.0
-},
-{
-  "central_position_x": 115.12843,
-  "central_position_y": 106.61876,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 3.0
-}
-]
-},
-"pedestrian 13":{
-  "gender": 1,
-  "age": 5,
-  "energy": 26.0,
-  "maxEnergy": 26.0,
-  "groupID": 1,
-  "currentGoal": {
-    "central_position_x": 203.0,
-    "central_position_y": 233.0,
-    "radius": 3.0,
-    "waypointID": -1
-  }
-,
-"timestamp 13": [
-{
-  "central_position_x": 146.0,
-  "central_position_y": 460.0,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 2.0
-},
-{
-  "central_position_x": 146.00302,
-  "central_position_y": 459.35214,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 3.0
-}
-]
-},
-"pedestrian 14":{
-  "gender": 2,
-  "age": 4,
-  "energy": 50.0,
-  "maxEnergy": 50.0,
-  "groupID": 1,
-  "currentGoal": {
-    "central_position_x": 203.0,
-    "central_position_y": 233.0,
-    "radius": 3.0,
-    "waypointID": -1
-  }
-,
-"timestamp 14": [
-{
-  "central_position_x": 15.0,
-  "central_position_y": 153.0,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 2.0
-},
-{
-  "central_position_x": 15.491096,
-  "central_position_y": 153.42792,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 3.0
-}
-]
-},
-"pedestrian 15":{
-  "gender": 2,
-  "age": 3,
-  "energy": 43.0,
-  "maxEnergy": 43.0,
-  "groupID": 1,
-  "currentGoal": {
-    "central_position_x": 203.0,
-    "central_position_y": 233.0,
-    "radius": 3.0,
-    "waypointID": -1
-  }
-,
-"timestamp 15": [
-{
-  "central_position_x": 117.0,
-  "central_position_y": 367.0,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 2.0
-},
-{
-  "central_position_x": 117.13269,
-  "central_position_y": 366.4008,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 3.0
-}
-]
-},
-"pedestrian 16":{
-  "gender": 2,
-  "age": 3,
-  "energy": 49.0,
-  "maxEnergy": 49.0,
-  "groupID": 1,
-  "currentGoal": {
-    "central_position_x": 203.0,
-    "central_position_y": 233.0,
-    "radius": 3.0,
-    "waypointID": -1
-  }
-,
-"timestamp 16": [
-{
-  "central_position_x": 166.0,
-  "central_position_y": 107.0,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 2.0
-},
-{
-  "central_position_x": 165.9419,
-  "central_position_y": 107.627785,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 3.0
-}
-]
-},
-"pedestrian 17":{
-  "gender": 2,
-  "age": 4,
-  "energy": 31.0,
-  "maxEnergy": 31.0,
-  "groupID": 1,
-  "currentGoal": {
-    "central_position_x": 203.0,
-    "central_position_y": 233.0,
-    "radius": 3.0,
-    "waypointID": -1
-  }
-,
-"timestamp 17": [
-{
-  "central_position_x": 181.0,
-  "central_position_y": 226.0,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 2.0
-},
-{
-  "central_position_x": 180.88162,
-  "central_position_y": 226.37411,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 3.0
-}
-]
-},
-"pedestrian 18":{
-  "gender": 1,
-  "age": 4,
-  "energy": 40.0,
-  "maxEnergy": 40.0,
-  "groupID": 1,
-  "currentGoal": {
-    "central_position_x": 203.0,
-    "central_position_y": 233.0,
-    "radius": 3.0,
-    "waypointID": -1
-  }
-,
-"timestamp 18": [
-{
-  "central_position_x": 117.0,
-  "central_position_y": 454.0,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 2.0
-},
-{
-  "central_position_x": 117.09287,
-  "central_position_y": 453.3593,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 3.0
-}
-]
-},
-"pedestrian 19":{
-  "gender": 1,
-  "age": 4,
-  "energy": 34.0,
-  "maxEnergy": 34.0,
-  "groupID": 2,
-  "currentGoal": {
-    "central_position_x": 203.0,
-    "central_position_y": 233.0,
-    "radius": 3.0,
-    "waypointID": -1
-  }
-,
-"timestamp 19": [
-{
-  "central_position_x": 57.0,
-  "central_position_y": 460.0,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 2.0
-},
-{
-  "central_position_x": 57.0,
-  "central_position_y": 460.0,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 3.0
-}
-]
-},
-"pedestrian 20":{
-  "gender": 1,
-  "age": 4,
-  "energy": 33.0,
-  "maxEnergy": 33.0,
-  "groupID": 2,
-  "currentGoal": {
-    "central_position_x": 203.0,
-    "central_position_y": 233.0,
-    "radius": 3.0,
-    "waypointID": -1
-  }
-,
-"timestamp 20": [
-{
-  "central_position_x": 82.0,
-  "central_position_y": 322.0,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 2.0
-},
-{
-  "central_position_x": 82.0,
-  "central_position_y": 322.0,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 3.0
-}
-]
-},
-"pedestrian 21":{
-  "gender": 1,
-  "age": 4,
-  "energy": 33.0,
-  "maxEnergy": 33.0,
-  "groupID": 2,
-  "currentGoal": {
-    "central_position_x": 203.0,
-    "central_position_y": 233.0,
-    "radius": 3.0,
-    "waypointID": -1
-  }
-,
-"timestamp 21": [
-{
-  "central_position_x": 171.0,
-  "central_position_y": 164.0,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 2.0
-},
-{
-  "central_position_x": 171.0,
-  "central_position_y": 164.0,
-  "leftTheBuilding": false,
-  "currentGoal": -1,
-  "time": 3.0
+  "time": 1.0
 }
 ]
 }

@@ -264,7 +264,7 @@ public class Pedestrian extends Entity {
             }
         }
         // Average -- divide by how many
-        if (count > 0) {
+        if (count > 0){
             steer.div((float)count);
         }
 

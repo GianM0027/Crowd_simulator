@@ -58,7 +58,7 @@ public class ActiveEntitiesPanel extends JTabbedPane {
 
         this.addTab("Pedestrians", researchAndPeople);
         this.addTab("Obstacles", obstaclesTab);
-        this.addTab("Way Points", wayPointsTab);
+        this.addTab("Waypoints", wayPointsTab);
 
         //panels to split in researchAndPeople tab
         GridBagConstraints gbdResearch = new GridBagConstraints(0,0,1,1,0,1,
@@ -136,7 +136,7 @@ public class ActiveEntitiesPanel extends JTabbedPane {
                 DefaultListModel listModel = new DefaultListModel();
 
                 for(int i = 1; i <= wayPointsList.size(); i++) {
-                    listModel.add(i-1, "Way Point " + i + ": " + wayPointsList.get(i-1).getPositionString());
+                    listModel.add(i-1, "Waypoint " + i + ": " + wayPointsList.get(i-1).getPositionString());
                 }
 
                 JList wayPoints = new JList(listModel);

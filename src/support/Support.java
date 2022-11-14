@@ -63,9 +63,8 @@ public abstract class Support {
     }
 
 
+    /** return a random int within Min and Max (included) */
     public static int getRandomValue(int Min, int Max) {
-        // Get and return the random integer
-        // within Min and Max
         return ThreadLocalRandom.current().nextInt(Min, Max + 1);
     }
 

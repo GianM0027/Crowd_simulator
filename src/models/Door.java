@@ -16,6 +16,8 @@ public class Door extends WayPoint{
     public Door(Point2D startPosition, Point2D endPosition, Room room) {
         super(startPosition);
 
+        this.room = room;
+
         entityType = Constant.DOOR;
         doorLine = new Line2D.Double(startPosition, endPosition);
 

@@ -54,9 +54,7 @@ public class Animation extends JPanel implements ActionListener {
         building.drawExternalArea(g2D);
         for(int i = 0; i < building.getRooms().size(); i++) {
             building.getRooms().get(i).drawRoom(g2D);
-
-            //g2D.fill(building.getRooms().get(i).getFrontDoorOut().getShape());
-            //g2D.fill(building.getRooms().get(i).getFrontDoorIn().getShape());
+            g2D.fill(building.getExit().getShape());
         }
 
         g2D.setStroke(new BasicStroke(0));
