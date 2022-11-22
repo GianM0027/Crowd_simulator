@@ -51,6 +51,8 @@ public class Main {
         homePage.setVisible(true);
     }
 
+
+
     static void drawPanel(){
         JFrame frame = new JFrame();
         frame.setSize(200,200);

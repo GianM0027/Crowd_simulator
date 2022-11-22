@@ -34,7 +34,7 @@ public class Animation extends JPanel implements ActionListener {
         this.setPreferredSize(new Dimension(this.parentPanel.getWidth(), this.parentPanel.getHeight()));
         this.building = building;
 
-        timer = new Timer(0, this);
+        timer = new Timer(1, this);
         timer.start();
     }
 
@@ -52,10 +52,8 @@ public class Animation extends JPanel implements ActionListener {
 
         g2D.setStroke(new BasicStroke(Constant.BUILDING_STROKE));
         building.drawExternalArea(g2D);
-        for(int i = 0; i < building.getRooms().size(); i++) {
+        for(int i = 0; i < building.getRooms().size(); i++)
             building.getRooms().get(i).drawRoom(g2D);
-            g2D.fill(building.getExit().getShape());
-        }
 
         g2D.setStroke(new BasicStroke(0));
     }

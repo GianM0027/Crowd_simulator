@@ -285,7 +285,8 @@ public class ActiveEntitiesPanel extends JTabbedPane {
 
                         groupPanel.add(labelPanel, BorderLayout.NORTH);
                         labelPanel.setBackground(Color.LIGHT_GRAY);
-                        labelPanel.add(groupLabel);
+                        if(!pedestrianListModel.isEmpty())
+                            labelPanel.add(groupLabel);
                         groupPanel.add(pedestriansList, BorderLayout.CENTER);
 
                         allGroupsPanel.add(groupPanel, gbd);

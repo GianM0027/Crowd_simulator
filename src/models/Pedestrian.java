@@ -136,12 +136,13 @@ public class Pedestrian extends Entity {
         }
         else{
             //check if the pedestrian is in a room where there is nothing to do or if they are in the hall but they should not be there
-            for(Room r : building.getRooms())
-                if(r.getRoomRectangle().intersects(this.pedestrianShape)) {
+            for(Room r : building.getRooms()) {
+                if (r.getRoomRectangle().intersects(this.pedestrianShape)) {
                     Room pedestrianRoom = r;
-                    if(!pedestrianRoom.hasCurrentWaypoint(this))
+                    if (!pedestrianRoom.hasCurrentWaypoint(this))
                         currentGoal = r.getFrontDoorOut();
                 }
+            }
         }
     }
 
@@ -176,7 +177,7 @@ public class Pedestrian extends Entity {
         float avoidMultiplicator = 0.6f;
 
 
-        //if the pedestrian has collided
+        //if the pedestrian has collided on a wall
         if(this.hasCollided) {
             cohMultiplicator = 0;
             avoidMultiplicator = 0f;
