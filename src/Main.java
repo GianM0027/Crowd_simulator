@@ -1,8 +1,12 @@
-import models.Pedestrian;
+/**
+ * Main class of the code. It initializes the layout and position of the main frame and the three panel that
+ * constitute the GUI.
+ * The interface is composed as follows:
+ * - 
+ */
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
@@ -46,47 +50,6 @@ public class Main {
         rightPanel.add(simulationPanel, BorderLayout.CENTER);
         rightPanel.add(activeEntitiesPanel, BorderLayout.SOUTH);
 
-        //drawPanel();
-
         homePage.setVisible(true);
     }
-
-
-
-    static void drawPanel(){
-        JFrame frame = new JFrame();
-        frame.setSize(200,200);
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setPreferredSize(frame.getSize());
-
-        scrollPane.setViewportView(populateList());
-        frame.add(scrollPane);
-
-        new Timer(1000, e -> refreshFrame(scrollPane)).start(); //refresh panel every 1 sec
-
-        frame.setVisible(true);
-    }
-
-    static JList populateList(){
-        DefaultListModel model = new DefaultListModel();
-        for(int i = 0; i < 100; i++) {
-            model.add(i, new Random().nextInt(0, 100));
-        }
-        return new JList(model);
-    }
-
-    static void refreshFrame(JScrollPane scrollPane){
-        if(!scrollPane.getVerticalScrollBar().getValueIsAdjusting()) {
-            int verticalValue = scrollPane.getVerticalScrollBar().getValue();
-
-            JList list = populateList();
-            scrollPane.setViewportView(list);
-
-            scrollPane.getVerticalScrollBar().setValue(verticalValue);
-        }
-
-        scrollPane.repaint();
-        scrollPane.revalidate();
-    }
-
 }
