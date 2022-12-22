@@ -4,6 +4,10 @@ import com.google.gson.annotations.Expose;
 import models.Group;
 import models.Pedestrian;
 
+/**
+ * Given a group of pedestrians, this class takes only the useful information about it and organize the timestamp for that
+ * group in a given moment
+ */
 public class GroupTimestamp {
     @Expose
     private boolean leftTheBuilding;
@@ -26,6 +30,5 @@ public class GroupTimestamp {
         this.isVisitingAWaypoint = !group.isMoving();
         this.isResting = group.isRestTime();
         this.hasStartedWalking = group.hasStartedWalking();
-
     }
 }

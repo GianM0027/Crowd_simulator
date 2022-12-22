@@ -92,35 +92,6 @@ public class Building {
         g2D.draw(bottomWall);
     }
 
-    /**
-     * Return true if an entity is closer to the building more than the "bounds distance"
-     * */
-    public Line2D checkCollision(Entity entity){
-        EntityBound entityBounds = new EntityBound(entity);
-
-        if(!entityBounds.getBoundsRectangle().intersects(entrance.getShape()) && !entityBounds.getBoundsRectangle().intersects(exit.getShape())) {
-            if (entityBounds.getBoundsRectangle().intersectsLine(entranceUpWall))
-                return entranceUpWall;
-            if (entityBounds.getBoundsRectangle().intersectsLine(entranceBottomWall))
-                return entranceBottomWall;
-            if (entityBounds.getBoundsRectangle().intersectsLine(exitUpWall))
-                return exitUpWall;
-            if (entityBounds.getBoundsRectangle().intersectsLine(exitBottomWall))
-                return exitBottomWall;
-            if (entityBounds.getBoundsRectangle().intersectsLine(upWall))
-                return upWall;
-            if (entityBounds.getBoundsRectangle().intersectsLine(bottomWall))
-                return bottomWall;
-        }
-
-        for(Room room: this.rooms) {
-            Line2D wall = room.checkCollision(entity);
-            if (wall != null)
-                return wall;
-        }
-
-        return null;
-    }
 
     /**
      * Return true if an entity is closer to the building more than the "bounds distance"

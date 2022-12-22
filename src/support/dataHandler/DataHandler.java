@@ -1,19 +1,21 @@
 package support.dataHandler;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import models.Group;
 import models.Obstacle;
 import models.Pedestrian;
 import models.WayPoint;
-
-import javax.rmi.ssl.SslRMIClientSocketFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class allows collecting, organizing and storing data from the simulation in a file in JSON format. It has a list
+ * for each entity and a list of timestamps for each dynamic entity
+ */
 public class DataHandler{
     private Gson gson;
     private List<String> groupsStaticData;
@@ -40,10 +42,11 @@ public class DataHandler{
         groupsTimestampNumber = 0;
     }
 
-    public Gson getGson(){
-        return gson;
-    }
 
+    /**
+     * Function called at the start of the simulation, it collects static data from the list of obstacles in the environment
+     * @param obstaclesData
+     */
     public void setObstaclesData(List<Obstacle> obstaclesData) {
         int n = 1;
         for(int i = 0; i < obstaclesData.size(); i++){
@@ -56,6 +59,10 @@ public class DataHandler{
         }
     }
 
+    /**
+     * Function called at the start of the simulation, it collects static data from the list of waypoints in the environment
+     * @param waypointsData
+     */
     public void setWaypointsData(List<WayPoint> waypointsData) {
         int n = 1;
         for(int i = 0; i < waypointsData.size(); i++){
@@ -68,6 +75,10 @@ public class DataHandler{
         }
     }
 
+    /**
+     * Function called at the start of the simulation, it collects static data from the list of groups in the environment
+     * @param groupsStaticData
+     */
     public void setGroupsStaticData(List<Group> groupsStaticData) {
         for(int i = 0; i < groupsStaticData.size(); i++){
             String jsonString = gson.toJson(groupsStaticData.get(i));
@@ -79,6 +90,10 @@ public class DataHandler{
             groupsTimestamp.add(new ArrayList<>());
     }
 
+    /**
+     * Function called at the start of the simulation, it collects static data from the list of pedestrians in the environment
+     * @param pedestriansStaticData
+     */
     public void setPedestriansStaticData(List<Pedestrian> pedestriansStaticData) {
         for(int i = 0; i < pedestriansStaticData.size(); i++){
             String jsonString = gson.toJson(pedestriansStaticData.get(i));
@@ -90,6 +105,11 @@ public class DataHandler{
             pedestriansTimestamp.add(new ArrayList<>());
     }
 
+    /**
+     * Function called at regular intervals, for each time it collects and stores the dynamic data of pedestrians
+     * @param pedestrians the list of pedestrians in the environment
+     * @param time is the time the collected information belong
+     */
     public void setPedestriansTimestamp(List<Pedestrian> pedestrians, float time) {
         for(int i = 0; i < pedestrians.size(); i++){
             PedestrianTimestamp timestamp = new PedestrianTimestamp(pedestrians.get(i), time);
@@ -99,6 +119,11 @@ public class DataHandler{
         pedestriansTimestampNumber++;
     }
 
+    /**
+     * Function called at regular intervals, for each time it collects and stores the dynamic data of groups
+     * @param groups the list of groups in the environment
+     * @param time is the time the collected information belong
+     */
     public void setGroupsTimestamp(List<Group> groups, float time){
         for(int i = 0; i < groups.size(); i++){
             GroupTimestamp timestamp = new GroupTimestamp(groups.get(i), time);
@@ -108,6 +133,11 @@ public class DataHandler{
         groupsTimestampNumber++;
     }
 
+    /**
+     * This function is called at the end of a simulation, it creates the output file (currently it replaces the existing file every time)
+     * in JSON syntax with the static and dynamic data of the entities
+     * @throws IOException
+     */
     public void simulationDataToJSON() throws IOException {
         PrintWriter writer = new PrintWriter("simulation data.txt", StandardCharsets.UTF_8);
 

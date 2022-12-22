@@ -1,7 +1,5 @@
 package models;
 
-import com.google.gson.annotations.Expose;
-
 import java.awt.*;
 import java.awt.geom.Point2D;
 

@@ -1,28 +1,13 @@
 package support;
 
 import models.*;
-
-import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Support functions independent of specific classes
+ * Support functions independent of specific classes, it contains mostly sorting function
  * */
 public abstract class Support {
-
-    //distance between two points
-    public static double distance(Point2D p1, Point2D p2){
-        return Math.sqrt(((p2.getY() - p1.getY())*(p2.getY() - p1.getY())) + ((p2.getX() - p1.getX())*(p2.getX() - p1.getX())));
-    }
-
-    //distance between two entities (according to their bounds)
-    public static double distance(Entity e1, Entity e2){
-
-        //implement a way to find the minimum distance between two entities with different shapes
-        return 0;
-    }
 
 
     /**********************************   SORTING FUNCTIONS   **********************************/
@@ -63,7 +48,7 @@ public abstract class Support {
     }
 
 
-    /** return a random int within Min and Max (included) */
+    /** it returns a random int within Min and Max (included) */
     public static int getRandomValue(int Min, int Max) {
         return ThreadLocalRandom.current().nextInt(Min, Max + 1);
     }
@@ -92,11 +77,7 @@ public abstract class Support {
         return i+1;
     }
 
-    /* The main function that implements QuickSort
-              arr[] --> Array to be sorted,
-              low --> Starting index,
-              high --> Ending index
-     */
+
     public static void quickSortByVelocity(ArrayList<Pedestrian> list, int low, int high) {
         if (low < high) {
 
@@ -130,11 +111,7 @@ public abstract class Support {
         return i+1;
     }
 
-    /* The main function that implements QuickSort
-              arr[] --> Array to be sorted,
-              low --> Starting index,
-              high --> Ending index
-     */
+
     public static void quickSortByEnergy(ArrayList<Pedestrian> list, int low, int high) {
         if (low < high) {
 

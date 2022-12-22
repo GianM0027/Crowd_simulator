@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Calculates bounds of any entity
+ * This class calculates bounds of any entity and implements useful methods
  * */
 public class EntityBound{
     private Rectangle2D boundsRectangle;

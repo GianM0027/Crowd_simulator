@@ -15,7 +15,7 @@ import java.util.Objects;
 
 
 /**
- * Every Pedestrian is a mobile entity with its own characteristics
+ * Every Pedestrian is a dynamic entity with its own characteristics
  * */
 public class Pedestrian extends Entity {
     private Rectangle2D pedestrianShape;
@@ -93,11 +93,7 @@ public class Pedestrian extends Entity {
     }
 
 
-
-
-
-
-    /***********************************      PEDESTRIAN MOTION METHODS       *********************************/
+    /*!**********************************      PEDESTRIAN MOTION METHODS       *********************************/
 
     /**
      * Compute next position towards a goal, it ignores obstacles and other pedestrians

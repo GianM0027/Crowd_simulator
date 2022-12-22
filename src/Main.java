@@ -1,16 +1,15 @@
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * Main class of the code. It initializes the layout and position of the main frame and the three panel that
  * constitute the GUI.
  * The interface is composed as follows:
  * - One JFrame that contains every other element
- * - Inside the JFrame there are two panels, "settingPanels" on the left part of the screen and "rightPanel" on the right part.
- * - "settingsPanel" contains buttons and forms that allow the user to set the parameters of the simulation.
- * - "rightPanel" contains two other panels: "simulationPanel" on the top part of the screen; "activeEntitiesPanel" on the bottom part of the screen.
+ *   - Inside the JFrame there are two panels, "settingPanels" on the left part of the screen and "rightPanel" on the right part.
+ *      - "settingsPanel" contains buttons and forms that allow the user to set the parameters of the simulation.
+ *      - "rightPanel" contains two other panels: "simulationPanel" on the top part of the screen; "activeEntitiesPanel" on the bottom part of the screen.
  */
-
-import javax.swing.*;
-import java.awt.*;
-
 public class Main {
     public static void main(String[] args) {
         JFrame homePage = new JFrame("Crowd Simulator");
