@@ -1,20 +1,19 @@
 import support.ConfirmationWindow;
 import support.RangeSlider;
 import support.constants.Constant;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
 /**
- * Panel with controls and settings of the simulation
+ * This class extends JPanel and it is used to initialize and set the layout of the settingPanel (left section of the interface).
+ * It also implements buttons functionalities and it links them to the "Simulation" class
  * */
 public class SettingPanel extends JPanel {
 
     private JTextField numberOfPeople, numberOfWayPoints, numberOfObstacles;
     private RangeSlider groupsSize;
     private JButton playButton, pauseButton, stopButton, confirmButton;
-
 
     public SettingPanel(){
         this.setBorder(BorderFactory.createEtchedBorder());
@@ -24,7 +23,9 @@ public class SettingPanel extends JPanel {
     }
 
     /**
-     * Set the internal layout
+     * It sets the internal layout of the setting panel (left vertical panel of the GUI).
+     * It divides the panel in two sub-panels: one above (=topPanel) that contains the topbar and the three buttons play, pause, stop;
+     * one below, that contains the forms which collect the parameters of the simulation
      * */
     private void setInternalLayout(){
         //declaring 2 sections (1 containing topBar + buttons, 1 scrollable contains options and settings)
@@ -37,7 +38,7 @@ public class SettingPanel extends JPanel {
         //setting top bar
         setTopBar(topPanel);
 
-        //setting start and pause buttons
+        //setting start, pause and stop buttons
         addButtons(topPanel);
 
         //Adding options and simulation's parameters in setting panel
@@ -50,6 +51,7 @@ public class SettingPanel extends JPanel {
 
     /**
      * Set a grey bar on the top of the panel with the name of that panel
+     * @param panel Upper panel of the settings section (fig 1.1)
      * */
     private void setTopBar(JPanel panel){
         JToolBar topBar = new JToolBar();
@@ -62,12 +64,12 @@ public class SettingPanel extends JPanel {
     }
 
     /**
-     * Add play button, pause button and stop button
+     * Add play button, pause button and stop button in a gridbag layout panel
      * */
     private void addButtons(JPanel panel){
-        JPanel buttonsPanel = new JPanel(new GridBagLayout());
+        JPanel buttonsPanel = new JPanel(new GridBagLayout()); //buttonsPanel inside param panel
 
-        //icons
+        //retrieve icons from the folder
         ClassLoader cl = this.getClass().getClassLoader();
         ImageIcon playButton = new ImageIcon(cl.getResource("media/playButton.png"));
         ImageIcon pauseButton = new ImageIcon(cl.getResource("media/pauseButton.png"));
@@ -77,12 +79,14 @@ public class SettingPanel extends JPanel {
         GridBagConstraints gbd = new GridBagConstraints();
         gbd.insets = new Insets(5,10,5,10);
 
+        // adding element in GRIDX = 0
         gbd.gridx = 0;
         this.pauseButton = new JButton(pauseButton);
         this.pauseButton.setFocusable(false);
         this.pauseButton.addActionListener(e -> pauseSimulation());
         buttonsPanel.add(this.pauseButton, gbd);
 
+        //adding element in GRIDX = 1
         gbd.gridx = 1;
         this.playButton = new JButton(playButton);
         this.playButton.setFocusable(false);
@@ -95,6 +99,7 @@ public class SettingPanel extends JPanel {
         });
         buttonsPanel.add(this.playButton, gbd);
 
+        //adding element in GRIDX = 2
         gbd.gridx = 2;
         this.stopButton = new JButton(stopButton);
         this.stopButton.setFocusable(false);
@@ -117,7 +122,7 @@ public class SettingPanel extends JPanel {
         gbdPanel.gridx = 0;
         gbdPanel.insets = new Insets(5,5,0,5);
 
-        //instructions for setting panel
+        //instructions for the setting panel
         JLabel instructions1 = new JLabel("Set values for each field, press \"confirm\" to apply");
         instructions1.setForeground(Color.GRAY);
         panel.add(instructions1,gbdPanel);
@@ -161,7 +166,6 @@ public class SettingPanel extends JPanel {
         panel.add(line3, gbdPanel);
 
 
-
         //adding range slider for groups size
         JLabel numGroupsLabel = new JLabel("Select a range for the size of the groups:");
         this.groupsSize = new RangeSlider(Constant.MIN_GROUPS_SIZE, Constant.MAX_GROUPS_SIZE);
@@ -180,7 +184,8 @@ public class SettingPanel extends JPanel {
     }
 
     /**
-     * Add the "confirm" button at the bottom of the page
+     * the function adds the "confirm" button at the bottom of the setting panel, when pressed the button call the
+     * function setSimulationParameters()
      * */
     private void addConfirmButton(JPanel panel){
         this.confirmButton = new JButton("Confirm");
@@ -192,12 +197,16 @@ public class SettingPanel extends JPanel {
         gbd.fill = GridBagConstraints.HORIZONTAL;
         gbd.anchor = GridBagConstraints.PAGE_END;
         gbd.insets = new Insets(10,20,10,20);
-        gbd.gridy = 100000;
+        gbd.gridy = 100000; //high value allows positioning the button on the bottom part of the panel
         gbd.weighty = 1;
 
         panel.add(this.confirmButton, gbd);
     }
 
+    /**
+     * This function checks if the parameters of the simulation are correct, then it sends those parameters to the
+     * Simulation class
+     */
     private void setSimulationParameters(){
         //controls before setting parameters, if any field is empty a warning message will be shown
         if(this.numberOfPeople.getText().equals("")) {
@@ -232,10 +241,10 @@ public class SettingPanel extends JPanel {
     }
 
     /**
-     * Functionalities of the "play button", it starts a new simulation or resume an existing one
+     * When the "play button" is pressed, this function starts a new simulation or resumes an existing one
      * */
     private void startSimulation() throws IOException {
-        //when pressed the play button but there are not valid parameters in the fields nothing happens
+        //when pressed the play button but there are no valid parameters in the fields nothing happens
         if(Simulation.getInstance().missingParameters())
             return;
 
@@ -253,7 +262,7 @@ public class SettingPanel extends JPanel {
     }
 
     /**
-     * Functionality of the "pause button", stop the timer of the currently active animation
+     * When the "pause button" is pressed this function stops the timer of the currently active animation
      * */
     private void pauseSimulation(){
         this.playButton.setEnabled(true);
@@ -261,7 +270,7 @@ public class SettingPanel extends JPanel {
     }
 
     /**
-     * Functionality of the "stop button", reset the simulation and all its parameters
+     * When the "stop button" is pressed, this function reset the simulation and all its parameters
      * */
     private void stopSimulation(){
         if(new ConfirmationWindow("Do you really want to stop the simulation? It will restore all the settings").isConfirmed()) {
@@ -275,8 +284,9 @@ public class SettingPanel extends JPanel {
         }
     }
 
+
     /**
-     * Auxiliary functions
+     * Function that disables the "stop button" and the "pause button", it enables the "play button"
      * */
     public void disableStopPauseButtons(){
         this.playButton.setEnabled(true);
@@ -284,6 +294,9 @@ public class SettingPanel extends JPanel {
         this.pauseButton.setEnabled(false);
     }
 
+    /**
+     * Function that enables the "stop button" and the "pause button", it disables the "play button"
+     * */
     public void enableStopPauseButtons(){
         this.playButton.setEnabled(false);
         this.stopButton.setEnabled(true);

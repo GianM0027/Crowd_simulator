@@ -9,21 +9,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implements the movement and the printing functions of the simulation
+ * This class represents and handles the animation. It collects information from every entity, it sets a shape for them
+ * and it represents them on screen, refreshing the panel and creating the illusion of the movement
  * */
 public class Animation extends JPanel implements ActionListener {
-
     private JPanel parentPanel;
     private List<Pedestrian> crowd;
     private List<Group> groups;
     private List<Obstacle> obstacles;
     private List<WayPoint> wayPoints;
     private Building building;
-
-
-    //simulation parameters
     private Timer timer;
 
+    /**
+     * This constructor takes as parameters the list of entities and the top panel where the simulation must be shown.
+     * It sets this information as class attributes and it also starts the timer for screen refresh
+     *
+     * @param panel top panel when the simulation must be shown
+     * @param crowd
+     * @param obstacles
+     * @param wayPoints
+     * @param groups
+     * @param building
+     */
     public Animation(JPanel panel, List<Pedestrian> crowd, List<Obstacle> obstacles, List<WayPoint> wayPoints, List<Group> groups, Building building){
         this.parentPanel = panel;
         this.groups = groups;
@@ -39,7 +47,7 @@ public class Animation extends JPanel implements ActionListener {
     }
 
 
-    /*****************************   Paint background and fixed entities   ******************************/
+    /*!****************************   Paint background and fixed entities   ******************************/
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -47,6 +55,10 @@ public class Animation extends JPanel implements ActionListener {
         drawEntities(g);
     }
 
+    /**
+     * This function draws the building that the crowd walk through
+     * @param g graphic content
+     */
     private void drawBuilding(Graphics g){
         Graphics2D g2D = (Graphics2D) g;
 
@@ -58,7 +70,10 @@ public class Animation extends JPanel implements ActionListener {
         g2D.setStroke(new BasicStroke(0));
     }
 
-
+    /**
+     * This function draws every entity in their current position
+     * @param g graphic content
+     */
     private void drawEntities(Graphics g){
         Graphics2D g2D = (Graphics2D) g;
         g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -134,7 +149,13 @@ public class Animation extends JPanel implements ActionListener {
 
 
 
-    /******************************    Handle pedestrians' movement    *************************************/
+    /*!*****************************    Handle pedestrians' movement    *************************************/
+
+    /**
+     * Every time that the screen is refreshed, this function check if the simulation can end (every pedestrian is outside the building)
+     * otherwise it computes the next position for each entity. At the end of the calculation, it refreshes the panel
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         boolean simulationCanEnd = true;
@@ -154,11 +175,18 @@ public class Animation extends JPanel implements ActionListener {
     }
 
 
-    /******************************    Animation commands    *************************************/
+    /*!*****************************    Animation commands    *************************************/
+
+    /**
+     * This function stops the timer that refreshes the animation
+     */
     public void pause(){
         this.timer.stop();
     }
 
+    /**
+     * This function starts the timer that refreshes the animation
+     */
     public void resume(){
         this.timer.start();
     }

@@ -2,7 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * General setting of the simulation panel, division of spaces and basic layout
+ * This class extends JPanel and it is used to initialize and set the layout of the Simulation Panel (upper-right section of the interface).
+ * This class does not contain the parameters of the Simulation, it only allows to manage the external layout of this section.
+ * The logic behind the simulation and the actual animation is managed by the class "Simulation.java"
  * */
 public class SimulationPanel extends JPanel{
 
@@ -23,7 +25,7 @@ public class SimulationPanel extends JPanel{
     }
 
     /**
-     * Set top bar of the simulation panel
+     * it sets top bar of the simulation panel
      * */
     private void setTopBar(){
         JToolBar topBar = new JToolBar();

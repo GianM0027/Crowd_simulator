@@ -10,8 +10,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * A tabbed pane that shows all the currently active entities
+ * This class extends JTabbedPanel and it is used to initialize and set the layout of the Active Entities Panel (lower-right section of the interface).
+ * This class also receives data from the class "Simulation", and it uses them to provide information to the user about the active entities.
  * */
 public class ActiveEntitiesPanel extends JTabbedPane {
     private static ActiveEntitiesPanel instance;
@@ -46,9 +48,10 @@ public class ActiveEntitiesPanel extends JTabbedPane {
     }
 
 
-    /***************************************    INTERNAL LAYOUT SETTINGS    *****************************************/
+    /*.*************************************    INTERNAL LAYOUT SETTINGS    *****************************************/
     /**
-     * Set three tabs, one for obstacles, one for way points, one for pedestrians with their content
+     * This function sets the layout of the panel as three tabs, one for obstacles, one for way points,
+     * one for pedestrians. Each section has their own information about the three different entities
      * */
     private void setInternalLayout(){
         //declaring and adding panes to the three tabs
@@ -78,11 +81,12 @@ public class ActiveEntitiesPanel extends JTabbedPane {
         setFiltersTab();
         setPedestriansTab(Simulation.getInstance().getCrowd());
 
+        //creating the timer for screen refreshing
         refresh = new Timer(1000, e -> updatePedestriansPanel());
     }
 
     /**
-     * Set the tab that shows the active obstacles
+     * This function sets the tab that shows the active obstacles
      * */
     public void setObstaclesTab() {
         //first of writing on this tab every label or old list must be canceled from the panel
@@ -118,7 +122,7 @@ public class ActiveEntitiesPanel extends JTabbedPane {
 
 
         /**
-         * Set the tab that shows the active way points
+         * This function sets the tab that shows the active waypoints
          * */
         public void setWayPointsTab(){
             //first of writing on this tab every label or old list must be canceled from the panel
@@ -150,8 +154,8 @@ public class ActiveEntitiesPanel extends JTabbedPane {
         }
 
         /**
-         * Set the tab that allows to research Pedestrians filtering the results
-         * */
+         * This function sets the tab that allows ordering-filtering Pedestrians
+         **/
         public void setFiltersTab(){
             //first of writing on this tab every label or old list must be canceled from the panel
             this.researchFilters.removeAll();
@@ -323,6 +327,7 @@ public class ActiveEntitiesPanel extends JTabbedPane {
             this.activePedestrians.repaint();
         }
 
+
         /**
          * Every time there is a change in the settings of the "filters panel", this function modifies, updates and shows the
          * list of active pedestrians and the active pedestrians' tab
@@ -371,8 +376,11 @@ public class ActiveEntitiesPanel extends JTabbedPane {
         }
 
 
-    /***************************************    SUPPORT FUNCTIONS    *****************************************/
-    //Update panel without lose information on the position of the JscrollPane
+    /*!**************************************    SUPPORT FUNCTIONS    *****************************************/
+    /**
+     * This function updates the pedestrian tab without losing information about the position of the JscrollPane,
+     * without this function every refresh brings the scrollbar back to its initial value
+     */
     private void updatePedestriansPanel(){
         if(scrollGroupsPane != null && !scrollGroupsPane.getVerticalScrollBar().getValueIsAdjusting()) {
             int maximumV = scrollGroupsPane.getVerticalScrollBar().getMaximum();
@@ -393,10 +401,13 @@ public class ActiveEntitiesPanel extends JTabbedPane {
             scrollGroupsPane.getHorizontalScrollBar().setMaximum(maximumH);
             scrollGroupsPane.getHorizontalScrollBar().setBlockIncrement(blockIncrementH);
             scrollGroupsPane.getHorizontalScrollBar().setVisibleAmount(visibleAmountH);
-            scrollGroupsPane.getHorizontalScrollBar().setValue(verticalValue);
+            scrollGroupsPane.getHorizontalScrollBar().setValue(horizontalValue);
         }
     }
 
+    /**
+     * this function disables filters (Simulation is not started yet)
+     */
     public void disableFilters(){
         orderBy.setEnabled(false);
         ageFilter.setEnabled(false);
@@ -405,6 +416,9 @@ public class ActiveEntitiesPanel extends JTabbedPane {
         energyFilter.setEnabled(false);
     }
 
+    /**
+     * this function enables filters (Simulation is started)
+     */
     public void enableFilters(){
         orderBy.setEnabled(true);
         ageFilter.setEnabled(true);
@@ -413,6 +427,9 @@ public class ActiveEntitiesPanel extends JTabbedPane {
         energyFilter.setEnabled(true);
     }
 
+    /**
+     * @return the timer used to update the active pedestrian section
+     */
     public Timer getRefresh() {
         return refresh;
     }

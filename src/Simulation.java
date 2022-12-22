@@ -12,7 +12,8 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Contain all the settings and contents of the actual simulation
+ * This class has only one instance at a time, it contains every information about the Simulation and its components.
+ * This class also extends JPanel because the class itself is the panel that contains the animation
  * */
 public class Simulation extends JPanel{
     private static Simulation instance;
@@ -58,19 +59,21 @@ public class Simulation extends JPanel{
     }
 
 
-    /***************************************    SIMULATION CONTROLS    *****************************************/
+    /*!**************************************    SIMULATION CONTROLS    *****************************************/
     /**
-     *
+     * When called, this function start the animation given the parameters saved as attributes of the class
      * */
     protected void startSimulation() throws IOException {
-        this.isRunning = true;
+        this.isRunning = true; //set the attribute
+
+        //creating the entities
         this.building = new Building(this.getWidth(), this.getHeight());
         createObstacles();
         createWayPoints();
         createCrowd();
         this.building.setWayPoints(wayPoints);
 
-        //Printing entities on the "active entities panel"
+        //setting the Active Entities Panel with all its tabs
         ActiveEntitiesPanel.getInstance().setObstaclesTab();
         ActiveEntitiesPanel.getInstance().setWayPointsTab();
         ActiveEntitiesPanel.getInstance().setPedestriansTab(this.crowd);
@@ -78,6 +81,7 @@ public class Simulation extends JPanel{
         ActiveEntitiesPanel.getInstance().updateFilteredCrowd();
         ActiveEntitiesPanel.getInstance().getRefresh().start();
 
+        //"cleaning the panel" and Initializing the animation
         this.removeAll();
         this.revalidate();
         this.repaint();
@@ -86,13 +90,14 @@ public class Simulation extends JPanel{
         this.revalidate();
         this.repaint();
 
-        //collect static data from obstacles, groups and waypoints
+        //collecting static data from obstacles, groups and waypoints
         DataHandler dataHandler = new DataHandler();
         dataHandler.setObstaclesData(obstacles);
         dataHandler.setWaypointsData(wayPoints);
         dataHandler.setGroupsStaticData(groups);
         dataHandler.setPedestriansStaticData(crowd);
 
+        //start the data collector
         collectDataTimer = new Timer(1000, e -> {
             try {
                 collectData(dataHandler);
@@ -104,7 +109,7 @@ public class Simulation extends JPanel{
     }
 
     /**
-     * Pause the timer that update pedestrian's data
+     * This function pauses the timers of the simulation
      * */
     protected void pauseSimulation(){
         this.animation.pause();
@@ -119,6 +124,9 @@ public class Simulation extends JPanel{
             pedestrian.stopWasteEnergyTimer();
     }
 
+    /**
+     * This function restarts every Timer of the simulation
+     */
     protected void resumeSimulation(){
         this.animation.resume();
         this.collectDataTimer.start();
@@ -134,7 +142,7 @@ public class Simulation extends JPanel{
 
 
     /**
-     * reset parameters of the simulation
+     * resetting parameters of the simulation, attributes of the class and resetting active entities panel
      * */
     protected void stopSimulation(){
         setParameters(0,Constant.MIN_GROUPS_SIZE,Constant.MAX_GROUPS_SIZE,0, 0);
@@ -159,6 +167,13 @@ public class Simulation extends JPanel{
         this.repaint();
     }
 
+    /**
+     * This function is called cyclically, every time it checks if the simulation is still running. If it is running
+     * it collects information about dynamic entities, otherwise it stops the timer that calls this function and it creates
+     * the final file with all the information about the simulation
+     * @param dataHandler object of the class dataHandler
+     * @throws IOException
+     */
     private void collectData(DataHandler dataHandler) throws IOException {
         //if the simulation ends, set the file with all the data
         if(!this.isRunning){
@@ -173,9 +188,9 @@ public class Simulation extends JPanel{
     }
 
 
-    /***************************************     ENTITIES CREATION     *****************************************/
+    /*!*************************************     ENTITIES CREATION     *****************************************/
     /**
-     *
+     * This functions, given the number of obstacles inserted by the user, create a list of obstacles
      * */
     private void createObstacles(){
         this.obstacles = new ArrayList<>();
@@ -192,14 +207,14 @@ public class Simulation extends JPanel{
                 o = new Obstacle(point);
             }while (!building.distanceIsEnough(o) || building.checkCollisionOnDoorFreeSpace(o) || checkCollisionOnOtherEntities(o));
 
-            this.obstacles.add(i, o);
+            this.obstacles.add(i, o); //save list of obstacles as an attribute
         }
 
         Support.sortObstacles(this.obstacles);
     }
 
     /**
-     *
+     * This functions, given the number of waypoints inserted by the user, create a list of obstacles
      * */
     private void createWayPoints(){
         this.wayPoints = new ArrayList<>();
@@ -225,7 +240,8 @@ public class Simulation extends JPanel{
     }
 
     /**
-     * Creates crowd and groups
+     * This functions, given the parameters inserted by the user, create the crowd and the groups contained in it. Giving them the knowledge
+     * about themselves and the environment
      * */
     private void createCrowd(){
         this.crowd = new ArrayList<>();
@@ -284,11 +300,10 @@ public class Simulation extends JPanel{
         } while (!people.isEmpty());
 
         numberOfGroups = groups.size();
-
     }
 
     /**
-     * Assign a list of goals to each group, the bigger is the group (with respect to the number of waypoints)
+     * This function assigns a list of goals to each group, the bigger is the group (with respect to the number of waypoints)
      * the higher is the probability of having more goals
      * */
     private List<WayPoint> goalsList(int groupSize){
@@ -332,10 +347,15 @@ public class Simulation extends JPanel{
         else if(groupsGoalsRatio >= 0.8) {
             goalsList.removeIf(w -> Support.getRandomValue(1, 100) < 10);
         }
-
         return goalsList;
     }
 
+    /**
+     * This function is used during the generation phase of the obstacles and it checks whether an obstacle (with its initial random position)
+     * is colliding with another one
+     * @param o obstacle in the environment
+     * @return true if there is a collision, false otherwise
+     */
     private boolean checkCollisionOnOtherEntities(Obstacle o){
         for(Obstacle obstacle : obstacles)
             if(o.getEntityBounds().getBoundsRectangle().intersects(obstacle.getEntityBounds().getBoundsRectangle()))
@@ -344,6 +364,12 @@ public class Simulation extends JPanel{
         return false;
     }
 
+    /**
+     * This function is used during the generation phase of the waypoints and it checks whether a waypoint (with its initial random position)
+     * is colliding with another one
+     * @param w waypoint in the environment
+     * @return true if there is a collision, false otherwise
+     */
     private boolean checkCollisionOnOtherEntities(WayPoint w){
         for(Obstacle obstacle : obstacles)
             if(w.getEntityBounds().getBoundsRectangle().intersects(obstacle.getEntityBounds().getBoundsRectangle()))
@@ -355,8 +381,35 @@ public class Simulation extends JPanel{
         return false;
     }
 
+    /**
+     * This function is used to receive the parameters inserted by the user in the setting panel, it takes them as
+     * parameters and it saves their values as attributes of the class
+     * @param numberOfPeople
+     * @param minGroupSize
+     * @param maxGroupSize
+     * @param numberOfObstacles
+     * @param numberOfWayPoints
+     */
+    public void setParameters(int numberOfPeople, int minGroupSize, int maxGroupSize, int numberOfObstacles, int numberOfWayPoints){
+        this.minGroupSize = minGroupSize;
+        this.maxGroupSize = maxGroupSize;
+        this.numberOfObstacles = numberOfObstacles;
+        this.numberOfPeople = numberOfPeople;
+        this.numberOfWayPoints = numberOfWayPoints;
+    }
 
-    /***************************************    ACCESSORS    *****************************************/
+    /**
+     * This function checks if one of the required parameters of the class is zero (in particular, it checks the number of obstacles inserted,
+     * the number of people in the crowd and the number of waypoints)
+     * @return true if there are missing parameters, false otherwise
+     */
+    public boolean missingParameters(){
+        if (this.numberOfObstacles == 0 || this.numberOfPeople == 0 || this.numberOfWayPoints == 0)
+            return true;
+        return false;
+    }
+
+    /*!**************************************    ACCESSORS    *****************************************/
     public int getNumberOfPeople() {
         return numberOfPeople;
     }
@@ -403,20 +456,6 @@ public class Simulation extends JPanel{
 
     public void setIsRunning(boolean running) {
         isRunning = running;
-    }
-
-    public void setParameters(int numberOfPeople, int minGroupSize, int maxGroupSize, int numberOfObstacles, int numberOfWayPoints){
-        this.minGroupSize = minGroupSize;
-        this.maxGroupSize = maxGroupSize;
-        this.numberOfObstacles = numberOfObstacles;
-        this.numberOfPeople = numberOfPeople;
-        this.numberOfWayPoints = numberOfWayPoints;
-    }
-
-    public boolean missingParameters(){
-        if (this.numberOfObstacles == 0 || this.numberOfPeople == 0 || this.numberOfWayPoints == 0)
-            return true;
-        return false;
     }
 
 }
